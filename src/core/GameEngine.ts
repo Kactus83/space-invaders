@@ -1,6 +1,7 @@
 import { Player } from '../components/Player';
 import { InvadersGroup } from '../components/InvadersGroup';
 import { Projectile } from '../components/Projectile';
+import { checkCollision } from '../utils/Collision';
 
 export class GameEngine {
     private lastTime = 0;
@@ -27,11 +28,29 @@ export class GameEngine {
 
         requestAnimationFrame(this.loop.bind(this));
     }
-
     private update(deltaTime: number) {
         this.invadersGroup.update();
-        this.projectiles.forEach(projectile => projectile.update(deltaTime));
-    }
+        this.projectiles = this.projectiles.filter(projectile => {
+            let active = true;
+            projectile.update(deltaTime);
+    
+            // Supprimer si hors du canvas
+            if (projectile.y < 0) {
+                active = false;
+            }
+    
+            // Vérifier les collisions avec les envahisseurs
+            this.invadersGroup.invaders.forEach((invader, index) => {
+                if (checkCollision(projectile, invader)) {
+                    this.invadersGroup.removeInvader(index); 
+                    this.player.score += 10; 
+                    active = false;
+                }
+            });
+    
+            return active;
+        });
+    }    
 
     private draw() {
         this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
@@ -49,7 +68,7 @@ export class GameEngine {
                 case 'ArrowRight':
                     this.player.moveRight();
                     break;
-                case 'Space':
+                case ' ':
                     this.player.shoot(this.projectiles); 
                     break;
             }

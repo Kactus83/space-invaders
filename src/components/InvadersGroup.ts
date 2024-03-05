@@ -1,7 +1,7 @@
 import { Invader } from './Invader';
 
 export class InvadersGroup {
-    private invaders: Invader[] = [];
+    public invaders: Invader[] = [];
     private direction = 1;
     private speed = 1;
     private downStep = 10;
@@ -44,5 +44,9 @@ export class InvadersGroup {
 
     draw() {
         this.invaders.forEach(invader => invader.draw(this.ctx));
+    }
+
+    removeInvader(index: number) {
+        this.invaders.splice(index, 1); 
     }
 }

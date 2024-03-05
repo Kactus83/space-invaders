@@ -1,6 +1,8 @@
 export class Invader {
     public x: number;
     public y: number;
+    public width = 10;
+    public height = 10;
     private speed = 1;
 
     constructor(x: number, y: number) {
@@ -17,6 +19,6 @@ export class Invader {
 
     draw(ctx: CanvasRenderingContext2D) {
         ctx.fillStyle = '#f00';
-        ctx.fillRect(this.x, this.y, 10, 20);
+        ctx.fillRect(this.x, this.y, this.width, this.height);
     }
 }

@@ -3,7 +3,8 @@ import { Projectile } from "./Projectile";
 export class Player {
     private x: number;
     private y: number;
-    private speed = 5; 
+    public speed = 5;
+    public score = 0; 
 
     constructor(x: number, y: number) {
         this.x = x;
@@ -24,9 +25,6 @@ export class Player {
     }
     
     shoot(projectiles: Projectile[]) {
-        // Crée un projectile au milieu du joueur
-        projectiles.push(new Projectile(this.x + 25, this.y, 5));
+        projectiles.push(new Projectile(this.x + 25, this.y - 10));
     }
-
-    // Ajoutez plus de méthodes au besoin, comme pour tirer un projectile
 }

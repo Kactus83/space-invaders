@@ -1,5 +1,14 @@
 export class Projectile {
-    constructor(private x: number, private y: number, private speed: number = 5) {}
+    public x: number;
+    public y: number;
+    public width = 2;
+    public height = 2;
+    private speed = 10;
+    
+    constructor(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+    }
 
     update(deltaTime: number) {
         this.y -= this.speed;
