@@ -1,9 +1,12 @@
-import { Player } from '../components/Player';
-import { InvadersGroup } from '../components/InvadersGroup';
-import { Projectile } from '../components/Projectile';
+import { Player } from '../components/player/Player';
+import { InvadersGroup } from '../components/invaders/InvadersGroup';
+import { Projectile } from '../components/projectiles/Projectile';
 import { checkCollision } from '../utils/Collision';
+import { GameState } from '../types/GameState';
 
 export class GameEngine {
+
+    private gameState: GameState = GameState.Running;
     private lastTime = 0;
     private player: Player;
     private invadersGroup: InvadersGroup;
@@ -20,6 +23,11 @@ export class GameEngine {
     }
 
     private loop(timeStamp: number) {
+
+        if (this.gameState !== GameState.Running) {
+            this.handleEndGame();
+            return; 
+        }
         const deltaTime = timeStamp - this.lastTime;
         this.lastTime = timeStamp;
 
@@ -40,13 +48,19 @@ export class GameEngine {
             }
     
             // Vérifier les collisions avec les envahisseurs
-            this.invadersGroup.invaders.forEach((invader, index) => {
+            this.invadersGroup.invaders.forEach((invader, iIndex) => {
                 if (checkCollision(projectile, invader)) {
-                    this.invadersGroup.removeInvader(index); 
-                    this.player.score += 10; 
-                    active = false;
+                    invader.takeDamage(projectile.damage); 
+                    const newScore = this.player.getScore() + 10; 
+                    this.player.setScore(newScore);
+                    active = false; 
                 }
             });
+            
+        if (this.gameState === GameState.Running) {
+            this.checkWinCondition();
+            this.checkLoseCondition();
+        }
     
             return active;
         });
@@ -57,7 +71,15 @@ export class GameEngine {
         this.player.draw(this.ctx);
         this.invadersGroup.draw();
         this.projectiles.forEach(projectile => projectile.draw(this.ctx));
+        this.drawScore();
     }
+
+    private drawScore() {
+        this.ctx.font = '20px Arial';
+        this.ctx.fillStyle = '#fff';
+        // Affichage du score et du niveau
+        this.ctx.fillText(`Score: ${this.player.getScore()} - Level: ${this.player.getLevel()}`, 10, 30);
+    }       
     
     private handleInputs() {
         window.addEventListener('keydown', (event) => {
@@ -74,4 +96,29 @@ export class GameEngine {
             }
         });
     }
+    
+    private handleEndGame() {
+        const message = this.gameState === GameState.Won ? "Victoire !" : "Défaite !";
+        console.log(message);
+        // Afficher ici le message sur le canvas ou via une alerte/élément HTML
+        this.ctx.fillStyle = '#fff';
+        this.ctx.fillText(message, this.ctx.canvas.width / 2 - 50, this.ctx.canvas.height / 2);
+    }
+
+    private checkWinCondition() {
+        if (this.invadersGroup.invaders.length === 0) {
+            this.gameState = GameState.Won;
+        }
+    }
+    
+    private checkLoseCondition() {
+        const lost = this.invadersGroup.invaders.some(invader => 
+            invader.y + invader.height >= this.player.y 
+        );
+    
+        if (lost) {
+            this.gameState = GameState.Lost;
+        }
+    }
+    
 }

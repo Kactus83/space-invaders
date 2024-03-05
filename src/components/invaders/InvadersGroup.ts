@@ -1,4 +1,6 @@
+import { InvaderType } from '../../types/InvaderType';
 import { Invader } from './Invader';
+import { InvaderTypesAttributes } from './InvaderAttributes';
 
 export class InvadersGroup {
     public invaders: Invader[] = [];
@@ -13,9 +15,10 @@ export class InvadersGroup {
     private initialize() {
         for (let row = 0; row < this.rows; row++) {
             for (let column = 0; column < this.columns; column++) {
-                const x = column * this.invaderSpacing + 100; 
-                const y = row * this.invaderSpacing + 50; 
-                this.invaders.push(new Invader(x, y));
+                const x = column * this.invaderSpacing + 100;
+                const y = row * this.invaderSpacing + 50;
+                const type = this.determineInvaderType(row, column); // À implémenter
+                this.invaders.push(new Invader(x, y, type));
             }
         }
     }
@@ -40,13 +43,18 @@ export class InvadersGroup {
         this.invaders.forEach(invader => {
             invader.x += this.speed * this.direction;
         });
+        
+        this.invaders = this.invaders.filter(invader => !invader.getDestroyed());
+    }
+
+    private determineInvaderType(row: number, column: number): InvaderType {
+        // Logique simplifiée pour l'exemple. À enrichir pour varier les types.
+        if (row === 0) return InvaderType.Elite; // La première rangée d'élites
+        if (row === 1) return InvaderType.Advanced; // La seconde rangée d'avancés
+        return InvaderType.Basic; // Les autres rangées de base
     }
 
     draw() {
         this.invaders.forEach(invader => invader.draw(this.ctx));
-    }
-
-    removeInvader(index: number) {
-        this.invaders.splice(index, 1); 
     }
 }
