@@ -12,6 +12,9 @@ export class GameEngine {
     private invadersGroup: InvadersGroup;
     private projectiles: Projectile[] = [];
 
+    private lastDisplayedScore: number = 0;
+    private lastDisplayedLevel: number = 0;
+
     constructor(private ctx: CanvasRenderingContext2D) {
         this.player = new Player(ctx.canvas.width / 2, ctx.canvas.height - 60);
         this.handleInputs();
@@ -74,12 +77,30 @@ export class GameEngine {
         this.drawScore();
     }
 
+
     private drawScore() {
-        this.ctx.font = '20px Arial';
-        this.ctx.fillStyle = '#fff';
-        // Affichage du score et du niveau
-        this.ctx.fillText(`Score: ${this.player.getScore()} - Level: ${this.player.getLevel()}`, 10, 30);
-    }       
+        const scoreElement = document.getElementById('scoreDisplay');
+        const levelElement = document.getElementById('levelDisplay');
+    
+        if (scoreElement) {
+            scoreElement.innerHTML = `Score: ${this.player.getScore()}`;
+        }
+        if (levelElement) {
+            levelElement.innerHTML = `Level: ${this.player.getLevel()}`;
+        }
+    
+        // Déclencher une animation CSS si le score ou le niveau a changé
+        if (this.player.getScore() !== this.lastDisplayedScore) {
+            scoreElement?.classList.add('flash-animation');
+            setTimeout(() => scoreElement?.classList.remove('flash-animation'), 1000);
+            this.lastDisplayedScore = this.player.getScore();
+        }
+        if (this.player.getLevel() !== this.lastDisplayedLevel) {
+            levelElement?.classList.add('flash-animation');
+            setTimeout(() => levelElement?.classList.remove('flash-animation'), 1000);
+            this.lastDisplayedLevel = this.player.getLevel();
+        }
+    }     
     
     private handleInputs() {
         window.addEventListener('keydown', (event) => {
