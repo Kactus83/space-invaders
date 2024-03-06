@@ -1,3 +1,7 @@
 # To launch the project : 
 
-"npm start" in terminal when you're in main folder
+install node js & npm
+
+"npm i" to install dependencies
+
+"npm start" tu run the game (in terminal when you're in main folder)
