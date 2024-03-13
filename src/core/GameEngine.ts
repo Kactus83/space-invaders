@@ -3,10 +3,13 @@ import { InvadersGroup } from '../components/invaders/InvadersGroup';
 import { Projectile } from '../components/projectiles/Projectile';
 import { checkCollision } from '../utils/Collision';
 import { GameState } from '../types/GameState';
+import { DefaultTheme } from '../themes/default/DefaultTheme';
+import { ITheme } from '../themes/ITheme';
 
 export class GameEngine {
 
     private gameState: GameState = GameState.Running;
+    private theme: ITheme = new DefaultTheme();
     private lastTime = 0;
     private player: Player;
     private invadersGroup: InvadersGroup;
@@ -16,9 +19,9 @@ export class GameEngine {
     private lastDisplayedLevel: number = 0;
 
     constructor(private ctx: CanvasRenderingContext2D) {
-        this.player = new Player(ctx.canvas.width / 2, ctx.canvas.height - 60);
+        this.player = new Player(ctx.canvas.width / 2, ctx.canvas.height - 60, this.theme);
         this.handleInputs();
-        this.invadersGroup = new InvadersGroup(ctx, 5, 11, 40);
+        this.invadersGroup = new InvadersGroup(ctx, 5, 11, 40, this.theme);
     }
 
     start() {
