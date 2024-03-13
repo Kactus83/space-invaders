@@ -1,7 +1,7 @@
 import { PlayerDesign } from './models/PlayerDesign';
 import { InvaderDesign } from './models/InvaderDesign';
 import { ProjectileDesign } from './models/ProjectileDesign';
-import playerDesignsData from './lib/playerDesigns.json'; // Si vous stockez des données dans JSON
+import playerDesignsData from './lib/playerDesigns.json'; 
 import invaderDesignsData from './lib/invaderDesigns.json';
 import projectileDesignsData from './lib/projectileDesigns.json';
 import { IDesign } from './types/IDesign';
