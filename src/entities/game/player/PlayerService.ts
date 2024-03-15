@@ -2,19 +2,25 @@ import { Player } from './Player';
 import { InputManager } from '../../../inputs/InputManager';
 import { ThemeManager } from '../../../themes/ThemeManager';
 import { UserInputType } from '../../../inputs/UserInputType';
+import { ProjectileService } from '../projectile/ProjectileService';
 
 export class PlayerService {
-    private player: Player;
+    private player: Player; 
 
-    constructor(private inputManager: InputManager, private themeManager: ThemeManager, x: number, y: number) {
+    constructor(
+        private inputManager: InputManager, 
+        private themeManager: ThemeManager, 
+        x: number, 
+        y: number,
+        private projectileService: ProjectileService
+        ) 
+    {
         this.player = new Player(themeManager, x, y);
         this.subscribeToInput();
     }
 
     private subscribeToInput(): void {
-        console.log("subscribe to input");
         this.inputManager.subscribe((inputType: UserInputType) => {
-            console.log("input received : ", inputType);
             switch(inputType) {
                 case UserInputType.Left:
                     this.player.moveLeft();
@@ -23,7 +29,7 @@ export class PlayerService {
                     this.player.moveRight();
                     break;
                 case UserInputType.Shoot:
-                    this.player.shoot();
+                    this.shoot();
                     break;
                 // Ajoutez d'autres cas au besoin
             }
@@ -46,5 +52,14 @@ export class PlayerService {
     public cleanup(): void {
         // Se désabonner lors de la destruction du service pour éviter les fuites de mémoire
         this.inputManager.unsubscribe(this.subscribeToInput);
+    }
+
+    private shoot(): void {
+        // Déterminer la position initiale du projectile
+        const projectileX = this.player.fabricObject.left + this.player.fabricObject.width / 2;
+        const projectileY = this.player.fabricObject.top;
+
+        // Demander au ProjectileService de créer un projectile
+        this.projectileService.createProjectileForPlayerLevel(this.player.level, projectileX, projectileY);
     }
 }

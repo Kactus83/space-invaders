@@ -5,9 +5,11 @@ import { ThemeManager } from '../../../themes/ThemeManager';
 import { UserInputType } from '../../../inputs/UserInputType';
 import { PlayerService } from '../../../entities/game/player/PlayerService';
 import { InputManager } from '../../../inputs/InputManager';
+import { ProjectileService } from '../../../entities/game/projectile/ProjectileService';
 
 export class GamePlayScene implements IGameScene {
     isInitialized: boolean = false;
+    private projectileService: ProjectileService;
     private playerService: PlayerService;
 
     constructor(
@@ -21,7 +23,8 @@ export class GamePlayScene implements IGameScene {
         // Position initiale du joueur (à ajuster selon les besoins)
         const playerStartPositionX = 300;
         const playerStartPositionY = 560;
-        this.playerService = new PlayerService(this.inputManager, this.themeManager, playerStartPositionX, playerStartPositionY);
+        this.projectileService = new ProjectileService(this.themeManager);
+        this.playerService = new PlayerService(this.inputManager, this.themeManager, playerStartPositionX, playerStartPositionY, this.projectileService);
         await this.playerService.initializePlayer();
         this.isInitialized = true;
     }
@@ -32,17 +35,18 @@ export class GamePlayScene implements IGameScene {
 
     public update(deltaTime: number): void {
         this.playerService.update(deltaTime);
+        this.projectileService.update(deltaTime);
     }
 
     public render(): void {
-        if(!this.isInitialized) {
+        if (!this.isInitialized) {
             console.error("GamePlayScene not initialized");
             return;
         }
         this.renderer.clearCanvas();
         const playerObject = this.playerService.getFabricObject();
-        this.renderer.draw([playerObject]);
-        // Ajoutez ici le rendu d'autres entités si nécessaire
+        const projectileObjects = this.projectileService.getFabricObjects();
+        this.renderer.draw([...projectileObjects, playerObject]);
     }
 
     public cleanup(): void {

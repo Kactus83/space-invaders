@@ -30,7 +30,7 @@ export class InputManager {
             case "ArrowRight": return UserInputType.Right;
             case "ArrowUp": return UserInputType.Up;
             case "ArrowDown": return UserInputType.Down;
-            case "Space": return UserInputType.Shoot;
+            case " ": return UserInputType.Shoot;
             case "Enter": return UserInputType.Enter;
             default: return undefined; // Retourne undefined si la clé n'est pas reconnue
         }

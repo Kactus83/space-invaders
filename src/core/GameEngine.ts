@@ -6,6 +6,7 @@ import { InputManager } from '../inputs/InputManager';
 import { SceneIds } from '../scenes/types/SceneIds';
 
 export class GameEngine {
+    private lastTimestamp: number = 0;
     private sceneManager: SceneManager;
     private renderer: Renderer;
     private inputManager: InputManager;
@@ -20,13 +21,21 @@ export class GameEngine {
     }
 
     public start(): void {
-        requestAnimationFrame(this.gameLoop.bind(this));
+        requestAnimationFrame((timestamp) => this.gameLoop(timestamp));
     }
 
     private gameLoop(timestamp: number): void {
-        this.sceneManager.updateCurrentScene(0); // deltaTime n'est pas nécessaire ici mais peut être ajouté si besoin
+        if (this.lastTimestamp === 0) {
+            this.lastTimestamp = timestamp;
+        }
+
+        // Calcul de deltaTime en secondes
+        const deltaTime = (timestamp - this.lastTimestamp) / 1000;
+        this.lastTimestamp = timestamp;
+
+        this.sceneManager.updateCurrentScene(deltaTime);
         this.renderer.clearCanvas();
         this.sceneManager.renderCurrentScene();
-        requestAnimationFrame(this.gameLoop.bind(this));
+        requestAnimationFrame((timestamp) => this.gameLoop(timestamp));
     }
 }

@@ -1,7 +1,7 @@
 export enum UserInputType {
     Left = "ArrowLeft",
     Right = "ArrowRight",
-    Shoot = "Space",
+    Shoot = " ",
     Up = "ArrowUp",
     Down = "ArrowDown",
     Enter = "Enter",

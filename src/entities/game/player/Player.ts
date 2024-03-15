@@ -26,7 +26,6 @@ export class Player extends BaseEntity {
     moveRight(): void {
         const newLeft = this.fabricObject.left + 10;
         if (newLeft + this.fabricObject.width <= config.canvas.width) { 
-            console.log("new left : ", newLeft, " width : ", this.fabricObject.width, " canvas width : ", config.canvas.width);
             this.fabricObject.left = newLeft;
         }
     }
@@ -56,7 +55,6 @@ export class Player extends BaseEntity {
                         scaleY: scaleY,
                     });
     
-                    console.log("fabric object : ", this.fabricObject);
                     resolve();
                 });
             } else {
@@ -67,7 +65,7 @@ export class Player extends BaseEntity {
                     width: theme.width,
                     height: theme.height,
                 });
-                console.log("fabric object DEFAULT : ", this.fabricObject);
+
                 resolve();
             }
         });
