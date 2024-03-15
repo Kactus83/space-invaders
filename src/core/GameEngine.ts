@@ -3,7 +3,6 @@ import { ThemeManager } from '../themes/ThemeManager';
 import { SceneManager } from '../scenes/SceneManager';
 import { Renderer } from '../renderer/Renderer';
 import { InputManager } from '../inputs/InputManager';
-import { MainMenuScene } from '../scenes/lib/main-menu/MainMenuScene';
 import { SceneIds } from '../scenes/types/SceneIds';
 
 export class GameEngine {
@@ -12,7 +11,7 @@ export class GameEngine {
     private inputManager: InputManager;
 
     constructor(private canvas: fabric.Canvas, themeManager: ThemeManager) {
-        this.renderer = new Renderer(this.canvas, themeManager);
+        this.renderer = new Renderer(this.canvas);
         this.inputManager = new InputManager();
         this.sceneManager = new SceneManager(this.inputManager, this.renderer, themeManager);
 

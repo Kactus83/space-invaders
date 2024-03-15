@@ -1,17 +1,24 @@
 import { UserInputType } from './UserInputType';
 
 export class InputManager {
-    private inputCallback: (input: UserInputType) => void;
+    private subscribers: ((input: UserInputType) => void)[] = [];
 
-    public initialize(inputCallback: (input: UserInputType) => void): void {
-        this.inputCallback = inputCallback;
+    constructor() {
         window.addEventListener('keydown', this.handleKeyDown.bind(this));
+    }
+
+    public subscribe(callback: (input: UserInputType) => void): void {
+        this.subscribers.push(callback);
+    }
+
+    public unsubscribe(callback: (input: UserInputType) => void): void {
+        this.subscribers = this.subscribers.filter(sub => sub !== callback);
     }
 
     private handleKeyDown(event: KeyboardEvent): void {
         const inputType = UserInputType[event.key as keyof typeof UserInputType];
-        if (inputType && this.inputCallback) {
-            this.inputCallback(inputType);
+        if (inputType) {
+            this.subscribers.forEach(callback => callback(inputType));
         }
     }
 

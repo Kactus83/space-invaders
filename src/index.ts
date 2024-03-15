@@ -1,6 +1,7 @@
 import { GameEngine } from './core/GameEngine';
 import { ThemeManager } from './themes/ThemeManager';
 import { fabric } from 'fabric';
+import './styles/styles.css';
 
 class App {
     private canvas: fabric.Canvas;

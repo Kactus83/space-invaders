@@ -16,23 +16,23 @@ export class SceneManager {
         private themeManager: ThemeManager
     ) {
         this.scenes.set(SceneIds.MainMenu, new MainMenuScene(this, this.renderer, this.themeManager));
-        this.scenes.set(SceneIds.GamePlay, new GamePlayScene(this, this.renderer, this.themeManager));
+        this.scenes.set(SceneIds.GamePlay, new GamePlayScene(this, this.renderer, this.themeManager, this.inputManager));
         // Ajoutez d'autres scènes au besoin
     }
 
-    public loadInitialScene(): void {
-        this.changeScene(SceneIds.MainMenu);
+    public async loadInitialScene(): Promise<void> {
+        await this.changeScene(SceneIds.MainMenu);
     }
 
-    public changeScene(sceneId: SceneIds): void {
+    public async changeScene(sceneId: SceneIds): Promise<void> {
         const scene = this.scenes.get(sceneId);
-        if (!scene) {
+        if (scene) {
+            await this.currentScene?.cleanup();
+            this.currentScene = scene;
+            await this.currentScene.initialize();
+        } else {
             console.error(`Scene ${sceneId} not found.`);
-            return;
         }
-        this.currentScene?.cleanup();
-        this.currentScene = scene;
-        this.currentScene.initialize();
     }
 
     public updateCurrentScene(deltaTime: number): void {
