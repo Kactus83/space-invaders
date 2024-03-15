@@ -14,6 +14,7 @@ export class PlayerService {
     private subscribeToInput(): void {
         console.log("subscribe to input");
         this.inputManager.subscribe((inputType: UserInputType) => {
+            console.log("input received : ", inputType);
             switch(inputType) {
                 case UserInputType.Left:
                     this.player.moveLeft();
@@ -35,12 +36,10 @@ export class PlayerService {
     
 
     public update(deltaTime: number): void {
-        console.log("update player");
         this.player.update(deltaTime);
     }
 
     public getFabricObject(): fabric.Object {
-        console.log("get fabric object");
         return this.player.fabricObject;
     }
 

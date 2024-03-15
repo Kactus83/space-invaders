@@ -19,8 +19,8 @@ export class GamePlayScene implements IGameScene {
 
     public async initialize(): Promise<void> {
         // Position initiale du joueur (à ajuster selon les besoins)
-        const playerStartPositionX = 400;
-        const playerStartPositionY = 550;
+        const playerStartPositionX = 300;
+        const playerStartPositionY = 450;
         this.playerService = new PlayerService(this.inputManager, this.themeManager, playerStartPositionX, playerStartPositionY);
         await this.playerService.initializePlayer();
         this.isInitialized = true;
@@ -41,7 +41,6 @@ export class GamePlayScene implements IGameScene {
         }
         this.renderer.clearCanvas();
         const playerObject = this.playerService.getFabricObject();
-        console.log("player object : ", playerObject);
         this.renderer.draw([playerObject]);
         // Ajoutez ici le rendu d'autres entités si nécessaire
     }

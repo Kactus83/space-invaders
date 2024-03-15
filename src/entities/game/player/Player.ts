@@ -17,16 +17,19 @@ export class Player extends BaseEntity {
     
     moveLeft(): void {
         // Mettre à jour la position du joueur à gauche
+        console.log("move left");
         this.fabricObject.left -= 10; // Exemple de déplacement
     }
 
     moveRight(): void {
         // Mettre à jour la position du joueur à droite
+        console.log("move right");
         this.fabricObject.left += 10; // Exemple de déplacement
     }
 
     shoot(): void {
         // Implémenter la logique de tir
+        console.log("shoot");
     }
 
     public loadDesign(): Promise<void> {

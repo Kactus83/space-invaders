@@ -1,4 +1,4 @@
-import { UserInputType } from './UserInputType';
+import { UserInputType } from "./UserInputType";
 
 export class InputManager {
     private subscribers: ((input: UserInputType) => void)[] = [];
@@ -16,9 +16,23 @@ export class InputManager {
     }
 
     private handleKeyDown(event: KeyboardEvent): void {
-        const inputType = UserInputType[event.key as keyof typeof UserInputType];
+        const inputType = this.mapKeyToInputType(event.key);
         if (inputType) {
             this.subscribers.forEach(callback => callback(inputType));
+        } else {
+            console.log(`No mapping found for key: ${event.key}`);
+        }
+    }
+
+    private mapKeyToInputType(key: string): UserInputType | undefined {
+        switch (key) {
+            case "ArrowLeft": return UserInputType.Left;
+            case "ArrowRight": return UserInputType.Right;
+            case "ArrowUp": return UserInputType.Up;
+            case "ArrowDown": return UserInputType.Down;
+            case "Space": return UserInputType.Shoot;
+            case "Enter": return UserInputType.Enter;
+            default: return undefined; // Retourne undefined si la clé n'est pas reconnue
         }
     }
 
