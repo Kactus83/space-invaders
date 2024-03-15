@@ -1,6 +1,7 @@
 import { BaseEntity } from '../BaseEntity';
 import { fabric } from 'fabric';
 import { ThemeManager } from '../../../themes/ThemeManager';
+import { config } from '../../../config/config';
 
 export class Player extends BaseEntity {
     public level: number = 1;
@@ -16,15 +17,18 @@ export class Player extends BaseEntity {
     }
     
     moveLeft(): void {
-        // Mettre à jour la position du joueur à gauche
-        console.log("move left");
-        this.fabricObject.left -= 10; // Exemple de déplacement
+        const newLeft = this.fabricObject.left - 10;
+        if (newLeft >= 0) {
+            this.fabricObject.left = newLeft;
+        }
     }
-
+    
     moveRight(): void {
-        // Mettre à jour la position du joueur à droite
-        console.log("move right");
-        this.fabricObject.left += 10; // Exemple de déplacement
+        const newLeft = this.fabricObject.left + 10;
+        if (newLeft + this.fabricObject.width <= config.canvas.width) { 
+            console.log("new left : ", newLeft, " width : ", this.fabricObject.width, " canvas width : ", config.canvas.width);
+            this.fabricObject.left = newLeft;
+        }
     }
 
     shoot(): void {
@@ -38,13 +42,20 @@ export class Player extends BaseEntity {
             console.log("theme : ", theme);
             if (theme.svgPath) {
                 fabric.loadSVGFromURL(theme.svgPath, (objects, options) => {
+                    // Création de l'objet SVG
                     const svg = fabric.util.groupSVGElements(objects, options);
+                    // Calcul du facteur de mise à l'échelle pour correspondre aux dimensions désirées
+                    const scaleX = theme.width / svg.width;
+                    const scaleY = theme.height / svg.height;
+    
+                    // Mise à jour des propriétés de l'objet SVG avec les nouvelles dimensions
                     this.fabricObject = svg.set({
-                        left: this.x, // Utilisez x, y fournis au constructeur pour positionner
+                        left: this.x,
                         top: this.y,
-                        scaleX: theme.width, // Assurez-vous que ces valeurs sont correctes
-                        scaleY: theme.height,
+                        scaleX: scaleX,
+                        scaleY: scaleY,
                     });
+    
                     console.log("fabric object : ", this.fabricObject);
                     resolve();
                 });
@@ -56,7 +67,7 @@ export class Player extends BaseEntity {
                     width: theme.width,
                     height: theme.height,
                 });
-                console.log("fabric object : ", this.fabricObject);
+                console.log("fabric object DEFAULT : ", this.fabricObject);
                 resolve();
             }
         });

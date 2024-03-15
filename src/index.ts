@@ -2,6 +2,7 @@ import { GameEngine } from './core/GameEngine';
 import { ThemeManager } from './themes/ThemeManager';
 import { fabric } from 'fabric';
 import './styles/styles.css';
+import { config } from './config/config';
 
 class App {
     private canvas: fabric.Canvas;
@@ -17,8 +18,8 @@ class App {
         this.canvas = new fabric.Canvas('gameCanvas', {
             hoverCursor: 'pointer',
             selection: false,
-            width: 800,
-            height: 600,
+            width: config.canvas.width,
+            height: config.canvas.height,
         });
     }
 

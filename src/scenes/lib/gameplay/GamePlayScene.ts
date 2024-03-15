@@ -20,7 +20,7 @@ export class GamePlayScene implements IGameScene {
     public async initialize(): Promise<void> {
         // Position initiale du joueur (à ajuster selon les besoins)
         const playerStartPositionX = 300;
-        const playerStartPositionY = 450;
+        const playerStartPositionY = 560;
         this.playerService = new PlayerService(this.inputManager, this.themeManager, playerStartPositionX, playerStartPositionY);
         await this.playerService.initializePlayer();
         this.isInitialized = true;
