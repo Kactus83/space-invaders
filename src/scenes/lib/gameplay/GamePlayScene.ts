@@ -6,10 +6,12 @@ import { UserInputType } from '../../../inputs/UserInputType';
 import { PlayerService } from '../../../entities/game/player/PlayerService';
 import { InputManager } from '../../../inputs/InputManager';
 import { ProjectileService } from '../../../entities/game/projectile/ProjectileService';
+import { InvaderService } from '../../../entities/game/invader/InvaderService';
 
 export class GamePlayScene implements IGameScene {
     isInitialized: boolean = false;
     private projectileService: ProjectileService;
+    private invaderService: InvaderService;
     private playerService: PlayerService;
 
     constructor(
@@ -24,8 +26,10 @@ export class GamePlayScene implements IGameScene {
         const playerStartPositionX = 300;
         const playerStartPositionY = 560;
         this.projectileService = new ProjectileService(this.themeManager);
+        this.invaderService = new InvaderService(this.themeManager);
         this.playerService = new PlayerService(this.inputManager, this.themeManager, playerStartPositionX, playerStartPositionY, this.projectileService);
         await this.playerService.initializePlayer();
+        await this.invaderService.initializeWave();
         this.isInitialized = true;
     }
 
@@ -36,6 +40,7 @@ export class GamePlayScene implements IGameScene {
     public update(deltaTime: number): void {
         this.playerService.update(deltaTime);
         this.projectileService.update(deltaTime);
+        this.invaderService.update(deltaTime);
     }
 
     public render(): void {
@@ -46,7 +51,8 @@ export class GamePlayScene implements IGameScene {
         this.renderer.clearCanvas();
         const playerObject = this.playerService.getFabricObject();
         const projectileObjects = this.projectileService.getFabricObjects();
-        this.renderer.draw([...projectileObjects, playerObject]);
+        const invaderObjects = this.invaderService.getFabricObjects(); 
+        this.renderer.draw([...invaderObjects, ...projectileObjects, playerObject]);
     }
 
     public cleanup(): void {
