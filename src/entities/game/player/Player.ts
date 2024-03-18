@@ -2,6 +2,7 @@ import { BaseEntity } from '../BaseEntity';
 import { fabric } from 'fabric';
 import { ThemeManager } from '../../../themes/ThemeManager';
 import { config } from '../../../config/config';
+import { MaxLevel, PlayerLevelThresholds } from './PlayerLevels';
 
 export class Player extends BaseEntity {
     public level: number = 1;
@@ -35,7 +36,7 @@ export class Player extends BaseEntity {
         console.log("shoot");
     }
 
-    public loadDesign(): Promise<void> {
+    public async loadDesign(): Promise<void> {
         return new Promise((resolve, reject) => {
             const theme = this.themeManager.getPlayerDesign(this.level);
             console.log("theme : ", theme);
@@ -71,14 +72,26 @@ export class Player extends BaseEntity {
         });
     }    
 
-    public setLevel(newLevel: number): void {
-        if (newLevel !== this.level) {
-            this.level = newLevel;
-            this.loadDesign(); 
+    public increaseScore(points: number): void {
+        this.score += points;
+        this.checkForLevelUp();
+    }
+
+    private async checkForLevelUp(): Promise<void> {
+        for (let level = 2; level <= MaxLevel; level++) {
+            if (this.score >= PlayerLevelThresholds[level as keyof typeof PlayerLevelThresholds] && this.level < level) {
+                await this.setLevel(level);
+                break; // Arrêtez de vérifier une fois qu'un niveau supérieur est trouvé et appliqué
+            }
         }
     }
 
-    public increaseScore(points: number): void {
-        this.score += points;
+    public async setLevel(newLevel: number): Promise<void> {
+        if (newLevel !== this.level && newLevel <= MaxLevel) {
+            this.level = newLevel;
+            // Mettez à jour le design du joueur ici si nécessaire
+            // Par exemple, charger un nouveau design basé sur le niveau
+            await this.loadDesign();
+        }
     }
 }

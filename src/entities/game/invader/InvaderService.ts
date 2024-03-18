@@ -58,6 +58,14 @@ export class InvaderService {
         return this.invaders.map(invader => invader.fabricObject);
     }
 
+    public getInvaders(): Invader[] {
+        return this.invaders;
+    }
+
+    public removeInvader(id: number): void {
+        this.invaders = this.invaders.filter(invader => invader.id !== id);
+    }
+
     public cleanup(): void {
         this.invaders = [];
     }

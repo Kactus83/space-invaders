@@ -46,6 +46,14 @@ export class ProjectileService {
         return this.projectiles.map(projectile => projectile.fabricObject);
     }
 
+    public getProjectiles(): Projectile[] {
+        return this.projectiles;
+    }
+
+    public removeProjectile(id: number): void{
+        this.projectiles = this.projectiles.filter(projectile => projectile.id !== id);
+    }
+
     public cleanup(): void {
         this.projectiles = [];
     }

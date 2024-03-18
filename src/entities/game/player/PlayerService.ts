@@ -49,6 +49,10 @@ export class PlayerService {
         return this.player.fabricObject;
     }
 
+    public getPlayer(): Player {
+        return this.player;
+    }
+
     public cleanup(): void {
         // Se désabonner lors de la destruction du service pour éviter les fuites de mémoire
         this.inputManager.unsubscribe(this.subscribeToInput);
@@ -61,5 +65,9 @@ export class PlayerService {
 
         // Demander au ProjectileService de créer un projectile
         this.projectileService.createProjectileForPlayerLevel(this.player.level, projectileX, projectileY);
+    }
+
+    public increaseScore(points: number): void {
+        this.player.increaseScore(points);
     }
 }

@@ -7,12 +7,16 @@ import { PlayerService } from '../../../entities/game/player/PlayerService';
 import { InputManager } from '../../../inputs/InputManager';
 import { ProjectileService } from '../../../entities/game/projectile/ProjectileService';
 import { InvaderService } from '../../../entities/game/invader/InvaderService';
+import { CollisionService } from '../../../collisions/CollisionService';
+import { PlayerHUD } from '../../../entities/game/player/PlayerHUD';
 
 export class GamePlayScene implements IGameScene {
     isInitialized: boolean = false;
     private projectileService: ProjectileService;
     private invaderService: InvaderService;
     private playerService: PlayerService;
+    private collisionService: CollisionService;
+    private playerHUD: PlayerHUD;
 
     constructor(
         private sceneManager: SceneManager,
@@ -28,6 +32,8 @@ export class GamePlayScene implements IGameScene {
         this.projectileService = new ProjectileService(this.themeManager);
         this.invaderService = new InvaderService(this.themeManager);
         this.playerService = new PlayerService(this.inputManager, this.themeManager, playerStartPositionX, playerStartPositionY, this.projectileService);
+        this.collisionService = new CollisionService(this.projectileService, this.invaderService, this.playerService);
+        this.playerHUD = new PlayerHUD(this.playerService, 10, 10);
         await this.playerService.initializePlayer();
         await this.invaderService.initializeWave();
         this.isInitialized = true;
@@ -41,6 +47,8 @@ export class GamePlayScene implements IGameScene {
         this.playerService.update(deltaTime);
         this.projectileService.update(deltaTime);
         this.invaderService.update(deltaTime);
+        this.collisionService.checkCollisions();
+        this.playerHUD.update();
     }
 
     public render(): void {
@@ -52,7 +60,8 @@ export class GamePlayScene implements IGameScene {
         const playerObject = this.playerService.getFabricObject();
         const projectileObjects = this.projectileService.getFabricObjects();
         const invaderObjects = this.invaderService.getFabricObjects(); 
-        this.renderer.draw([...invaderObjects, ...projectileObjects, playerObject]);
+        const playerHUDObjects = this.playerHUD.getFabricObjects();
+        this.renderer.draw([...playerHUDObjects, ...invaderObjects, ...projectileObjects, playerObject]);
     }
 
     public cleanup(): void {
