@@ -59,11 +59,12 @@ export class WallService {
         return this.walls;
     }
 
-    public applyDamageToWall(wall: Wall, damage: number): void {
+    public applyDamageToWall(wall: Wall, damage: number): boolean {
         const isDestroyed = wall.applyDamage(damage);
         if (isDestroyed) {
             this.removeWall(wall);
         }
+        return isDestroyed;
     }
 
     private removeWall(wallToRemove: Wall): void {

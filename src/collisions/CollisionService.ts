@@ -33,16 +33,22 @@ export class CollisionService {
             }
         }
 
-        for (const invader of this.invaderService.getInvaders()) {
-            for (const wall of walls) {
+        this.invaderService.getInvaders().forEach(invader => {
+            walls.forEach(wall => {
                 if (this.areColliding(invader, wall)) {
-                    // Supposons que chaque invader a une propriété `damage` pour les dégâts qu'il inflige
-                    this.wallService.applyDamageToWall(wall, invader.damage);
-                    this.invaderService.removeInvader(invader.id);
-                    break; // Supposer qu'un invader ne peut toucher qu'un seul mur à la fois
+                    const invaderDestroyed = invader.applyDamage(wall.damage);
+                    const wallDestroyed = this.wallService.applyDamageToWall(wall, invader.damage);
+    
+                    if (invaderDestroyed) {
+                        this.invaderService.removeInvader(invader.id);
+                    }
+    
+                    if (wallDestroyed) {
+                        // La logique de suppression est gérée dans applyDamageToWall
+                    }
                 }
-            }
-        }
+            });
+        });
     }
 
     private areColliding(entityA: BaseEntity, entityB: BaseEntity): boolean {

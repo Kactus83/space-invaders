@@ -7,11 +7,13 @@ import { WallSpecs } from './WallSpecs';
 export class Wall extends BaseEntity {
     type: WallType;
     hp: number;
+    damage: number;
 
     constructor(themeManager: ThemeManager, type: WallType, x: number, y: number) {
         super(themeManager, x, y);
         this.type = type;
         this.hp = WallSpecs[type].hp;
+        this.damage = WallSpecs[type].damage;
         this.loadDesign();
     }
 
