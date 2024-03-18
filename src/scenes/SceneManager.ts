@@ -5,6 +5,8 @@ import { ThemeManager } from '../themes/ThemeManager';
 import { SceneIds } from './types/SceneIds';
 import { MainMenuScene } from './lib/main-menu/MainMenuScene';
 import { GamePlayScene } from './lib/gameplay/GamePlayScene';
+import { GameWinScene } from './lib/gameplay/GameWinScene';
+import { GameLoseScene } from './lib/gameplay/GameLoseScene';
 
 export class SceneManager {
     private scenes: Map<SceneIds, IGameScene> = new Map();
@@ -17,6 +19,8 @@ export class SceneManager {
     ) {
         this.scenes.set(SceneIds.MainMenu, new MainMenuScene(this, this.renderer, this.themeManager));
         this.scenes.set(SceneIds.GamePlay, new GamePlayScene(this, this.renderer, this.themeManager, this.inputManager));
+        this.scenes.set(SceneIds.GameWin, new GameWinScene(this, this.renderer, this.themeManager));
+        this.scenes.set(SceneIds.GameLose, new GameLoseScene(this, this.renderer, this.themeManager));
         // Ajoutez d'autres scènes au besoin
     }
 

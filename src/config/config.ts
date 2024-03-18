@@ -3,4 +3,6 @@ export const config = {
         width: 800,
         height: 600,
     },
+    playerStartPositionX: 300,
+    playerStartPositionY: 560
 };

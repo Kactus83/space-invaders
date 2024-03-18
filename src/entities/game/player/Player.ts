@@ -7,6 +7,7 @@ import { MaxLevel, PlayerLevelThresholds } from './PlayerLevels';
 export class Player extends BaseEntity {
     public level: number = 1;
     public score: number = 0;
+    public health: number = 3;
 
     constructor(themeManager: ThemeManager, x: number, y: number) {
         super(themeManager, x, y);

@@ -3,19 +3,18 @@ import { InputManager } from '../../../inputs/InputManager';
 import { ThemeManager } from '../../../themes/ThemeManager';
 import { UserInputType } from '../../../inputs/UserInputType';
 import { ProjectileService } from '../projectile/ProjectileService';
+import { config } from '../../../config/config';
 
 export class PlayerService {
     private player: Player; 
 
     constructor(
         private inputManager: InputManager, 
-        private themeManager: ThemeManager, 
-        x: number, 
-        y: number,
+        private themeManager: ThemeManager,
         private projectileService: ProjectileService
         ) 
     {
-        this.player = new Player(themeManager, x, y);
+        this.player = new Player(themeManager, config.playerStartPositionX, config.playerStartPositionY);
         this.subscribeToInput();
     }
 

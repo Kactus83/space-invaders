@@ -9,6 +9,8 @@ import { ProjectileService } from '../../../entities/game/projectile/ProjectileS
 import { InvaderService } from '../../../entities/game/invader/InvaderService';
 import { CollisionService } from '../../../collisions/CollisionService';
 import { PlayerHUD } from '../../../entities/game/player/PlayerHUD';
+import { EndGameService } from '../../../end-game/EndGameService';
+import { SceneIds } from '../../types/SceneIds';
 
 export class GamePlayScene implements IGameScene {
     isInitialized: boolean = false;
@@ -17,6 +19,7 @@ export class GamePlayScene implements IGameScene {
     private playerService: PlayerService;
     private collisionService: CollisionService;
     private playerHUD: PlayerHUD;
+    private endGameService: EndGameService;
 
     constructor(
         private sceneManager: SceneManager,
@@ -26,16 +29,20 @@ export class GamePlayScene implements IGameScene {
     ) {}
 
     public async initialize(): Promise<void> {
-        // Position initiale du joueur (à ajuster selon les besoins)
-        const playerStartPositionX = 300;
-        const playerStartPositionY = 560;
+        console.log("GamePlayScene initializing");
         this.projectileService = new ProjectileService(this.themeManager);
         this.invaderService = new InvaderService(this.themeManager);
-        this.playerService = new PlayerService(this.inputManager, this.themeManager, playerStartPositionX, playerStartPositionY, this.projectileService);
+        this.playerService = new PlayerService(this.inputManager, this.themeManager, this.projectileService);
         this.collisionService = new CollisionService(this.projectileService, this.invaderService, this.playerService);
         this.playerHUD = new PlayerHUD(this.playerService, 10, 10);
+        this.endGameService = new EndGameService(
+            this.invaderService,
+            this.playerService,
+            this.sceneManager
+        );  
         await this.playerService.initializePlayer();
-        await this.invaderService.initializeWave();
+        await this.invaderService.initializeWave();   
+        console.log("GamePlayScene initialized");   
         this.isInitialized = true;
     }
 
@@ -44,11 +51,17 @@ export class GamePlayScene implements IGameScene {
     }
 
     public update(deltaTime: number): void {
+        console.log("GamePlayScene update");
+        if (!this.isInitialized) {
+            console.error("GamePlayScene not initialized");
+            return;
+        }
         this.playerService.update(deltaTime);
         this.projectileService.update(deltaTime);
         this.invaderService.update(deltaTime);
         this.collisionService.checkCollisions();
         this.playerHUD.update();
+        this.endGameService.checkGameStatus();
     }
 
     public render(): void {
