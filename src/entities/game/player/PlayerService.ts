@@ -4,9 +4,11 @@ import { ThemeManager } from '../../../themes/ThemeManager';
 import { UserInputType } from '../../../inputs/UserInputType';
 import { ProjectileService } from '../projectile/ProjectileService';
 import { config } from '../../../config/config';
+import { PlayerLevels } from './PlayerLevels';
 
 export class PlayerService {
     private player: Player; 
+    private lastShootTime: number = 0;
 
     constructor(
         private inputManager: InputManager, 
@@ -58,6 +60,15 @@ export class PlayerService {
     }
 
     private shoot(): void {
+    const currentTime = Date.now();
+    const fireRate = PlayerLevels[this.player.level.toString()].fireRate; // Convertir en string pour indexer
+    if ((currentTime - this.lastShootTime) / 1000 < fireRate) {
+        return; // Ne pas tirer si le délai n'est pas écoulé
+    }
+
+    this.lastShootTime = currentTime;
+
+        this.lastShootTime = currentTime;
         // Déterminer la position initiale du projectile
         const projectileX = this.player.fabricObject.left + this.player.fabricObject.width / 2;
         const projectileY = this.player.fabricObject.top;

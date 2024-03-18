@@ -11,12 +11,14 @@ import { CollisionService } from '../../../collisions/CollisionService';
 import { PlayerHUD } from '../../../entities/game/player/PlayerHUD';
 import { EndGameService } from '../../../end-game/EndGameService';
 import { SceneIds } from '../../types/SceneIds';
+import { WallService } from '../../../entities/game/wall/WallService';
 
 export class GamePlayScene implements IGameScene {
     isInitialized: boolean = false;
     private projectileService: ProjectileService;
     private invaderService: InvaderService;
     private playerService: PlayerService;
+    private wallService: WallService;
     private collisionService: CollisionService;
     private playerHUD: PlayerHUD;
     private endGameService: EndGameService;
@@ -29,20 +31,20 @@ export class GamePlayScene implements IGameScene {
     ) {}
 
     public async initialize(): Promise<void> {
-        console.log("GamePlayScene initializing");
         this.projectileService = new ProjectileService(this.themeManager);
         this.invaderService = new InvaderService(this.themeManager);
         this.playerService = new PlayerService(this.inputManager, this.themeManager, this.projectileService);
-        this.collisionService = new CollisionService(this.projectileService, this.invaderService, this.playerService);
+        this.wallService = new WallService(this.themeManager);
+        this.collisionService = new CollisionService(this.projectileService, this.invaderService, this.playerService, this.wallService);
         this.playerHUD = new PlayerHUD(this.playerService, 10, 10);
         this.endGameService = new EndGameService(
             this.invaderService,
             this.playerService,
             this.sceneManager
         );  
+        this.wallService.initializeWalls();
         await this.playerService.initializePlayer();
         await this.invaderService.initializeWave();   
-        console.log("GamePlayScene initialized");   
         this.isInitialized = true;
     }
 
@@ -51,7 +53,6 @@ export class GamePlayScene implements IGameScene {
     }
 
     public update(deltaTime: number): void {
-        console.log("GamePlayScene update");
         if (!this.isInitialized) {
             console.error("GamePlayScene not initialized");
             return;
@@ -73,8 +74,9 @@ export class GamePlayScene implements IGameScene {
         const playerObject = this.playerService.getFabricObject();
         const projectileObjects = this.projectileService.getFabricObjects();
         const invaderObjects = this.invaderService.getFabricObjects(); 
+        const wallObjects = this.wallService.getFabricObjects();
         const playerHUDObjects = this.playerHUD.getFabricObjects();
-        this.renderer.draw([...playerHUDObjects, ...invaderObjects, ...projectileObjects, playerObject]);
+        this.renderer.draw([...wallObjects, ...playerHUDObjects, ...invaderObjects, ...projectileObjects, playerObject]);
     }
 
     public cleanup(): void {

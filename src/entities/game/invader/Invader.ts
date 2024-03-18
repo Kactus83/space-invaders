@@ -9,6 +9,7 @@ export class Invader extends BaseEntity {
     type: InvaderType;
     hp: number;
     speed: number;
+    damage: number;
     score: number;
 
     constructor(themeManager: ThemeManager, type: InvaderType, x: number, y: number) {
@@ -18,6 +19,7 @@ export class Invader extends BaseEntity {
         this.hp = specs.hp;
         this.speed = specs.speed;
         this.score = specs.score;
+        this.damage = specs.damage;
         this.loadDesign();
     }
 
@@ -67,6 +69,12 @@ export class Invader extends BaseEntity {
         // Appliquer le déplacement calculé
         this.fabricObject.left = potentialLeft;
     }
+    
+    public applyDamage(damage: number): boolean {
+        this.hp -= damage;
+        return this.hp <= 0;
+    }
+    
     
     
 }

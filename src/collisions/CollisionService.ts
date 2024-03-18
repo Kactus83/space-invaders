@@ -4,9 +4,10 @@ import { InvaderService } from "../entities/game/invader/InvaderService";
 import { PlayerService } from "../entities/game/player/PlayerService";
 import { Projectile } from "../entities/game/projectile/Projectile";
 import { ProjectileService } from "../entities/game/projectile/ProjectileService";
+import { WallService } from "../entities/game/wall/WallService";
 
 export class CollisionService {
-    constructor(private projectileService: ProjectileService, private invaderService: InvaderService, private playerService: PlayerService) {}
+    constructor(private projectileService: ProjectileService, private invaderService: InvaderService, private playerService: PlayerService, private wallService: WallService) {}
 
     public async checkCollisions(): Promise<void> {
         const projectiles = this.projectileService.getProjectiles();
@@ -19,10 +20,32 @@ export class CollisionService {
                 }
             }
         }
+        
+        // Nouvelle boucle pour vérifier les collisions entre les projectiles et les murs
+        const walls = this.wallService.getWalls(); 
+        for (const projectile of this.projectileService.getProjectiles()) {
+            for (const wall of walls) {
+                if (this.areColliding(projectile, wall)) {
+                    this.wallService.applyDamageToWall(wall, projectile.damage);
+                    this.projectileService.removeProjectile(projectile.id);
+                    break; 
+                }
+            }
+        }
+
+        for (const invader of this.invaderService.getInvaders()) {
+            for (const wall of walls) {
+                if (this.areColliding(invader, wall)) {
+                    // Supposons que chaque invader a une propriété `damage` pour les dégâts qu'il inflige
+                    this.wallService.applyDamageToWall(wall, invader.damage);
+                    this.invaderService.removeInvader(invader.id);
+                    break; // Supposer qu'un invader ne peut toucher qu'un seul mur à la fois
+                }
+            }
+        }
     }
 
     private areColliding(entityA: BaseEntity, entityB: BaseEntity): boolean {
-        // Implémentation de la vérification des collisions basée sur les rectangles englobants
         return !(
             entityA.fabricObject.left + entityA.fabricObject.width < entityB.fabricObject.left ||
             entityB.fabricObject.left + entityB.fabricObject.width < entityA.fabricObject.left ||
@@ -32,8 +55,17 @@ export class CollisionService {
     }
 
     private async handleProjectileInvaderCollision(projectile: Projectile, invader: Invader) {
+        // Applique les dégâts du projectile à l'invader
+        const isDestroyed = invader.applyDamage(projectile.damage);
+    
+        // Retire le projectile dans tous les cas
         this.projectileService.removeProjectile(projectile.id);
-        this.invaderService.removeInvader(invader.id);
-        await this.playerService.increaseScore(invader.score); 
+    
+        // Si l'invader est détruit, le retirer et augmenter le score du joueur
+        if (isDestroyed) {
+            this.invaderService.removeInvader(invader.id);
+            await this.playerService.increaseScore(invader.score);
+        }
     }
+    
 }

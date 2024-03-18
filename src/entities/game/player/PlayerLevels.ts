@@ -1,7 +1,7 @@
-export const PlayerLevelThresholds = {
-    1: 0, // Niveau 1 dès le début
-    2: 100, // Niveau 2 à 100 points
-    3: 250, // Niveau 3 à 250 points
+export const PlayerLevels: Record<string, { scoreThreshold: number; fireRate: number; shield: number }> = {
+    '1': { scoreThreshold: 0, fireRate: 1.0, shield: 0 },
+    '2': { scoreThreshold: 100, fireRate: 0.7, shield: 0 },
+    '3': { scoreThreshold: 250, fireRate: 0.5, shield: 1 },
 };
 
-export const MaxLevel = Object.keys(PlayerLevelThresholds).length;
+export const MaxLevel = Object.keys(PlayerLevels).length;

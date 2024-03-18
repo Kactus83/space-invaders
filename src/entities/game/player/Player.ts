@@ -2,12 +2,13 @@ import { BaseEntity } from '../BaseEntity';
 import { fabric } from 'fabric';
 import { ThemeManager } from '../../../themes/ThemeManager';
 import { config } from '../../../config/config';
-import { MaxLevel, PlayerLevelThresholds } from './PlayerLevels';
+import { MaxLevel, PlayerLevels } from './PlayerLevels';
 
 export class Player extends BaseEntity {
     public level: number = 1;
     public score: number = 0;
     public health: number = 3;
+    public shield: number = 0;
 
     constructor(themeManager: ThemeManager, x: number, y: number) {
         super(themeManager, x, y);
@@ -80,9 +81,9 @@ export class Player extends BaseEntity {
 
     private async checkForLevelUp(): Promise<void> {
         for (let level = 2; level <= MaxLevel; level++) {
-            if (this.score >= PlayerLevelThresholds[level as keyof typeof PlayerLevelThresholds] && this.level < level) {
+            if (this.score >= PlayerLevels[level].scoreThreshold && this.level < level) {
                 await this.setLevel(level);
-                break; // Arrêtez de vérifier une fois qu'un niveau supérieur est trouvé et appliqué
+                break; 
             }
         }
     }
@@ -90,8 +91,7 @@ export class Player extends BaseEntity {
     public async setLevel(newLevel: number): Promise<void> {
         if (newLevel !== this.level && newLevel <= MaxLevel) {
             this.level = newLevel;
-            // Mettez à jour le design du joueur ici si nécessaire
-            // Par exemple, charger un nouveau design basé sur le niveau
+            this.shield = PlayerLevels[newLevel].shield;
             await this.loadDesign();
         }
     }
