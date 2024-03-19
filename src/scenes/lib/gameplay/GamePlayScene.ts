@@ -45,7 +45,9 @@ export class GamePlayScene implements IGameScene {
         await this.wallService.initializeWallsForLevel("level1");
         await this.playerService.initializePlayer();
         await this.invaderService.initializeWave();   
-        this.isInitialized = true;
+        setTimeout(() => {
+            this.isInitialized = true;
+        }, 250);
     }
 
     public handleInput(inputType: UserInputType): void {
