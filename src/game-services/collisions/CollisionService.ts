@@ -13,8 +13,10 @@ export class CollisionService {
     public async checkCollisions(): Promise<void> {
         const projectiles = this.projectileService.getProjectiles();
         const player = this.playerService.getPlayer();
-
+    
+        // Gestion des collisions des projectiles avec les invaders et le joueur
         projectiles.forEach(async (projectile) => {
+            // Vérification des collisions des projectiles du joueur avec les invaders
             if (projectile.origin === ProjectileOrigin.Player) {
                 this.invaderService.getInvaders().forEach(async (invader) => {
                     if (this.areColliding(projectile, invader)) {
@@ -22,11 +24,13 @@ export class CollisionService {
                     }
                 });
             }
-
+    
+            // Vérification des collisions des projectiles des invaders avec le joueur
             if (projectile.origin === ProjectileOrigin.Invader && this.areColliding(projectile, player)) {
                 this.handleProjectilePlayerCollision(projectile);
             }
-
+    
+            // Vérification des collisions des projectiles avec les murs
             this.wallService.getWalls().forEach((wall) => {
                 if (this.areColliding(projectile, wall)) {
                     this.wallService.applyDamageToWall(wall, projectile.damage);
@@ -34,7 +38,25 @@ export class CollisionService {
                 }
             });
         });
-    }
+    
+        // Ajout du bloc manquant pour gérer les collisions entre les invaders et les murs
+        this.invaderService.getInvaders().forEach(invader => {
+            this.wallService.getWalls().forEach(wall => {
+                if (this.areColliding(invader, wall)) {
+                    const invaderDestroyed = invader.applyDamage(wall.damage);
+                    const wallDestroyed = this.wallService.applyDamageToWall(wall, invader.damage);
+    
+                    if (invaderDestroyed) {
+                        this.invaderService.removeInvader(invader.id);
+                    }
+    
+                    if (wallDestroyed) {
+                        // La logique de suppression est gérée dans applyDamageToWall
+                    }
+                }
+            });
+        });
+    }    
 
     private areColliding(entityA: BaseEntity, entityB: BaseEntity): boolean {
         if (!entityA.fabricObject || !entityB.fabricObject) {
