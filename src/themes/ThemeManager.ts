@@ -3,6 +3,8 @@ import { invaderDesigns } from './lib/InvaderDesigns';
 import { projectileDesigns } from './lib/ProjectileDesigns';
 import { WallType } from '../entities/game/wall/WallType';
 import { wallDesigns } from './lib/WallDesigns';
+import { InvaderDesign } from './models/InvaderDesign';
+import { InvaderType } from '../entities/game/invader/InvaderType';
 
 export class ThemeManager {
     public getPlayerDesign(level: number) {
@@ -11,9 +13,10 @@ export class ThemeManager {
         return design;
     }
 
-    public getInvaderDesign(type: string) {
-        const design = invaderDesigns[type];
-        if (!design) throw new Error(`Invader design not found for type ${type}`);
+    getInvaderDesign(type: InvaderType, state: 'new' | 'damaged' | 'critical') {
+        // On s'assure que les paramètres sont bien des types attendus
+        const design = invaderDesigns[type][state];
+        if (!design) throw new Error(`Invader design not found for type ${type} and state ${state}`);
         return design;
     }
 

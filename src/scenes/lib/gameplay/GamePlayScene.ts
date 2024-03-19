@@ -82,9 +82,6 @@ export class GamePlayScene implements IGameScene {
             this.playerService.getFabricObject(),
             ...this.playerHUD.getFabricObjects()
         ];
-
-        console.log("Drawing", objectsToDraw.length, "objects");
-        console.log(objectsToDraw);
     
         this.renderer.clearCanvas();
         this.renderer.draw(objectsToDraw);

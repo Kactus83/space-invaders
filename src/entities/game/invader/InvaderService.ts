@@ -55,7 +55,7 @@ export class InvaderService {
     public update(deltaTime: number): void {
         this.invaders.forEach(invader => {
             invader.update(deltaTime);
-            invader.shoot(); // Nouvelle logique de tir
+            invader.shoot();
         });
     }
 

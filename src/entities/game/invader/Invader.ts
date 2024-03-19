@@ -28,15 +28,35 @@ export class Invader extends BaseEntity {
         this.loadDesign();
     }
 
+    private determineHealthState(): "new" | "damaged" | "critical" {
+        const healthPercentage = (this.hp / InvaderSpecs[this.type].hp) * 100;
+
+        if (healthPercentage < 30) {
+            return 'critical';
+        } else if (healthPercentage < 60) {
+            return 'damaged';
+        } else {
+            return 'new';
+        }
+    }
+
     public async loadDesign(): Promise<void> {
-        const design = this.themeManager.getInvaderDesign(this.type.toString());
+        const currentX = this.fabricObject ? this.fabricObject.left : this.x;
+        const currentY = this.fabricObject ? this.fabricObject.top : this.y;
+    
+        const designState = this.determineHealthState();
+        const design = this.themeManager.getInvaderDesign(this.type, designState);
+    
+        console.log(`Loading invader design for type ${this.type} and state ${designState}`);
+        console.log(design);
+    
         if (design.svgPath) {
             await new Promise<void>((resolve) => {
                 fabric.loadSVGFromURL(design.svgPath, (objects, options) => {
                     const svg = fabric.util.groupSVGElements(objects, options);
                     this.fabricObject = svg.set({
-                        left: this.x,
-                        top: this.y,
+                        left: currentX,
+                        top: currentY,
                         scaleX: design.width / svg.width,
                         scaleY: design.height / svg.height,
                     });
@@ -45,14 +65,14 @@ export class Invader extends BaseEntity {
             });
         } else {
             this.fabricObject = new fabric.Rect({
-                left: this.x,
-                top: this.y,
+                left: currentX,
+                top: currentY,
                 fill: design.color,
                 width: design.width,
                 height: design.height,
             });
         }
-    }
+    }    
 
     update(deltaTime: number): void {
         // Calcul du déplacement potentiel
@@ -74,11 +94,14 @@ export class Invader extends BaseEntity {
         // Appliquer le déplacement calculé
         this.fabricObject.left = potentialLeft;
     }
-    
+
     public applyDamage(damage: number): boolean {
         this.hp -= damage;
+        console.log(`Invader hit! HP after damage: ${this.hp}`);
+        // Load new design based on current HP
+        this.loadDesign();
         return this.hp <= 0;
-    }
+    }    
 
     public shoot(): void {
         const specs = InvaderSpecs[this.type];
@@ -91,5 +114,5 @@ export class Invader extends BaseEntity {
             this.projectileService.createProjectile(specs.projectileType, projectileX, projectileY, ProjectileOrigin.Invader);
             this.lastShootTime = now;
         }
-    }    
+    } 
 }

@@ -75,8 +75,11 @@ export class CollisionService {
         const isDestroyed = invader.applyDamage(projectile.damage);
         this.projectileService.removeProjectile(projectile.id);
         if (isDestroyed) {
+            console.log("Invader destroyed.");
             this.invaderService.removeInvader(invader.id);
             await this.playerService.increaseScore(invader.score);
+        } else {
+            console.log("Invader hit but not destroyed.");
         }
     }
 
