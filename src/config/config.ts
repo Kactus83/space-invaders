@@ -9,8 +9,8 @@ export const config = {
     },
     invader: {
         startX: 50, 
-        startY: -250, 
-        spacingX: 70, 
+        startY: -220, 
+        spacingX: 50, 
         spacingY: 60, 
     },
     wallArea: {
