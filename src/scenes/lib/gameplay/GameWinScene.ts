@@ -35,7 +35,7 @@ export class GameWinScene implements IGameScene {
 
     public handleInput(): void {}
 
-    public update(): void {}
+    public async update(): Promise<void> {}
 
     public render(): void {
         this.renderer.clearCanvas();

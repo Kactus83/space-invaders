@@ -48,7 +48,7 @@ export class MainMenuScene implements IGameScene {
         // Traitement des entrées utilisateur spécifiques à cette scène
     }
 
-    public update(deltaTime: number): void {
+    public async update(deltaTime: number): Promise<void> {
         // Mise à jour de la logique de la scène
     }
 

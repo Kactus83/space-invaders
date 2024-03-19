@@ -9,18 +9,19 @@ import { ProjectileService } from '../../../entities/game/projectile/ProjectileS
 import { InvaderService } from '../../../entities/game/invader/InvaderService';
 import { CollisionService } from '../../../game-services/collisions/CollisionService';
 import { PlayerHUD } from '../../../entities/game/player/PlayerHUD';
-import { EndGameService } from '../../../game-services/end-game/EndGameService';
 import { WallService } from '../../../entities/game/wall/WallService';
+import { WaveManagementService } from '../../../game-services/wave-management/WaveManagementService';
 
 export class GamePlayScene implements IGameScene {
     isInitialized: boolean = false;
+    isUpdating: boolean = false;
     private projectileService: ProjectileService;
     private invaderService: InvaderService;
     private playerService: PlayerService;
     private wallService: WallService;
     private collisionService: CollisionService;
     private playerHUD: PlayerHUD;
-    private endGameService: EndGameService;
+    private waveManagementService: WaveManagementService;
 
     constructor(
         private sceneManager: SceneManager,
@@ -36,26 +37,23 @@ export class GamePlayScene implements IGameScene {
         this.wallService = new WallService(this.themeManager);
         this.collisionService = new CollisionService(this.projectileService, this.invaderService, this.playerService, this.wallService);
         this.playerHUD = new PlayerHUD(this.playerService, 10, 10);
-        this.endGameService = new EndGameService(
-            this.invaderService,
-            this.playerService,
-            this.sceneManager
-        );  
-        await this.wallService.initializeWallsForLevel("level1");
+        this.waveManagementService = new WaveManagementService(this.invaderService, this.wallService, this.playerService, this.sceneManager);
         await this.playerService.initializePlayer();
-        await this.invaderService.initializeWave("wave1");   
-        setTimeout(() => {
-            this.isInitialized = true;
-        }, 250);
+        await this.waveManagementService.initializeWave().then(() => {
+            console.log("GamePlayScene initialized", this.waveManagementService.isInitialized);
+            this.isInitialized = this.waveManagementService.isInitialized;
+        });
     }
 
     public handleInput(inputType: UserInputType): void {
         // Cette méthode pourrait rester vide si l'InputManager est directement géré par les services
     }
 
-    public update(deltaTime: number): void {
-        if (!this.isInitialized) {
-            console.error("GamePlayScene not initialized");
+    public async update(deltaTime: number): Promise<void> {
+        this.isUpdating = true;
+        if (!this.isInitialized || !this.waveManagementService.isInitialized) {
+            console.error("Update error : GamePlayScene not initialized");
+            this.isUpdating = false;
             return;
         }
         this.playerService.update(deltaTime);
@@ -63,25 +61,41 @@ export class GamePlayScene implements IGameScene {
         this.invaderService.update(deltaTime);
         this.collisionService.checkCollisions();
         this.playerHUD.update();
-        this.endGameService.checkGameStatus();
+        await this.waveManagementService.checkGameStatus();
+        this.isUpdating = false;
     }
 
     public render(): void {
-        if (!this.isInitialized) {
-            console.error("GamePlayScene not initialized");
+        if (!this.isInitialized || !this.waveManagementService.isInitialized) {
+            console.error("render error : GamePlayScene not initialized");
             return;
         }
+        if (this.isUpdating) {
+            console.error("render error : GamePlayScene is updating");
+            return;
+        }
+        // Assurez-vous que tous les objets sont prêts avant de les dessiner
+        const objectsToDraw = [
+            ...this.wallService.getFabricObjects(),
+            ...this.invaderService.getFabricObjects(),
+            ...this.projectileService.getFabricObjects(),
+            this.playerService.getFabricObject(),
+            ...this.playerHUD.getFabricObjects()
+        ];
+
+        console.log("Drawing", objectsToDraw.length, "objects");
+        console.log(objectsToDraw);
+    
         this.renderer.clearCanvas();
-        const playerObject = this.playerService.getFabricObject();
-        const projectileObjects = this.projectileService.getFabricObjects();
-        const invaderObjects = this.invaderService.getFabricObjects(); 
-        const wallObjects = this.wallService.getFabricObjects();
-        const playerHUDObjects = this.playerHUD.getFabricObjects();
-        this.renderer.draw([...wallObjects, ...invaderObjects, ...projectileObjects, ...playerHUDObjects, playerObject]);
+        this.renderer.draw(objectsToDraw);
     }
+    
 
     public cleanup(): void {
         // Nettoyage spécifique de la scène de jeu
         this.playerService.cleanup();
+        this.invaderService.cleanup();
+        this.projectileService.cleanup();
+        this.wallService.cleanup();
     }
 }

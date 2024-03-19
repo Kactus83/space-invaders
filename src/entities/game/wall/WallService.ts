@@ -3,7 +3,7 @@ import { ThemeManager } from '../../../themes/ThemeManager';
 import { Wall } from './Wall';
 import { WallType } from './WallType';
 import { fabric } from 'fabric';
-import { level1Pattern, wallTypeMapping } from './lib/wallConfigurations';
+import { assembleWallPattern, wallTypeMapping } from './lib/wallConfigurations';
 import { config } from '../../../config/config';
 
 export class WallService {
@@ -14,32 +14,39 @@ export class WallService {
         this.themeManager = themeManager;
     }
 
-    public async initializeWallsForLevel(level: string): Promise<void> {
-        let pattern;
-        if (level === "level1") {
-            pattern = level1Pattern;
-        } else {
-            console.error(`No wall configuration found for level ${level}`);
-            return;
-        }
+    public async initializeWallsForWave(waveKey: string): Promise<void> {
+        this.cleanup(); // Assurez-vous de nettoyer les murs existants.
+        
+        const pattern = assembleWallPattern(waveKey);
+        let wallCreationPromises: Promise<void>[] = [];
     
-        (await pattern).forEach((row: number[], rowIndex: number) => {
-            row.forEach((typeIndex: number, colIndex: number) => {
-                const wallType = wallTypeMapping[typeIndex];
-                if (wallType === WallType.None) return;
-    
+        pattern.forEach((row, rowIndex) => {
+            row.forEach((typeIndex, colIndex) => {
+                if (typeIndex === 0) return; // Ignorer les "None"
+                const type = wallTypeMapping[typeIndex];
                 const x = config.wallArea.startX + colIndex * 10;
                 const y = config.wallArea.startY + rowIndex * 10;
-                this.createWall(wallType, x, y);
+                // Collecter les promesses de création de murs.
+                wallCreationPromises.push(this.createWall(type, x, y));
             });
         });
+    
+        // Attendre la fin de la création de tous les murs.
+        await Promise.all(wallCreationPromises);
+        console.log(`Initialized walls for wave: ${waveKey}`, this.walls.length, 'walls');
     }
-
-    public createWall(type: WallType, x: number, y: number): void {
-        if (type === WallType.None) return;
+    
+    public async createWall(type: WallType, x: number, y: number): Promise<void> {
+        if (type === WallType.None) return Promise.resolve();
         const newWall = new Wall(this.themeManager, type, x, y);
+        await newWall.loadDesign();
+        if (!newWall || !newWall.fabricObject) {
+            console.error("Failed to create a wall", {type, x, y});
+            throw new Error("Failed to create a wall");
+        }
         this.walls.push(newWall);
-    }
+        return Promise.resolve();
+    }    
 
     public update(deltaTime: number): void {
         // Mise à jour spécifique des murs, si nécessaire
@@ -63,5 +70,9 @@ export class WallService {
 
     private removeWall(wallToRemove: Wall): void {
         this.walls = this.walls.filter(wall => wall !== wallToRemove);
+    }
+
+    public cleanup(): void {
+        this.walls = [];
     }
 }

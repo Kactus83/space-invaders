@@ -9,6 +9,7 @@ import { GameWinScene } from './lib/gameplay/GameWinScene';
 import { GameLoseScene } from './lib/gameplay/GameLoseScene';
 
 export class SceneManager {
+    private isChangingScene: boolean = false;  
     private scenes: Map<SceneIds, IGameScene> = new Map();
     private currentScene: IGameScene | null = null;
     private inputManager: InputManager = new InputManager();
@@ -30,6 +31,7 @@ export class SceneManager {
     }
 
     public async changeScene(sceneId: SceneIds): Promise<void> {
+        this.isChangingScene = true;
         const scene = this.scenes.get(sceneId);
         if (scene) {
             await this.currentScene?.cleanup();
@@ -38,13 +40,16 @@ export class SceneManager {
         } else {
             console.error(`Scene ${sceneId} not found.`);
         }
+        this.isChangingScene = false;
     }
 
-    public updateCurrentScene(deltaTime: number): void {
-        this.currentScene?.update(deltaTime);
+    public async updateCurrentScene(deltaTime: number): Promise<void> {
+        if (this.isChangingScene) return;
+        await this.currentScene?.update(deltaTime);
     }
 
-    public renderCurrentScene(): void {
+    public async renderCurrentScene(): Promise<void> {
+        if (this.isChangingScene) return;
         this.currentScene?.render();
     }
 }

@@ -16,36 +16,38 @@ export class InvaderService {
     public async createInvader(type: InvaderType, x: number, y: number): Promise<void> {
         const newInvader = new Invader(this.themeManager, type, x, y);
         await newInvader.loadDesign();
+        if (!newInvader || !newInvader.fabricObject) {
+            console.error("Failed to create an invader", {type, x, y});
+            throw new Error("Failed to create an invader");
+        }
         this.invaders.push(newInvader);
-    }    
+    }
+        
 
     public async initializeWave(waveKey: string): Promise<void> {
-        // Assemblez le pattern de la vague spécifiée
         const wavePattern = assembleWavePattern(waveKey);
-        // Supprimez les anciens invaders avant d'initialiser la nouvelle vague
         this.cleanup();
-
-        // Utilisez les configurations globales pour la position de départ
+        
+        let invaderCreationPromises: Promise<void>[] = [];
         let currentX = config.invader.startX;
         let currentY = config.invader.startY;
-
-        // Itérez sur chaque ligne et colonne du pattern
+    
         wavePattern.forEach((row, rowIndex) => {
             row.forEach(async (type, colIndex) => {
-                // Ignorez les types 'None'
                 if (type === InvaderType.None) return;
-
+    
                 const x = currentX + colIndex * config.invader.spacingX;
                 const y = currentY + rowIndex * config.invader.spacingY;
-
-                // Créez et initialisez l'invader
-                await this.createInvader(type, x, y);
+                let newInvader = this.createInvader(type, x, y);
+                invaderCreationPromises.push(newInvader);
             });
-            // Réinitialisez la position X et augmentez Y après chaque ligne
             currentX = config.invader.startX;
             currentY += config.invader.spacingY;
         });
-    }   
+    
+        await Promise.all(invaderCreationPromises);
+        console.log(`Initialized wave: ${waveKey}`, this.invaders.length, 'invaders');
+    }
 
     public update(deltaTime: number): void {
         this.invaders.forEach((invader, index) => {
@@ -54,7 +56,6 @@ export class InvaderService {
             // Supprimer l'invader si ses points de vie tombent à zéro
             if (invader.hp <= 0) {
                 this.invaders.splice(index, 1);
-                // Éventuellement, gérer le score ici
             }
         });
     }

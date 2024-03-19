@@ -4,7 +4,7 @@ export interface IGameScene {
     isInitialized: boolean;
     initialize(): Promise<void>;
     handleInput(input: UserInputType): void;
-    update(deltaTime: number): void;
+    update(deltaTime: number): Promise<void>;
     render(): void;
     cleanup(): void;
 }

@@ -52,6 +52,10 @@ export class CollisionService {
     }
 
     private areColliding(entityA: BaseEntity, entityB: BaseEntity): boolean {
+        if (!entityA.fabricObject || !entityB.fabricObject) {
+            console.error('One of the entities is not initialized.');
+            return false;
+        }
         return !(
             entityA.fabricObject.left + entityA.fabricObject.width < entityB.fabricObject.left ||
             entityB.fabricObject.left + entityB.fabricObject.width < entityA.fabricObject.left ||
