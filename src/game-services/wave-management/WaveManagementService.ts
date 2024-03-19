@@ -8,7 +8,7 @@ import { SceneIds } from "../../scenes/types/SceneIds";
 export class WaveManagementService {
     public isInitialized: boolean = false;
     private currentWaveIndex: number = 0;
-    private totalWaves: number = 2;
+    private totalWaves: number = 3;
 
     constructor(
         private invaderService: InvaderService,
