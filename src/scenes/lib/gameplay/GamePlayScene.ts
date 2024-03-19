@@ -42,7 +42,7 @@ export class GamePlayScene implements IGameScene {
             this.playerService,
             this.sceneManager
         );  
-        this.wallService.initializeWallsForLevel("level1");
+        await this.wallService.initializeWallsForLevel("level1");
         await this.playerService.initializePlayer();
         await this.invaderService.initializeWave();   
         this.isInitialized = true;

@@ -14,7 +14,7 @@ export class WallService {
         this.themeManager = themeManager;
     }
 
-    public initializeWallsForLevel(level: string): void {
+    public async initializeWallsForLevel(level: string): Promise<void> {
         let pattern;
         if (level === "level1") {
             pattern = level1Pattern;
@@ -23,7 +23,7 @@ export class WallService {
             return;
         }
     
-        pattern.forEach((row: number[], rowIndex: number) => {
+        (await pattern).forEach((row: number[], rowIndex: number) => {
             row.forEach((typeIndex: number, colIndex: number) => {
                 const wallType = wallTypeMapping[typeIndex];
                 if (wallType === WallType.None) return;
