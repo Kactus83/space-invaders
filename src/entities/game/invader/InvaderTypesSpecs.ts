@@ -1,6 +1,7 @@
 import { InvaderType } from "./InvaderType";
 
 export const InvaderSpecs: Record<InvaderType, { hp: number, speed: number, score: number, damage: number }> = {
+    [InvaderType.None]: { hp: 0, speed: 0, score: 0, damage: 0},
     [InvaderType.Light]: { hp: 1, speed: 200, score: 25, damage: 1},
     [InvaderType.Basic]: { hp: 1, speed: 130, score: 10, damage: 1},
     [InvaderType.Advanced]: { hp: 2, speed: 100, score: 20, damage: 2},

@@ -7,6 +7,12 @@ export const config = {
         playerStartPositionX: 300,
         playerStartPositionY: 560,
     },
+    invader: {
+        startX: 50, 
+        startY: -250, 
+        spacingX: 70, 
+        spacingY: 60, 
+    },
     wallArea: {
         startX: 0,
         endX: 800,

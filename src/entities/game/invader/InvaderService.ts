@@ -2,6 +2,8 @@ import { Invader } from './Invader';
 import { ThemeManager } from '../../../themes/ThemeManager';
 import { fabric } from 'fabric';
 import { InvaderType } from './InvaderType';
+import { config } from '../../../config/config';
+import { assembleWavePattern } from './lib/invaderConfigurations';
 
 export class InvaderService {
     private invaders: Invader[] = [];
@@ -17,30 +19,33 @@ export class InvaderService {
         this.invaders.push(newInvader);
     }    
 
-    public async initializeWave(): Promise<void> {
-        const numberOfRows = 3;
-        const numberOfInvadersPerRow = 10;
-        const invaderSpacingX = 70;
-        const invaderSpacingY = 120;
-        const startX = 100;
-        const startY = -250;
-        const types = [InvaderType.Elite, InvaderType.Advanced, InvaderType.Basic];
-    
-        let invaderCreationPromises = [];
-    
-        for (let row = 0; row < numberOfRows; row++) {
-            for (let col = 0; col < numberOfInvadersPerRow; col++) {
-                const x = startX + col * invaderSpacingX;
-                const y = startY + row * invaderSpacingY;
-                const type = types[row % types.length];
-                // Stockez les promesses de création des invaders pour attendre leur complétion plus tard
-                invaderCreationPromises.push(this.createInvader(type, x, y));
-            }
-        }
-    
-        // Attend que tous les invaders soient créés et que leurs designs soient chargés
-        await Promise.all(invaderCreationPromises);
-    }    
+    public async initializeWave(waveKey: string): Promise<void> {
+        // Assemblez le pattern de la vague spécifiée
+        const wavePattern = assembleWavePattern(waveKey);
+        // Supprimez les anciens invaders avant d'initialiser la nouvelle vague
+        this.cleanup();
+
+        // Utilisez les configurations globales pour la position de départ
+        let currentX = config.invader.startX;
+        let currentY = config.invader.startY;
+
+        // Itérez sur chaque ligne et colonne du pattern
+        wavePattern.forEach((row, rowIndex) => {
+            row.forEach(async (type, colIndex) => {
+                // Ignorez les types 'None'
+                if (type === InvaderType.None) return;
+
+                const x = currentX + colIndex * config.invader.spacingX;
+                const y = currentY + rowIndex * config.invader.spacingY;
+
+                // Créez et initialisez l'invader
+                await this.createInvader(type, x, y);
+            });
+            // Réinitialisez la position X et augmentez Y après chaque ligne
+            currentX = config.invader.startX;
+            currentY += config.invader.spacingY;
+        });
+    }   
 
     public update(deltaTime: number): void {
         this.invaders.forEach((invader, index) => {

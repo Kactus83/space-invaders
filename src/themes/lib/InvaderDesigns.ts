@@ -1,6 +1,7 @@
 import { InvaderDesign } from '../models/InvaderDesign';
 
 export const invaderDesigns: Record<string, InvaderDesign> = {
+    "None": new InvaderDesign("None", "no need to have svg path", "invisible", 0, 0),
     "Light": new InvaderDesign("Light", "assets/themes/default/invaders/light.svg", "#342AA4", 30, 30),
     "Basic": new InvaderDesign("Basic", "assets/themes/default/invaders/basic.svg", "#342AA4", 40, 40),
     "Advanced": new InvaderDesign("Advanced", "assets/themes/default/invaders/advanced.svg", "#2F0D7D", 50, 50),

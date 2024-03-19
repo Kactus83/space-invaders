@@ -17,6 +17,7 @@ export const wallTypeMapping: { [key: string]: WallType } = {
 };
 
 export const level1Pattern = generateLevelPattern(["basic", "empty", "strong", "empty", "basic","basic", "empty", "strong", "empty", "basic","basic", "empty", "strong", "empty", "basic","basic", "empty", "strong", "empty", "basic"]);
+export const level2Pattern = generateLevelPattern(["basic", "empty", "empty", "empty", "basic","basic", "empty", "strong", "empty", "basic","basic", "empty", "strong", "empty", "basic","basic", "empty", "empty", "empty", "basic"]);
 
 async function generateLevelPattern(patternKeys: string[]): Promise<number[][]> {
   let pattern: number[][] = [];
