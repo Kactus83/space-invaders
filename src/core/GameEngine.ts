@@ -8,13 +8,9 @@ import { SceneIds } from '../scenes/types/SceneIds';
 export class GameEngine {
     private lastTimestamp: number = 0;
     private sceneManager: SceneManager;
-    private renderer: Renderer;
-    private inputManager: InputManager;
 
     constructor(private canvas: fabric.Canvas, themeManager: ThemeManager) {
-        this.renderer = new Renderer(this.canvas);
-        this.inputManager = new InputManager();
-        this.sceneManager = new SceneManager(this.inputManager, this.renderer, themeManager);
+        this.sceneManager = new SceneManager(this.canvas);
 
         // Chargez la scène initiale ici, par exemple, MainMenuScene
         this.sceneManager.changeScene(SceneIds.MainMenu);
@@ -34,7 +30,6 @@ export class GameEngine {
         this.lastTimestamp = timestamp;
 
         this.sceneManager.updateCurrentScene(deltaTime);
-        this.renderer.clearCanvas();
         this.sceneManager.renderCurrentScene();
         requestAnimationFrame((timestamp) => this.gameLoop(timestamp));
     }

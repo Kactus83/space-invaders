@@ -53,6 +53,7 @@ export class MainMenuScene implements IGameScene {
     }
 
     public render(): void {
+        this.renderer.clearCanvas();
         this.renderer.draw(this.objectsToRender);
     }
 }

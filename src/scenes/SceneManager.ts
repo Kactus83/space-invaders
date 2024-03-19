@@ -11,12 +11,13 @@ import { GameLoseScene } from './lib/gameplay/GameLoseScene';
 export class SceneManager {
     private scenes: Map<SceneIds, IGameScene> = new Map();
     private currentScene: IGameScene | null = null;
+    private inputManager: InputManager = new InputManager();
+    private themeManager: ThemeManager = new ThemeManager();
+    private renderer: Renderer;
 
-    constructor(
-        private inputManager: InputManager, 
-        private renderer: Renderer,
-        private themeManager: ThemeManager
-    ) {
+    constructor(canvas: fabric.Canvas) 
+    {
+        this.renderer = new Renderer(canvas);        
         this.scenes.set(SceneIds.MainMenu, new MainMenuScene(this, this.renderer, this.themeManager));
         this.scenes.set(SceneIds.GamePlay, new GamePlayScene(this, this.renderer, this.themeManager, this.inputManager));
         this.scenes.set(SceneIds.GameWin, new GameWinScene(this, this.renderer, this.themeManager));
