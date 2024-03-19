@@ -44,11 +44,15 @@ const miniPatterns: WavePattern = {
 // Configuration de vagues d'invaders qui utilisent les mini-patterns
 export const waveConfigurations = {
   wave1: [
-    "light", "basic", "strongMix", "light", "basic", "light",
+    "light", "basic", "strongMix", "light", "basic", "light", "light"
     // Répéter ou modifier pour créer une configuration complète de la vague
   ],
   wave2: [
-    "strongMix", "strong", "advanced", "elite", "light", "light",
+    "strongMix", "strong", "advanced", "elite", "light", "basic", "light", "basic", "light"
+    // Définir une configuration pour la vague 2
+  ],
+  wave3: [
+    "strongMix", "strong", "advanced", "elite", "elite", "advanced", "light", "light", "boss"
     // Définir une configuration pour la vague 2
   ],
   // Ajouter d'autres vagues au besoin
