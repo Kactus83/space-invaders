@@ -1,7 +1,7 @@
 import { Player } from './Player';
-import { InputManager } from '../../../inputs/InputManager';
+import { InputManager } from '../../../game-services/inputs/InputManager';
 import { ThemeManager } from '../../../themes/ThemeManager';
-import { UserInputType } from '../../../inputs/UserInputType';
+import { UserInputType } from '../../../game-services/inputs/UserInputType';
 import { ProjectileService } from '../projectile/ProjectileService';
 import { config } from '../../../config/config';
 import { PlayerLevels } from './PlayerLevels';

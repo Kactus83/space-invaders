@@ -1,16 +1,15 @@
 import { IGameScene } from '../../IGameScene';
 import { SceneManager } from '../../SceneManager';
-import { Renderer } from '../../../renderer/Renderer';
+import { Renderer } from '../../../game-services/renderer/Renderer';
 import { ThemeManager } from '../../../themes/ThemeManager';
-import { UserInputType } from '../../../inputs/UserInputType';
+import { UserInputType } from '../../../game-services/inputs/UserInputType';
 import { PlayerService } from '../../../entities/game/player/PlayerService';
-import { InputManager } from '../../../inputs/InputManager';
+import { InputManager } from '../../../game-services/inputs/InputManager';
 import { ProjectileService } from '../../../entities/game/projectile/ProjectileService';
 import { InvaderService } from '../../../entities/game/invader/InvaderService';
-import { CollisionService } from '../../../collisions/CollisionService';
+import { CollisionService } from '../../../game-services/collisions/CollisionService';
 import { PlayerHUD } from '../../../entities/game/player/PlayerHUD';
-import { EndGameService } from '../../../end-game/EndGameService';
-import { SceneIds } from '../../types/SceneIds';
+import { EndGameService } from '../../../game-services/end-game/EndGameService';
 import { WallService } from '../../../entities/game/wall/WallService';
 
 export class GamePlayScene implements IGameScene {

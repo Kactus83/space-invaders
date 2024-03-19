@@ -1,6 +1,6 @@
 import { IGameScene } from '../../IGameScene';
 import { SceneManager } from '../../SceneManager';
-import { Renderer } from '../../../renderer/Renderer';
+import { Renderer } from '../../../game-services/renderer/Renderer';
 import { ThemeManager } from '../../../themes/ThemeManager';
 import { SceneIds } from '../../types/SceneIds';
 import { fabric } from 'fabric';

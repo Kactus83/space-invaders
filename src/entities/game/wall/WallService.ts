@@ -1,4 +1,4 @@
-import { CollisionService } from '../../../collisions/CollisionService';
+import { CollisionService } from '../../../game-services/collisions/CollisionService';
 import { ThemeManager } from '../../../themes/ThemeManager';
 import { Wall } from './Wall';
 import { WallType } from './WallType';

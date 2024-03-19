@@ -1,4 +1,4 @@
-import { UserInputType } from '../inputs/UserInputType';
+import { UserInputType } from '../game-services/inputs/UserInputType';
 
 export interface IGameScene {
     isInitialized: boolean;

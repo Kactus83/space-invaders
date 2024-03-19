@@ -1,9 +1,9 @@
 import { IGameScene } from '../../IGameScene';
 import { SceneManager } from '../../SceneManager';
-import { Renderer } from '../../../renderer/Renderer';
+import { Renderer } from '../../../game-services/renderer/Renderer';
 import { ThemeManager } from '../../../themes/ThemeManager';
 import { SceneIds } from '../../types/SceneIds';
-import { UserInputType } from '../../../inputs/UserInputType';
+import { UserInputType } from '../../../game-services/inputs/UserInputType';
 import { MenuButton } from '../../../entities/ui/MenuButton';
 
 export class MainMenuScene implements IGameScene {

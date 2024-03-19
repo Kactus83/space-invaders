@@ -1,10 +1,10 @@
-import { BaseEntity } from "../entities/game/BaseEntity";
-import { Invader } from "../entities/game/invader/Invader";
-import { InvaderService } from "../entities/game/invader/InvaderService";
-import { PlayerService } from "../entities/game/player/PlayerService";
-import { Projectile } from "../entities/game/projectile/Projectile";
-import { ProjectileService } from "../entities/game/projectile/ProjectileService";
-import { WallService } from "../entities/game/wall/WallService";
+import { BaseEntity } from "../../entities/game/BaseEntity";
+import { Invader } from "../../entities/game/invader/Invader";
+import { InvaderService } from "../../entities/game/invader/InvaderService";
+import { PlayerService } from "../../entities/game/player/PlayerService";
+import { Projectile } from "../../entities/game/projectile/Projectile";
+import { ProjectileService } from "../../entities/game/projectile/ProjectileService";
+import { WallService } from "../../entities/game/wall/WallService";
 
 export class CollisionService {
     constructor(private projectileService: ProjectileService, private invaderService: InvaderService, private playerService: PlayerService, private wallService: WallService) {}

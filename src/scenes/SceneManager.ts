@@ -1,6 +1,6 @@
 import { IGameScene } from './IGameScene';
-import { InputManager } from '../inputs/InputManager';
-import { Renderer } from '../renderer/Renderer';
+import { InputManager } from '../game-services/inputs/InputManager';
+import { Renderer } from '../game-services/renderer/Renderer';
 import { ThemeManager } from '../themes/ThemeManager';
 import { SceneIds } from './types/SceneIds';
 import { MainMenuScene } from './lib/main-menu/MainMenuScene';

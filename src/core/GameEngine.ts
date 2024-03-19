@@ -1,8 +1,8 @@
 import { fabric } from 'fabric';
 import { ThemeManager } from '../themes/ThemeManager';
 import { SceneManager } from '../scenes/SceneManager';
-import { Renderer } from '../renderer/Renderer';
-import { InputManager } from '../inputs/InputManager';
+import { Renderer } from '../game-services/renderer/Renderer';
+import { InputManager } from '../game-services/inputs/InputManager';
 import { SceneIds } from '../scenes/types/SceneIds';
 
 export class GameEngine {

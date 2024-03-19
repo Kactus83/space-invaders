@@ -1,8 +1,8 @@
-import { config } from "../config/config";
-import { InvaderService } from "../entities/game/invader/InvaderService";
-import { PlayerService } from "../entities/game/player/PlayerService";
-import { SceneManager } from "../scenes/SceneManager";
-import { SceneIds } from "../scenes/types/SceneIds";
+import { config } from "../../config/config";
+import { InvaderService } from "../../entities/game/invader/InvaderService";
+import { PlayerService } from "../../entities/game/player/PlayerService";
+import { SceneManager } from "../../scenes/SceneManager";
+import { SceneIds } from "../../scenes/types/SceneIds";
 
 export class EndGameService {
     constructor(
