@@ -61,26 +61,21 @@ export class PlayerService {
 
     private shoot(): void {
         const currentTime = Date.now();
-        // Récupérer le fireRate actuel basé sur le niveau du joueur
         const fireRate = PlayerLevels[this.player.level.toString()].fireRate;
-    
-        // Convertir le fireRate en intervalle de temps entre les tirs (en millisecondes)
         const timeBetweenShots = 1000 / fireRate;
-    
-        // Vérifier si le délai suffisant s'est écoulé depuis le dernier tir
+
         if (currentTime - this.lastShootTime < timeBetweenShots) {
-            return; // Si le délai n'est pas encore écoulé, ne pas tirer
+            return; // Si le délai n'est pas écoulé, ne pas tirer
         }
-    
-        // Mettre à jour le temps du dernier tir et procéder au tir
+
         this.lastShootTime = currentTime;
-        // Déterminer la position initiale du projectile
+        const projectileType = PlayerLevels[this.player.level.toString()].projectileType; // Utilisez le projectileType du niveau actuel
         const projectileX = this.player.fabricObject.left + this.player.fabricObject.width / 2;
         const projectileY = this.player.fabricObject.top;
-    
-        // Demander au ProjectileService de créer un projectile
-        this.projectileService.createProjectileForPlayerLevel(this.player.level, projectileX, projectileY);
-    }    
+
+        // Créez un projectile en utilisant le type spécifié pour le niveau actuel du joueur
+        this.projectileService.createProjectile(projectileType, projectileX, projectileY);
+    }  
 
     public increaseScore(points: number): void {
         this.player.increaseScore(points);

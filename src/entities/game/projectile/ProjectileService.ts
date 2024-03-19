@@ -12,25 +12,10 @@ export class ProjectileService {
         this.themeManager = themeManager;
     }
 
-    // Créer un projectile en fonction du niveau du joueur
-    public async createProjectileForPlayerLevel(playerLevel: number, x: number, y: number): Promise<void> {
-        let projectileType = this.determineProjectileType(playerLevel);
-        if (!projectileType) {
-            console.error('Invalid player level for projectile creation');
-            return;
-        }
-        const newProjectile = new Projectile(this.themeManager, projectileType, x, y);
-        await newProjectile.loadDesign(); 
+    public async createProjectile(type: ProjectileType, x: number, y: number): Promise<void> {
+        const newProjectile = new Projectile(this.themeManager, type, x, y);
+        await newProjectile.loadDesign();
         this.projectiles.push(newProjectile);
-    }
-
-    private determineProjectileType(playerLevel: number): ProjectileType | undefined {
-        for (const [type, specs] of Object.entries(ProjectileSpecs)) {
-            if (specs.level === playerLevel) {
-                return type as ProjectileType;
-            }
-        }
-        return undefined;
     }
 
     public update(deltaTime: number): void {

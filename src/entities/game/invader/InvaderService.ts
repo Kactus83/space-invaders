@@ -23,7 +23,7 @@ export class InvaderService {
         const invaderSpacingX = 70;
         const invaderSpacingY = 120;
         const startX = 100;
-        const startY = -100;
+        const startY = -250;
         const types = [InvaderType.Elite, InvaderType.Advanced, InvaderType.Basic];
     
         let invaderCreationPromises = [];

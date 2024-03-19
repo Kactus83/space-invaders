@@ -78,7 +78,7 @@ export class GamePlayScene implements IGameScene {
         const invaderObjects = this.invaderService.getFabricObjects(); 
         const wallObjects = this.wallService.getFabricObjects();
         const playerHUDObjects = this.playerHUD.getFabricObjects();
-        this.renderer.draw([...wallObjects, ...playerHUDObjects, ...invaderObjects, ...projectileObjects, playerObject]);
+        this.renderer.draw([...wallObjects, ...invaderObjects, ...projectileObjects, ...playerHUDObjects, playerObject]);
     }
 
     public cleanup(): void {
