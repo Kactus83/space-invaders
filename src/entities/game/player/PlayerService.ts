@@ -16,7 +16,7 @@ export class PlayerService {
         private projectileService: ProjectileService
         ) 
     {
-        this.player = new Player(themeManager, config.playerStartPositionX, config.playerStartPositionY);
+        this.player = new Player(themeManager, config.player.playerStartPositionX, config.player.playerStartPositionY);
         this.subscribeToInput();
     }
 

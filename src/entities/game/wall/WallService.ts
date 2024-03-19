@@ -3,6 +3,8 @@ import { ThemeManager } from '../../../themes/ThemeManager';
 import { Wall } from './Wall';
 import { WallType } from './WallType';
 import { fabric } from 'fabric';
+import { level1Pattern, wallTypeMapping } from './lib/wallConfigurations';
+import { config } from '../../../config/config';
 
 export class WallService {
     private walls: Wall[] = [];
@@ -11,38 +13,30 @@ export class WallService {
     constructor(themeManager: ThemeManager) {
         this.themeManager = themeManager;
     }
-    public initializeWalls(): void {
-        this.createWall(WallType.Basic, 100, 450);
-        this.createWall(WallType.Basic, 110, 450);
-        this.createWall(WallType.Basic, 120, 450);
-        this.createWall(WallType.Strong, 130, 450);
-        this.createWall(WallType.Basic, 140, 450);
-        this.createWall(WallType.Basic, 150, 450);
-        this.createWall(WallType.Basic, 160, 450);
-        this.createWall(WallType.Basic, 100, 440);
-        this.createWall(WallType.Basic, 110, 440);
-        this.createWall(WallType.Basic, 120, 440);
-        this.createWall(WallType.Strong, 130, 440);
-        this.createWall(WallType.Basic, 140, 440);
-        this.createWall(WallType.Basic, 150, 440);
-        this.createWall(WallType.Basic, 160, 440);
-        this.createWall(WallType.Basic, 300, 450);
-        this.createWall(WallType.Basic, 310, 450);
-        this.createWall(WallType.Basic, 320, 450);
-        this.createWall(WallType.Strong, 330, 450);
-        this.createWall(WallType.Basic, 340, 450);
-        this.createWall(WallType.Basic, 350, 450);
-        this.createWall(WallType.Basic, 360, 450);
-        this.createWall(WallType.Basic, 300, 440);
-        this.createWall(WallType.Basic, 310, 440);
-        this.createWall(WallType.Basic, 320, 440);
-        this.createWall(WallType.Strong, 330, 440);
-        this.createWall(WallType.Basic, 340, 440);
-        this.createWall(WallType.Basic, 350, 440);
-        this.createWall(WallType.Basic, 360, 440);
+
+    public initializeWallsForLevel(level: string): void {
+        let pattern;
+        if (level === "level1") {
+            pattern = level1Pattern;
+        } else {
+            console.error(`No wall configuration found for level ${level}`);
+            return;
+        }
+    
+        pattern.forEach((row: number[], rowIndex: number) => {
+            row.forEach((typeIndex: number, colIndex: number) => {
+                const wallType = wallTypeMapping[typeIndex];
+                if (wallType === WallType.None) return;
+    
+                const x = config.wallArea.startX + colIndex * 10;
+                const y = config.wallArea.startY + rowIndex * 10;
+                this.createWall(wallType, x, y);
+            });
+        });
     }
 
     public createWall(type: WallType, x: number, y: number): void {
+        if (type === WallType.None) return;
         const newWall = new Wall(this.themeManager, type, x, y);
         this.walls.push(newWall);
     }
