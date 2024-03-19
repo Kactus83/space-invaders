@@ -9,7 +9,7 @@ export const PlayerLevels: Record<string, { scoreThreshold: number; projectileTy
     '6': { scoreThreshold: 1500, projectileType: ProjectileType.Advanced, fireRate: 2.5, shield: 1 },
     '7': { scoreThreshold: 2500, projectileType: ProjectileType.Ultimate, fireRate: 1.75, shield: 2 },
     '8': { scoreThreshold: 4000, projectileType: ProjectileType.Ultimate, fireRate: 2, shield: 2 },
-    '9': { scoreThreshold: 700, projectileType: ProjectileType.Ultimate, fireRate: 2.5, shield: 3 },
+    '9': { scoreThreshold: 7000, projectileType: ProjectileType.Ultimate, fireRate: 2.5, shield: 3 },
     '10': { scoreThreshold: 10000, projectileType: ProjectileType.Ultimate, fireRate: 2, shield: 3 },
 };
 
