@@ -40,6 +40,19 @@ export class Player extends BaseEntity {
         console.log("shoot");
     }
 
+    applyDamage(damage: number): boolean {
+        if (this.shield > 0) {
+            this.shield -= damage;
+            if (this.shield < 0) {
+                this.health += this.shield;
+                this.shield = 0;
+            }
+        } else {
+            this.health -= damage;
+        }
+        return this.health <= 0;
+    }
+
     public async loadDesign(): Promise<void> {
         return new Promise((resolve, reject) => {
             const theme = this.themeManager.getPlayerDesign(this.level);

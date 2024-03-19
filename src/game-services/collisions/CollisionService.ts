@@ -4,6 +4,7 @@ import { InvaderService } from "../../entities/game/invader/InvaderService";
 import { PlayerService } from "../../entities/game/player/PlayerService";
 import { Projectile } from "../../entities/game/projectile/Projectile";
 import { ProjectileService } from "../../entities/game/projectile/ProjectileService";
+import { ProjectileOrigin } from "../../entities/game/projectile/Projectileorigin";
 import { WallService } from "../../entities/game/wall/WallService";
 
 export class CollisionService {
@@ -11,41 +12,25 @@ export class CollisionService {
 
     public async checkCollisions(): Promise<void> {
         const projectiles = this.projectileService.getProjectiles();
-        const invaders = this.invaderService.getInvaders();
+        const player = this.playerService.getPlayer();
 
-        for (const projectile of projectiles) {
-            for (const invader of invaders) {
-                if (this.areColliding(projectile, invader)) {
-                    await this.handleProjectileInvaderCollision(projectile, invader);
-                }
+        projectiles.forEach(async (projectile) => {
+            if (projectile.origin === ProjectileOrigin.Player) {
+                this.invaderService.getInvaders().forEach(async (invader) => {
+                    if (this.areColliding(projectile, invader)) {
+                        await this.handleProjectileInvaderCollision(projectile, invader);
+                    }
+                });
             }
-        }
-        
-        // Nouvelle boucle pour vérifier les collisions entre les projectiles et les murs
-        const walls = this.wallService.getWalls(); 
-        for (const projectile of this.projectileService.getProjectiles()) {
-            for (const wall of walls) {
+
+            if (projectile.origin === ProjectileOrigin.Invader && this.areColliding(projectile, player)) {
+                this.handleProjectilePlayerCollision(projectile);
+            }
+
+            this.wallService.getWalls().forEach((wall) => {
                 if (this.areColliding(projectile, wall)) {
                     this.wallService.applyDamageToWall(wall, projectile.damage);
                     this.projectileService.removeProjectile(projectile.id);
-                    break; 
-                }
-            }
-        }
-
-        this.invaderService.getInvaders().forEach(invader => {
-            walls.forEach(wall => {
-                if (this.areColliding(invader, wall)) {
-                    const invaderDestroyed = invader.applyDamage(wall.damage);
-                    const wallDestroyed = this.wallService.applyDamageToWall(wall, invader.damage);
-    
-                    if (invaderDestroyed) {
-                        this.invaderService.removeInvader(invader.id);
-                    }
-    
-                    if (wallDestroyed) {
-                        // La logique de suppression est gérée dans applyDamageToWall
-                    }
                 }
             });
         });
@@ -53,7 +38,7 @@ export class CollisionService {
 
     private areColliding(entityA: BaseEntity, entityB: BaseEntity): boolean {
         if (!entityA.fabricObject || !entityB.fabricObject) {
-            console.error('One of the entities is not initialized.');
+            console.error("One of the entities is not initialized.");
             return false;
         }
         return !(
@@ -65,17 +50,17 @@ export class CollisionService {
     }
 
     private async handleProjectileInvaderCollision(projectile: Projectile, invader: Invader) {
-        // Applique les dégâts du projectile à l'invader
         const isDestroyed = invader.applyDamage(projectile.damage);
-    
-        // Retire le projectile dans tous les cas
         this.projectileService.removeProjectile(projectile.id);
-    
-        // Si l'invader est détruit, le retirer et augmenter le score du joueur
         if (isDestroyed) {
             this.invaderService.removeInvader(invader.id);
             await this.playerService.increaseScore(invader.score);
         }
     }
-    
+
+    private async handleProjectilePlayerCollision(projectile: Projectile) {
+        // Suppose that PlayerService has a method for handling damage
+        this.playerService.applyDamage(projectile.damage);
+        this.projectileService.removeProjectile(projectile.id);
+    }
 }

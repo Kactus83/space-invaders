@@ -5,6 +5,8 @@ import { UserInputType } from '../../../game-services/inputs/UserInputType';
 import { ProjectileService } from '../projectile/ProjectileService';
 import { config } from '../../../config/config';
 import { PlayerLevels } from './PlayerLevels';
+import { ProjectileType } from '../projectile/ProjectileType';
+import { ProjectileOrigin } from '../projectile/Projectileorigin';
 
 export class PlayerService {
     private player: Player; 
@@ -74,10 +76,16 @@ export class PlayerService {
         const projectileY = this.player.fabricObject.top;
 
         // Créez un projectile en utilisant le type spécifié pour le niveau actuel du joueur
-        this.projectileService.createProjectile(projectileType, projectileX, projectileY);
+        if(projectileType !== ProjectileType.None) {
+            this.projectileService.createProjectile(projectileType, projectileX, projectileY, ProjectileOrigin.Player);
+        }
     }  
 
     public increaseScore(points: number): void {
         this.player.increaseScore(points);
+    }
+
+    public applyDamage(damage: number): boolean {
+        return this.player.applyDamage(damage);
     }
 }

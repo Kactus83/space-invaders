@@ -1,8 +1,8 @@
 import { Projectile } from './Projectile';
 import { ThemeManager } from '../../../themes/ThemeManager';
-import { ProjectileType } from '../types/ProjectileType';
 import { fabric } from 'fabric';
-import { ProjectileSpecs } from './ProjectilesTypesSpecs';
+import { ProjectileType } from './ProjectileType';
+import { ProjectileOrigin } from './Projectileorigin';
 
 export class ProjectileService {
     private projectiles: Projectile[] = [];
@@ -12,8 +12,8 @@ export class ProjectileService {
         this.themeManager = themeManager;
     }
 
-    public async createProjectile(type: ProjectileType, x: number, y: number): Promise<void> {
-        const newProjectile = new Projectile(this.themeManager, type, x, y);
+    public async createProjectile(type: ProjectileType, x: number, y: number, projectileorigin: ProjectileOrigin): Promise<void> {
+        const newProjectile = new Projectile(this.themeManager, type, x, y, projectileorigin);
         await newProjectile.loadDesign();
         this.projectiles.push(newProjectile);
     }

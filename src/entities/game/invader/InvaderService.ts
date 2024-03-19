@@ -4,17 +4,20 @@ import { fabric } from 'fabric';
 import { InvaderType } from './InvaderType';
 import { config } from '../../../config/config';
 import { assembleWavePattern } from './lib/invaderConfigurations';
+import { ProjectileService } from '../projectile/ProjectileService';
 
 export class InvaderService {
     private invaders: Invader[] = [];
     private themeManager: ThemeManager;
+    private projectileService: ProjectileService;
 
-    constructor(themeManager: ThemeManager) {
+    constructor(themeManager: ThemeManager, projectileService: ProjectileService) {
         this.themeManager = themeManager;
+        this.projectileService = projectileService;
     }
 
     public async createInvader(type: InvaderType, x: number, y: number): Promise<void> {
-        const newInvader = new Invader(this.themeManager, type, x, y);
+        const newInvader = new Invader(this.themeManager, type, x, y, this.projectileService);
         await newInvader.loadDesign();
         if (!newInvader || !newInvader.fabricObject) {
             console.error("Failed to create an invader", {type, x, y});
@@ -50,13 +53,9 @@ export class InvaderService {
     }
 
     public update(deltaTime: number): void {
-        this.invaders.forEach((invader, index) => {
+        this.invaders.forEach(invader => {
             invader.update(deltaTime);
-
-            // Supprimer l'invader si ses points de vie tombent à zéro
-            if (invader.hp <= 0) {
-                this.invaders.splice(index, 1);
-            }
+            invader.shoot(); // Nouvelle logique de tir
         });
     }
 

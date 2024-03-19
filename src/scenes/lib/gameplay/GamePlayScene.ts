@@ -32,7 +32,7 @@ export class GamePlayScene implements IGameScene {
 
     public async initialize(): Promise<void> {
         this.projectileService = new ProjectileService(this.themeManager);
-        this.invaderService = new InvaderService(this.themeManager);
+        this.invaderService = new InvaderService(this.themeManager, this.projectileService);
         this.playerService = new PlayerService(this.inputManager, this.themeManager, this.projectileService);
         this.wallService = new WallService(this.themeManager);
         this.collisionService = new CollisionService(this.projectileService, this.invaderService, this.playerService, this.wallService);

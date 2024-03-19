@@ -1,20 +1,23 @@
 import { BaseEntity } from '../BaseEntity';
 import { fabric } from 'fabric';
 import { ThemeManager } from '../../../themes/ThemeManager';
-import { ProjectileType } from '../types/ProjectileType';
 import { ProjectileSpecs } from './ProjectilesTypesSpecs';
+import { ProjectileType } from './ProjectileType';
+import { ProjectileOrigin } from './Projectileorigin';
 
 export class Projectile extends BaseEntity {
     type: ProjectileType;
+    origin: ProjectileOrigin;
     damage: number;
     speed: number;
 
-    constructor(themeManager: ThemeManager, type: ProjectileType, x: number, y: number) {
+    constructor(themeManager: ThemeManager, type: ProjectileType, x: number, y: number, origin: ProjectileOrigin) {
         super(themeManager, x, y);
         this.type = type;
         const specs = ProjectileSpecs[type];
         this.speed = specs.speed;
         this.damage = specs.damage;
+        this.origin = origin;
         this.loadDesign();
     }
 
@@ -47,8 +50,9 @@ export class Projectile extends BaseEntity {
 
     update(deltaTime: number): void {
         if (this.fabricObject) {
-            this.fabricObject.top -= this.speed * deltaTime;
-            // Additional logic for off-screen handling or collisions
+            // Les projectiles des invaders se déplacent vers le bas, ceux du joueur vers le haut
+            const direction = this.origin === ProjectileOrigin.Invader ? 1 : -1;
+            this.fabricObject.top += this.speed * deltaTime * direction;
         }
-    }
+    }    
 }

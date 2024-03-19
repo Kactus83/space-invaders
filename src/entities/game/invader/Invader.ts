@@ -1,9 +1,11 @@
 import { BaseEntity } from '../BaseEntity';
 import { fabric } from 'fabric';
 import { ThemeManager } from '../../../themes/ThemeManager';
-import { InvaderSpecs } from './InvaderTypesSpecs';
+import { ProjectileService } from '../projectile/ProjectileService';
 import { config } from '../../../config/config';
 import { InvaderType } from './InvaderType';
+import { InvaderSpecs } from './InvaderTypesSpecs';
+import { ProjectileOrigin } from '../projectile/Projectileorigin';
 
 export class Invader extends BaseEntity {
     type: InvaderType;
@@ -11,8 +13,10 @@ export class Invader extends BaseEntity {
     speed: number;
     damage: number;
     score: number;
+    lastShootTime: number = Date.now();
+    projectileService: ProjectileService;
 
-    constructor(themeManager: ThemeManager, type: InvaderType, x: number, y: number) {
+    constructor(themeManager: ThemeManager, type: InvaderType, x: number, y: number, projectileService: ProjectileService) {
         super(themeManager, x, y);
         this.type = type;
         const specs = InvaderSpecs[type];
@@ -20,6 +24,7 @@ export class Invader extends BaseEntity {
         this.speed = specs.speed;
         this.score = specs.score;
         this.damage = specs.damage;
+        this.projectileService = projectileService;
         this.loadDesign();
     }
 
@@ -74,7 +79,17 @@ export class Invader extends BaseEntity {
         this.hp -= damage;
         return this.hp <= 0;
     }
+
+    public shoot(): void {
+        const specs = InvaderSpecs[this.type];
+        const now = Date.now();
     
-    
-    
+        // Assurez-vous que l'invader est au moins à 50 pixels du haut du canvas avant de tirer
+        if (this.fabricObject.top > 50 && now - this.lastShootTime > 1000 / specs.fireRate) {
+            const projectileX = this.fabricObject.left + this.fabricObject.width / 2;
+            const projectileY = this.fabricObject.top + this.fabricObject.height;
+            this.projectileService.createProjectile(specs.projectileType, projectileX, projectileY, ProjectileOrigin.Invader);
+            this.lastShootTime = now;
+        }
+    }    
 }
