@@ -4,7 +4,7 @@ export const config = {
         height: 600,
     },
     player: {
-        playerStartPositionX: 300,
+        playerStartPositionX: 375,
         playerStartPositionY: 560,
     },
     invader: {

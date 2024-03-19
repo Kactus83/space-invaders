@@ -23,6 +23,7 @@ export class Player extends BaseEntity {
         const newLeft = this.fabricObject.left - 10;
         if (newLeft >= 0) {
             this.fabricObject.left = newLeft;
+            this.x = newLeft;
         }
     }
     
@@ -30,6 +31,7 @@ export class Player extends BaseEntity {
         const newLeft = this.fabricObject.left + 10;
         if (newLeft + this.fabricObject.width <= config.canvas.width) { 
             this.fabricObject.left = newLeft;
+            this.x = newLeft;
         }
     }
 
