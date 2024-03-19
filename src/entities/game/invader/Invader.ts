@@ -1,9 +1,9 @@
 import { BaseEntity } from '../BaseEntity';
 import { fabric } from 'fabric';
 import { ThemeManager } from '../../../themes/ThemeManager';
-import { InvaderType } from '../types/InvaderType';
 import { InvaderSpecs } from './InvaderTypesSpecs';
 import { config } from '../../../config/config';
+import { InvaderType } from './InvaderType';
 
 export class Invader extends BaseEntity {
     type: InvaderType;
