@@ -34,6 +34,10 @@ const miniPatterns: WavePattern = {
     [InvaderType.Elite, InvaderType.Elite],
     [InvaderType.Boss, InvaderType.Elite]
   ],
+  full_boss: [
+    [InvaderType.Boss, InvaderType.Boss],
+    [InvaderType.Boss, InvaderType.Boss]
+  ],
   strongMix: [
     [InvaderType.Strong, InvaderType.Elite],
     [InvaderType.Strong, InvaderType.Advanced]
@@ -52,7 +56,15 @@ export const waveConfigurations = {
     // Définir une configuration pour la vague 2
   ],
   wave3: [
-    "strongMix", "strong", "advanced", "elite", "elite", "advanced", "light", "light", "boss"
+    "strongMix", "strong", "advanced", "elite", "elite", "advanced", "light", "light", "advanced"
+    // Définir une configuration pour la vague 2
+  ],
+  wave4: [
+    "light", "light", "strongMix", "strong", "elite", "advanced", "elite", "elite", "boss", "advanced", "elite", "light", "light", "light"
+    // Définir une configuration pour la vague 2
+  ],
+  wave5: [
+    "boss","strongMix", "strong", "boss", "advanced", "elite", "strong", "advanced", "elite", "elite", "advanced", "light", "light", "full_boss", "strong", "advanced", "elite", "strong", "advanced", "elite"
     // Définir une configuration pour la vague 2
   ],
   // Ajouter d'autres vagues au besoin

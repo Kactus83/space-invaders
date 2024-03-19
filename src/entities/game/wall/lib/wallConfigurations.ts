@@ -21,6 +21,8 @@ export const wallWaveConfigurations = {
   wave1: ["basic", "basic", "empty", "empty", "empty", "basic", "empty", "empty", "strong", "strong", "strong", "strong", "empty", "empty", "basic", "empty", "empty", "empty", "basic", "basic"],
   wave2: ["basic", "basic", "empty", "empty", "empty", "basic", "empty", "empty", "strong", "empty", "empty", "strong", "empty", "empty", "basic", "empty", "empty", "empty", "basic", "basic"],
   wave3: ["strong", "empty", "empty", "empty", "empty", "basic", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "basic", "empty", "empty", "empty", "empty", "strong"],
+  wave4: ["empty", "empty", "empty", "empty", "empty", "basic", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "basic", "empty", "empty", "empty", "empty", "empty"],
+  wave5: ["empty", "empty", "empty", "empty", "empty", "strong", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "empty", "strong", "empty", "empty", "empty", "empty", "empty"],
 };
 
 // Fonction pour assembler les mini-patterns en une configuration de vague complète
