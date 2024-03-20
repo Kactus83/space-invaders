@@ -23,7 +23,6 @@ export class Projectile extends BaseEntity {
 
     public async loadDesign(): Promise<void> {
         const design = this.themeManager.getProjectileDesign(this.type);
-        // Similar logic to Player for loading SVG or simple shape
         if (design.svgPath) {
             await new Promise<void>((resolve, reject) => {
                 fabric.loadSVGFromURL(design.svgPath, (objects, options) => {
@@ -50,7 +49,6 @@ export class Projectile extends BaseEntity {
 
     update(deltaTime: number): void {
         if (this.fabricObject) {
-            // Les projectiles des invaders se déplacent vers le bas, ceux du joueur vers le haut
             const direction = this.origin === ProjectileOrigin.Invader ? 1 : -1;
             this.fabricObject.top += this.speed * deltaTime * direction;
         }

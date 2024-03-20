@@ -4,8 +4,8 @@ import { PlayerService } from './PlayerService';
 export class PlayerHUD {
     private scoreText: fabric.Text;
     private levelText: fabric.Text;
-    private healthText: fabric.Text; // Ajout pour les points de vie
-    private shieldText: fabric.Text; // Ajout pour le bouclier
+    private healthText: fabric.Text; 
+    private shieldText: fabric.Text; 
 
     constructor(private playerService: PlayerService, x: number, y: number) {
         this.scoreText = new fabric.Text('Score: 0', {
@@ -19,7 +19,7 @@ export class PlayerHUD {
             fontSize: 20,
             fill: 'white',
             left: x,
-            top: y + 30 // Un peu en dessous du score
+            top: y + 30 
         });
 
         // Initialisation des nouveaux textes
@@ -27,28 +27,26 @@ export class PlayerHUD {
             fontSize: 20,
             fill: 'white',
             left: x,
-            top: y + 60 // Un peu en dessous du niveau
+            top: y + 60 
         });
 
         this.shieldText = new fabric.Text('Shield: 0', {
             fontSize: 20,
             fill: 'white',
             left: x,
-            top: y + 90 // Un peu en dessous de la santé
+            top: y + 90 
         });
     }
 
     public update(): void {
-        // Mettre à jour les textes avec les valeurs actuelles du playerService
-        const player = this.playerService.getPlayer(); // Récupération de l'instance du joueur pour accéder à ses propriétés
+        const player = this.playerService.getPlayer();
         this.scoreText.text = `Score: ${player.score}`;
         this.levelText.text = `Level: ${player.level}`;
-        this.healthText.text = `Health: ${player.health}`; // Mise à jour des points de vie
-        this.shieldText.text = `Shield: ${player.shield}`; // Mise à jour du bouclier
+        this.healthText.text = `Health: ${player.health}`;
+        this.shieldText.text = `Shield: ${player.shield}`; 
     }
 
     public getFabricObjects(): fabric.Object[] {
-        // Retourner les objets fabric pour le rendu
         return [this.scoreText, this.levelText, this.healthText, this.shieldText];
     }
 }

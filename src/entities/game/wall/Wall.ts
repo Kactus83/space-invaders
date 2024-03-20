@@ -50,8 +50,7 @@ export class Wall extends BaseEntity {
     }
 
     private updateTypeAndDesign(): void {
-        // Logique de mise à jour du type de mur en fonction des HP restants et rechargement du design
-        // Cette partie peut être adaptée selon vos spécifications exactes
+        // Mettre à jour le type et le design du mur en fonction des points de vie restants
         if (this.hp > WallSpecs[WallType.Strong].hp) {
             this.type = WallType.Strong;
         } else if (this.hp > WallSpecs[WallType.Basic].hp) {

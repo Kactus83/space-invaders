@@ -74,7 +74,7 @@ export class GamePlayScene implements IGameScene {
             console.error("render error : GamePlayScene is updating");
             return;
         }
-        // Assurez-vous que tous les objets sont prêts avant de les dessiner
+        
         const objectsToDraw = [
             ...this.wallService.getFabricObjects(),
             ...this.invaderService.getFabricObjects(),

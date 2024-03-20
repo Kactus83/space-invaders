@@ -15,7 +15,7 @@ export class WallService {
     }
 
     public async initializeWallsForWave(waveKey: string): Promise<void> {
-        this.cleanup(); // Assurez-vous de nettoyer les murs existants.
+        this.cleanup(); 
         
         const pattern = assembleWallPattern(waveKey);
         let wallCreationPromises: Promise<void>[] = [];

@@ -10,6 +10,11 @@ import { WallService } from "../../entities/game/wall/WallService";
 export class CollisionService {
     constructor(private projectileService: ProjectileService, private invaderService: InvaderService, private playerService: PlayerService, private wallService: WallService) {}
 
+    /**
+     * Vérifie les collisions entre les projectiles, les invaders, les murs et le joueur.   
+     * @returns Une promesse résolue une fois que les collisions ont été vérifiées. 
+     * @async
+     */
     public async checkCollisions(): Promise<void> {
         const projectiles = this.projectileService.getProjectiles();
         const player = this.playerService.getPlayer();
@@ -39,7 +44,7 @@ export class CollisionService {
             });
         });
     
-        // Ajout du bloc manquant pour gérer les collisions entre les invaders et les murs
+        // Gestion des collisions des invaders avec les murs
         this.invaderService.getInvaders().forEach(invader => {
             this.wallService.getWalls().forEach(wall => {
                 if (this.areColliding(invader, wall)) {
@@ -58,6 +63,12 @@ export class CollisionService {
         });
     }    
 
+    /**
+     * Vérifie si deux entités sont en collision.
+     * @param entityA Première entité
+     * @param entityB Deuxième entité
+     * @returns true si les entités sont en collision, sinon false
+     */
     private areColliding(entityA: BaseEntity, entityB: BaseEntity): boolean {
         if (!entityA.fabricObject || !entityB.fabricObject) {
             console.error("One of the entities is not initialized.");
@@ -71,6 +82,11 @@ export class CollisionService {
         );
     }
 
+    /**
+     * Gère la collision entre un projectile et un invader.
+     * @param projectile 
+     * @param invader 
+     */
     private async handleProjectileInvaderCollision(projectile: Projectile, invader: Invader) {
         const isDestroyed = invader.applyDamage(projectile.damage);
         this.projectileService.removeProjectile(projectile.id);
@@ -83,8 +99,11 @@ export class CollisionService {
         }
     }
 
+    /**
+     * Gère la collision entre un projectile et le joueur.
+     * @param projectile 
+     */
     private async handleProjectilePlayerCollision(projectile: Projectile) {
-        // Suppose that PlayerService has a method for handling damage
         this.playerService.applyDamage(projectile.damage);
         this.projectileService.removeProjectile(projectile.id);
     }

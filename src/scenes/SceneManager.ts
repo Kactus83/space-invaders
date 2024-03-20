@@ -23,7 +23,6 @@ export class SceneManager {
         this.scenes.set(SceneIds.GamePlay, new GamePlayScene(this, this.renderer, this.themeManager, this.inputManager));
         this.scenes.set(SceneIds.GameWin, new GameWinScene(this, this.renderer, this.themeManager));
         this.scenes.set(SceneIds.GameLose, new GameLoseScene(this, this.renderer, this.themeManager));
-        // Ajoutez d'autres scènes au besoin
     }
 
     public async loadInitialScene(): Promise<void> {

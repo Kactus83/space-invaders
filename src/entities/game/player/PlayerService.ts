@@ -34,7 +34,6 @@ export class PlayerService {
                 case UserInputType.Shoot:
                     this.shoot();
                     break;
-                // Ajoutez d'autres cas au besoin
             }
         });
     }
@@ -71,11 +70,10 @@ export class PlayerService {
         }
 
         this.lastShootTime = currentTime;
-        const projectileType = PlayerLevels[this.player.level.toString()].projectileType; // Utilisez le projectileType du niveau actuel
+        const projectileType = PlayerLevels[this.player.level.toString()].projectileType;
         const projectileX = this.player.fabricObject.left + this.player.fabricObject.width / 2;
         const projectileY = this.player.fabricObject.top;
 
-        // Créez un projectile en utilisant le type spécifié pour le niveau actuel du joueur
         if(projectileType !== ProjectileType.None) {
             this.projectileService.createProjectile(projectileType, projectileX, projectileY, ProjectileOrigin.Player);
         }
