@@ -1,5 +1,6 @@
 import { fabric } from "fabric";
 import { IGlobalConfig } from "../config/IGlobalConfig";
+import { IRenderable } from "./Irenderable";
 
 export class Renderer {
     private fabricCanvas: fabric.Canvas;
@@ -17,8 +18,12 @@ export class Renderer {
         this.fabricCanvas.clear();
     }
 
-    public draw(objects: fabric.Object[]): void {
-        objects.forEach(obj => this.fabricCanvas.add(obj));
+    public draw(renderables: IRenderable[]): void {
+        this.fabricCanvas.clear(); // Assurez-vous que le canvas est clair avant de dessiner
+        renderables.forEach(renderable => {
+            const objects = renderable.getDrawableObjects();
+            objects.forEach(obj => this.fabricCanvas.add(obj));
+        });
         this.fabricCanvas.renderAll();
     }
 }
