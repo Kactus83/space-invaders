@@ -1,13 +1,16 @@
-import { IRenderable } from "../../core/renderer/Irenderable";
 import { IScene } from "../../core/scene-manager/types/IScene";
+import { Menu } from "../../ui/menu/Menu";
 import { Button } from "../../ui/button/Button";
+import { IRenderable } from "../../core/renderer/Irenderable";
 
 export class MainMenuScene implements IScene {
-    private buttons: Button[] = [];
+    private menu: Menu;
 
     async initialize(): Promise<void> {
-        this.buttons.push(new Button('Start Game', { x: 100, y: 100 }));
-        this.buttons.push(new Button('Settings', { x: 100, y: 140 }));
+        const buttonNames = ['Start Game', 'Settings'];
+        const buttonActions = [this.onStartGame, this.onSettings];
+
+        this.menu = new Menu(buttonNames, buttonActions);
     }
 
     update(deltaTime: number): void {
@@ -15,10 +18,18 @@ export class MainMenuScene implements IScene {
     }
 
     getDrawableObjects(): IRenderable[] {
-        return this.buttons;
+        return [this.menu];
     }
 
     cleanup(): void {
-        this.buttons.forEach(button => button.cleanup());
+        this.menu.cleanup();
+    }
+    
+    private onStartGame(): void {
+        console.log('Start game');
+    }
+
+    private onSettings(): void {
+        console.log('Settings');
     }
 }
