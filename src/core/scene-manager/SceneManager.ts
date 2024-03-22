@@ -1,5 +1,5 @@
 import { MainMenuScene } from "../../scenes/main-menu/MainMenuScene";
-import { SceneIds } from "../../scenes/types/SceneIds";
+import { SceneIds } from "./types/SceneIds";
 import { Renderer } from "../renderer/Renderer";
 import { IScene } from "./types/IScene";
 

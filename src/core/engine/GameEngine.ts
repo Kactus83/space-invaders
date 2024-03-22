@@ -1,4 +1,4 @@
-import { SceneIds } from "../../scenes/types/SceneIds";
+import { SceneIds } from "../scene-manager/types/SceneIds";
 import { AppConfig } from "../config/AppConfig";
 import { IGlobalConfig } from "../config/IGlobalConfig";
 import { Renderer } from "../renderer/Renderer";
