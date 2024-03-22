@@ -20,7 +20,8 @@ export class Button implements IRenderable {
             ry: 10,
             stroke: '#FFF',
             strokeWidth: 2,
-            shadow: 'rgba(0,0,0,0.5) 5px 5px 10px'
+            shadow: 'rgba(0,0,0,0.5) 5px 5px 10px',
+            selectable: false,
         });
         this.fabricText = new fabric.Text(text, {
             left: position.x,
@@ -28,7 +29,8 @@ export class Button implements IRenderable {
             fontSize: 20,
             fill: this.defaultColor,
             originX: 'center',
-            originY: 'center'
+            originY: 'center',
+            selectable: false,
         });
         this.setHighlight(false); // Appliquer l'état initial non-surligné
     }

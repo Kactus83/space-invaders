@@ -34,7 +34,8 @@ export class Menu implements IRenderable, IInteractive {
             ry: 10,
             stroke: '#FFF',
             strokeWidth: 2,
-            shadow: 'rgba(0,0,0,0.5) 5px 5px 10px'
+            shadow: 'rgba(0,0,0,0.5) 5px 5px 10px',
+            selectable: false,
         });
 
         // Création et positionnement des boutons
