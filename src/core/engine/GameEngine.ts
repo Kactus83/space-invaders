@@ -5,14 +5,12 @@ import { Renderer } from "../renderer/Renderer";
 import { SceneManager } from "../scene-manager/SceneManager";
 
 export class GameEngine {
-    private config: IGlobalConfig = AppConfig.getInstance();
     private renderer: Renderer;
     private sceneManager: SceneManager;
     private lastFrameTimeMs: number = 0;
 
     constructor() {
-        this.renderer = new Renderer(this.config);
-        this.sceneManager = new SceneManager(this.renderer);
+        this.sceneManager = SceneManager.getInstance();
     }
 
     public async start(): Promise<void> {

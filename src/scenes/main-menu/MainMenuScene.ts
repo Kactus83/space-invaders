@@ -1,7 +1,8 @@
 import { IScene } from "../../core/scene-manager/types/IScene";
 import { Menu } from "../../ui/menu/Menu";
-import { Button } from "../../ui/button/Button";
 import { IRenderable } from "../../core/renderer/Irenderable";
+import { SceneManager } from "../../core/scene-manager/SceneManager";
+import { SceneIds } from "../../core/scene-manager/types/SceneIds";
 
 export class MainMenuScene implements IScene {
     private menu: Menu;
@@ -24,12 +25,14 @@ export class MainMenuScene implements IScene {
     cleanup(): void {
         this.menu.cleanup();
     }
-    
+
     private onStartGame(): void {
         console.log('Start game');
+        SceneManager.getInstance().changeScene(SceneIds.GamePlay); // Changer vers la scène de jeu
     }
-
+    
     private onSettings(): void {
         console.log('Settings');
+        SceneManager.getInstance().changeScene(SceneIds.Settings); // Changer vers la scène de paramètres
     }
 }

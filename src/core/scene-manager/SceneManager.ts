@@ -2,20 +2,31 @@ import { MainMenuScene } from "../../scenes/main-menu/MainMenuScene";
 import { SceneIds } from "./types/SceneIds";
 import { Renderer } from "../renderer/Renderer";
 import { IScene } from "./types/IScene";
+import { SettingsScene } from "../../scenes/settings/SettingsScene";
+import { GamePlayScene } from "../../scenes/game-play/GameplayScene";
 
 export class SceneManager {
+    private static instance: SceneManager;
     private currentScene: IScene | null = null;
     private scenes: Map<SceneIds, IScene> = new Map();
     private renderer: Renderer;
 
-    constructor(renderer: Renderer) {
-        this.renderer = renderer;
+    private constructor() {
+        this.renderer = new Renderer();
         this.registerScenes();
     }
 
+    public static getInstance(): SceneManager {
+        if (!SceneManager.instance) {
+            SceneManager.instance = new SceneManager();
+        }
+        return SceneManager.instance;
+    }
+
     private registerScenes(): void {
-        // Initialiser et enregistrer les scènes ici
         this.scenes.set(SceneIds.MainMenu, new MainMenuScene());
+        this.scenes.set(SceneIds.Settings, new SettingsScene());
+        this.scenes.set(SceneIds.GamePlay, new GamePlayScene());
         // Enregistrer d'autres scènes de la même manière
     }
 

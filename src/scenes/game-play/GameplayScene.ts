@@ -4,14 +4,12 @@ import { Player } from "../../entities/player/Player";
 import { Invader } from "../../entities/invader/Invader";
 import { Wall } from "../../entities/wall/Wall";
 import { Projectile } from "../../entities/projectile/Projectile";
-import { ThemeManager } from "../../themes/services/ThemeManager";
 
 export class GamePlayScene implements IScene {
     private player: Player;
     private invaders: Invader[] = [];
     private walls: Wall[] = [];
     private projectiles: Projectile[] = [];
-    private themeManager: ThemeManager = ThemeManager.getInstance();
     
     async initialize(): Promise<void> {
         // Initialisation des entités

@@ -1,11 +1,14 @@
 import { fabric } from "fabric";
 import { IGlobalConfig } from "../config/IGlobalConfig";
 import { IRenderable } from "./Irenderable";
+import { AppConfig } from "../config/AppConfig";
 
 export class Renderer {
     private fabricCanvas: fabric.Canvas;
+    private config: IGlobalConfig;
 
-    constructor(private config: IGlobalConfig) {
+    constructor() {
+        this.config = AppConfig.getInstance();
         // Initialiser le Canvas Fabric
         const canvasElement = document.getElementById('gameCanvas') as HTMLCanvasElement;
         this.fabricCanvas = new fabric.Canvas(canvasElement, {
