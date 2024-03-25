@@ -1,10 +1,12 @@
 import { AppConfig } from "../../core/config/AppConfig";
 import { IInteractive } from "../../core/input-manager/IInteractive";
+import { InputManager } from "../../core/input-manager/InputManager";
 import { UserInputType } from "../../core/input-manager/UserInputType";
 import { GameEntity } from "../GameEntity";
 import { PlayerLevels, MaxLevel } from "./PlayerLevels";
 
 export class Player extends GameEntity implements IInteractive {
+    private subscriptionId: number;
     private level: number = 1;
     private hp: number = PlayerLevels['1'].lifeBonus; 
     private score: number = 0;
@@ -12,6 +14,7 @@ export class Player extends GameEntity implements IInteractive {
 
     constructor() {
         super();
+        this.subscribeToInputManager();
     }
     
     protected async loadDesign(): Promise<void> {
@@ -38,6 +41,11 @@ export class Player extends GameEntity implements IInteractive {
 
     onCollisionWith(entity: GameEntity): void {
         // Implémentez la logique de collision
+    }
+
+    private subscribeToInputManager(): void {
+        const inputManager = InputManager.getInstance();
+        this.subscriptionId = inputManager.subscribe(this);
     }
 
     handleInput(inputType: UserInputType): void {
@@ -97,6 +105,10 @@ export class Player extends GameEntity implements IInteractive {
             this.hp += levelSpecs.lifeBonus; // Appliquez le bonus de vie
             this.shouldUpdateDesign = true; // Trigger la mise à jour du design
         }
+    }
+
+    public cleanup(): void {
+        InputManager.getInstance().unsubscribe(this.subscriptionId);
     }
 
 }

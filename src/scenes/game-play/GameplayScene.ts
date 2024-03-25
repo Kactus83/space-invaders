@@ -44,6 +44,7 @@ export class GamePlayScene implements IScene {
     }
 
     cleanup(): void {
+        this.player.cleanup();
         // Nettoyage de la scène si nécessaire
     }
 
