@@ -45,10 +45,4 @@ export class Projectile extends GameEntity {
             throw new Error("Unknown entity type in collision");
         }
     }
-
-    // Implementez la méthode getDrawableObjects pour définir comment le projectile est dessiné
-    getDrawableObjects(): fabric.Object[] {
-        // Cette implémentation est à compléter selon la manière dont vous souhaitez afficher vos projectiles
-        return [this.fabricObject];
-    }
 }
