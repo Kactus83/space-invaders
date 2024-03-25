@@ -34,6 +34,7 @@ export class GamePlayScene implements IScene {
 
     getDrawableObjects(): IRenderable[] {
         // Renvoie toutes les entités à dessiner
+        console.log("Player", this.player);
         return [
             this.player,
             ...this.invaders,
