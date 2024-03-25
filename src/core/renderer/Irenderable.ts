@@ -1,5 +1,5 @@
 import { fabric } from "fabric";
 
 export interface IRenderable {
-    getDrawableObjects(): fabric.Object[];
+    getDrawableObjects(): Promise<fabric.Object[]>;
 }
