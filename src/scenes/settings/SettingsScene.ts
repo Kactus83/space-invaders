@@ -10,8 +10,8 @@ export class SettingsScene implements IScene {
     async initialize(): Promise<void> {
         // Initialiser les éléments de la scène de paramètres ici, comme un menu de paramètres
         // Par exemple, créer un menu similaire au MainMenu avec des options différentes
-        const buttonNames = ['Audio', 'Graphics', 'Back'];
-        const buttonActions = [this.onAudio, this.onGraphics, this.onBack];
+        const buttonNames = ['Game', 'Audio', 'Graphics', 'Back'];
+        const buttonActions = [this.onGame, this.onAudio, this.onGraphics, this.onBack];
 
         this.menu = new Menu(buttonNames, buttonActions);
     }
@@ -25,7 +25,11 @@ export class SettingsScene implements IScene {
     }
 
     cleanup(): void {
-        // Nettoyage de la scène si nécessaire
+        this.menu.cleanup();
+    }
+
+    private onGame(): void {
+        SceneManager.getInstance().changeScene(SceneIds.Settings_Game);
     }
 
     private onAudio(): void {

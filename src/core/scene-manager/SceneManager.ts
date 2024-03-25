@@ -4,6 +4,7 @@ import { Renderer } from "../renderer/Renderer";
 import { IScene } from "./types/IScene";
 import { SettingsScene } from "../../scenes/settings/SettingsScene";
 import { GamePlayScene } from "../../scenes/game-play/GameplayScene";
+import { GameSettingsScene } from "../../scenes/settings/GameSettingsScene";
 
 export class SceneManager {
     private static instance: SceneManager;
@@ -26,6 +27,7 @@ export class SceneManager {
     private registerScenes(): void {
         this.scenes.set(SceneIds.MainMenu, new MainMenuScene());
         this.scenes.set(SceneIds.Settings, new SettingsScene());
+        this.scenes.set(SceneIds.Settings_Game, new GameSettingsScene());
         this.scenes.set(SceneIds.GamePlay, new GamePlayScene());
         // Enregistrer d'autres scènes de la même manière
     }
