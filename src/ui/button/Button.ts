@@ -35,8 +35,8 @@ export class Button implements IRenderable {
         this.setHighlight(false); // Appliquer l'état initial non-surligné
     }
 
-    getDrawableObjects(): fabric.Object[] {
-        return [this.fabricRect, this.fabricText];
+    getDrawableObjects(): Promise<fabric.Object[]> {
+        return Promise.resolve([this.fabricRect, this.fabricText]);
     }
 
     setHighlight(isHighlighted: boolean): void {

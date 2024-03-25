@@ -1,20 +1,17 @@
+import { AppConfig } from "../../core/config/AppConfig";
 import { IInteractive } from "../../core/input-manager/IInteractive";
 import { UserInputType } from "../../core/input-manager/UserInputType";
 import { GameEntity } from "../GameEntity";
-import { Invader } from "../invader/Invader";
-import { Projectile } from "../projectile/Projectile";
-import { ProjectileType } from "../projectile/ProjectileType";
-import { Wall } from "../wall/Wall";
-import { PlayerLevels } from "./PlayerLevels";
+import { PlayerLevels, MaxLevel } from "./PlayerLevels";
 
 export class Player extends GameEntity implements IInteractive {
     private level: number = 1;
-    private hp: number = 3; 
+    private hp: number = PlayerLevels['1'].lifeBonus; 
     private score: number = 0;
+    private moveSpeed: number = PlayerLevels['1'].moveSpeed;
 
     constructor() {
         super();
-        // Initialisation spécifique du joueur à venir ici
     }
     
     protected async loadDesign(): Promise<void> {
@@ -23,53 +20,66 @@ export class Player extends GameEntity implements IInteractive {
     }
 
     onCollisionWith(entity: GameEntity): void {
-        if (entity instanceof Player) {
-            // Logique de collision avec les joueurs
-        } else if (entity instanceof Projectile) {
-            // Logique de collision avec les projectiles
-        } else if (entity instanceof Wall) {
-            // Logique de collision avec les murs
-        } else if (entity instanceof Invader) {
-            // Logique de collision avec les autres invaders
-        } else {
-            throw new Error("Unknown entity type");
-        }
+        // Implémentez la logique de collision
     }
 
     handleInput(inputType: UserInputType): void {
-        // Implémentez votre logique de gestion des inputs ici
         switch (inputType) {
             case UserInputType.Left:
-                // Déplacer le joueur vers la gauche
+                this.moveLeft();
                 break;
             case UserInputType.Right:
-                // Déplacer le joueur vers la droite
+                this.moveRight();
                 break;
             case UserInputType.Shoot:
-                // Le joueur tire un projectile
+                this.shoot();
                 break;
-            // Ajoutez plus de cas si nécessaire
+            // Implémentez d'autres cas si nécessaire
         }
     }
 
-    private updateLevel(): void {
-        // Mettez à jour le niveau du joueur en fonction du score
-        for (let level in PlayerLevels) {
-            if (this.score >= PlayerLevels[level].scoreThreshold) {
-                this.level = parseInt(level);
-                // Appliquez les changements de niveau ici (par exemple, augmentez le taux de tir, etc.)
+    private moveLeft(): void {
+        if (this.fabricObject && this.fabricObject.left > 0) {
+            this.fabricObject.left -= 10;
+        }
+    }
+
+    private moveRight(): void {
+        if (this.fabricObject && (this.fabricObject.left + this.fabricObject.width) < AppConfig.getInstance().canvasWidth) {
+            this.fabricObject.left += 10;
+        }
+    }
+
+    private shoot(): void {
+        // Implémenter la logique de tir du joueur
+        console.log("Player shoots");
+    }
+
+    update(deltaTime: number): void {
+    }
+    
+    public increaseScore(amount: number): void {
+        this.score += amount;
+        this.checkForLevelUpdate();
+    }
+
+    private checkForLevelUpdate(): void {
+        for (let level = 2; level <= MaxLevel; level++) {
+            if (this.score >= PlayerLevels[level].scoreThreshold && this.level < level) {
+                this.setLevel(level);
+                break;
             }
         }
     }
 
-    public increaseScore(amount: number): void {
-        this.score += amount;
-        this.updateLevel();
+    private setLevel(newLevel: number): void {
+        if (newLevel !== this.level && newLevel <= MaxLevel) {
+            const levelSpecs = PlayerLevels[newLevel];
+            this.level = newLevel;
+            this.moveSpeed = levelSpecs.moveSpeed;
+            this.hp += levelSpecs.lifeBonus; // Appliquez le bonus de vie
+            this.shouldUpdateDesign = true; // Trigger la mise à jour du design
+        }
     }
 
-    // Ajoutez d'autres méthodes spécifiques au joueur si nécessaire
-
-    // Définissez getDrawableObjects() et d'autres méthodes abstraites si nécessaire
 }
-
-// Vous devrez également adapter PlayerLevels et d'autres constantes/configurations en fonction de vos besoins

@@ -18,12 +18,12 @@ export class Renderer {
         this.fabricCanvas.clear();
     }
 
-    public draw(renderables: IRenderable[]): void {
+    public async draw(renderables: IRenderable[]): Promise<void> {
         this.fabricCanvas.clear(); // Assurez-vous que le canvas est clair avant de dessiner
-        renderables.forEach(renderable => {
-            const objects = renderable.getDrawableObjects();
+        for (const renderable of renderables) {
+            const objects = await renderable.getDrawableObjects();
             objects.forEach(obj => this.fabricCanvas.add(obj));
-        });
+        }
         this.fabricCanvas.renderAll();
     }
 }

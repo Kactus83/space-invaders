@@ -60,4 +60,10 @@ export abstract class GameEntity implements IRenderable, ICollidable {
     }
 
     abstract onCollisionWith(entity: GameEntity): void;
+    
+    /**
+     * Updates the entity's state. Can be overridden by subclasses to implement specific behavior.
+     * @param deltaTime The time elapsed since the last update call, in milliseconds.
+     */
+    abstract update(deltaTime: number): void;
 }

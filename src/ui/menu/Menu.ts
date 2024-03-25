@@ -50,8 +50,10 @@ export class Menu implements IRenderable, IInteractive {
         this.highlightSelectedButton();
     }
 
-    getDrawableObjects(): fabric.Object[] {
-        return this.buttons.flatMap(button => button.getDrawableObjects());
+    async getDrawableObjects(): Promise<fabric.Object[]> {
+        const drawableObjects = await Promise.all(this.buttons.map(button => button.getDrawableObjects()));
+        const flattenedObjects = ([] as fabric.Object[]).concat(...drawableObjects);
+        return Promise.resolve(flattenedObjects);
     }
 
     handleInput(inputType: UserInputType): void {

@@ -35,6 +35,9 @@ export class Invader extends GameEntity {
         this.fabricObject = await this.createFabricObject(design);
     }
 
+    update(deltaTime: number): void {
+    }
+
     onCollisionWith(entity: GameEntity): void {
         if (entity instanceof Player) {
             // Logique de collision avec les joueurs
