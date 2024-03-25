@@ -19,7 +19,7 @@ export class Wall extends GameEntity {
     
     protected async loadDesign(): Promise<void> {
         const design = this.themeManager.getTheme().getWallDesign(this.type);
-        this.fabricObject = await this.createFabricObject(design);
+        this.fabricObject = await this.createFabricObject(design, { x: 0, y: 0 });
     }
     
     update(deltaTime: number): void {

@@ -16,7 +16,10 @@ export class Player extends GameEntity implements IInteractive {
     
     protected async loadDesign(): Promise<void> {
         const design = this.themeManager.getTheme().getPlayerDesign(this.level);
-        this.fabricObject = await this.createFabricObject(design);
+        const { player_InitialX, player_InitialY } = AppConfig.getInstance();
+        const initialPosition = { x: player_InitialX, y: player_InitialY }; 
+        const currentPosition = this.fabricObject ? { x: this.fabricObject.left, y: this.fabricObject.top } : initialPosition;
+        this.fabricObject = await this.createFabricObject(design, currentPosition);
     }
 
     onCollisionWith(entity: GameEntity): void {

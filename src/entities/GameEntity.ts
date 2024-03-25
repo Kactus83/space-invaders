@@ -24,26 +24,40 @@ export abstract class GameEntity implements IRenderable, ICollidable {
 
     protected abstract loadDesign(): Promise<void>;
     
-    protected async createFabricObject(design: IDesign): Promise<fabric.Object> {
+    protected async createFabricObject(design: IDesign, position: { x: number, y: number }): Promise<fabric.Object> {
         if (!design.svgPath) {
             throw new Error("Design SVG path is required");
         }
-
+    
         return new Promise<fabric.Object>((resolve, reject) => {
             fabric.loadSVGFromURL(design.svgPath, (objects, options) => {
+                if (!objects || !objects.length) {
+                    reject(new Error(`Failed to load SVG from ${design.svgPath}`));
+                    return;
+                }
+                console.log("Loaded SVG", design.svgPath, objects, options);
+
                 const svgObject = fabric.util.groupSVGElements(objects, options);
+
                 svgObject.set({
+                    left: position.x,
+                    top: position.y,
+                    hasControls: false,
+                    hasBorders: false,
+                    selectable: false,
+                    lockMovementX: true,
+                    lockMovementY: true,
                     scaleX: design.width / svgObject.width,
                     scaleY: design.height / svgObject.height,
                 });
+
                 resolve(svgObject);
+
             }, (error: any) => {
-                if (error) {
-                    reject(new Error("Failed to load SVG"));
-                }
+                reject(new Error(`Failed to load SVG from ${design.svgPath}: ${error}`));
             });
         });
-    }
+    }    
 
     getCollisionBounds(): { x: number, y: number, width: number, height: number } {
 
