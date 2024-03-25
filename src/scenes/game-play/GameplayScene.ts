@@ -14,6 +14,7 @@ export class GamePlayScene implements IScene {
     async initialize(): Promise<void> {
         // Initialisation des entités
         this.player = new Player();
+
         // TODO: Initialiser les invaders, les murs, et les projectiles
         
         // Exemple d'initialisation d'un invader, à répéter pour créer plusieurs invaders

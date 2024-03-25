@@ -1,5 +1,5 @@
-import { WallType } from '../../entities/wall/WallType';
-import { WallDesign } from '../models/WallDesign';
+import { WallType } from '../../../../entities/wall/WallType';
+import { WallDesign } from '../../../models/WallDesign';
 
 export const wallDesigns: Record<WallType, WallDesign> = {
     [WallType.None]: new WallDesign("None", "no design needed", 10, 10),

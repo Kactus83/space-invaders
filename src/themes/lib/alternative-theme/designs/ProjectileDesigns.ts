@@ -1,4 +1,4 @@
-import { ProjectileDesign } from '../models/ProjectileDesign';
+import { ProjectileDesign } from '../../../models/ProjectileDesign';
 
 export const projectileDesigns: Record<string, ProjectileDesign> = {
     "None": new ProjectileDesign("None", "no need to have a svg math", 0, 0),

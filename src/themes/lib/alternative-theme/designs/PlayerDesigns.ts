@@ -1,4 +1,4 @@
-import { PlayerDesign } from '../models/PlayerDesign';
+import { PlayerDesign } from '../../../models/PlayerDesign';
 
 export const playerDesigns: Record<number, PlayerDesign> = {
     1: new PlayerDesign(1, "assets/themes/default/player/level1.svg", 50, 30),

@@ -40,13 +40,13 @@ export class Player extends GameEntity implements IInteractive {
 
     private moveLeft(): void {
         if (this.fabricObject && this.fabricObject.left > 0) {
-            this.fabricObject.left -= 10;
+            this.fabricObject.left -= this.moveSpeed;
         }
     }
 
     private moveRight(): void {
         if (this.fabricObject && (this.fabricObject.left + this.fabricObject.width) < AppConfig.getInstance().canvasWidth) {
-            this.fabricObject.left += 10;
+            this.fabricObject.left += this.moveSpeed;
         }
     }
 

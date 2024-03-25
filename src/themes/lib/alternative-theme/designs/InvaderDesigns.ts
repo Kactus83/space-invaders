@@ -1,4 +1,4 @@
-import { InvaderDesign } from '../models/InvaderDesign';
+import { InvaderDesign } from '../../../models/InvaderDesign';
 
 export const invaderDesigns: Record<string, { new: InvaderDesign, damaged: InvaderDesign, critical: InvaderDesign }> = {
     "Light": {
