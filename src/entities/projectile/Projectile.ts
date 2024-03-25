@@ -4,31 +4,45 @@ import { Player } from "../player/Player";
 import { Invader } from "../invader/Invader";
 import { Wall } from "../wall/Wall";
 import { ProjectileSpecs } from "./ProjectilesTypesSpecs";
-import { ProjectileOrigin } from "./ProjectileOrigin";
 
 export class Projectile extends GameEntity {
+    x_Position: number;
+    y_Position: number;
     speed: number;
     damage: number;
-    origin: ProjectileOrigin;
+    origin: GameEntity;
     projectileType: ProjectileType;
 
-    constructor(origin: ProjectileOrigin, type: ProjectileType, initialPosition: { x: number, y: number }) {
+    constructor(origin: GameEntity, type: ProjectileType, initialPosition: { x: number, y: number }) {
         super();
+        this.x_Position = initialPosition.x;
+        this.y_Position = initialPosition.y;
         this.origin = origin;
         this.projectileType = type;
         const specs = ProjectileSpecs[type];
         this.speed = specs.speed;
         this.damage = specs.damage;
-
-        // TODO: Initialisation du fabricObject avec les paramètres positionnels
     }
     
     protected async loadDesign(): Promise<void> {
         const design = this.themeManager.getTheme().getProjectileDesign(this.projectileType);
-        this.fabricObject = await this.createFabricObject(design, { x: 0, y: 0 });
+        this.fabricObject = await this.createFabricObject(design, { x: this.x_Position, y: this.y_Position});
+        this.shouldUpdateDesign = false;
     }
     
     update(deltaTime: number): void {
+        // Convertit deltaTime de millisecondes en secondes pour la cohérence des unités
+        const deltaTimeInSeconds = deltaTime / 1000;
+    
+        // Détermine la direction du déplacement en fonction de l'origine du projectile
+        const direction = this.origin instanceof Player ? -1 : 1;
+    
+        // Met à jour la position y du projectile en fonction de la vitesse et de la direction
+        if (this.fabricObject) {
+            this.fabricObject.top += this.speed * deltaTimeInSeconds * direction;
+            this.y_Position = this.fabricObject.top;
+            this.x_Position = this.fabricObject.left;
+        }
     }
 
     onCollisionWith(entity: GameEntity): void {

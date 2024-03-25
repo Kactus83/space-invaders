@@ -14,6 +14,7 @@ export class GamePlayScene implements IScene {
     async initialize(): Promise<void> {
         // Initialisation des entités
         this.player = new Player();
+        this.player.onShoot(projectile => this.projectiles.push(projectile));
 
         // TODO: Initialiser les invaders, les murs, et les projectiles
         
@@ -34,7 +35,6 @@ export class GamePlayScene implements IScene {
 
     getDrawableObjects(): IRenderable[] {
         // Renvoie toutes les entités à dessiner
-        console.log("Player", this.player);
         return [
             this.player,
             ...this.invaders,
