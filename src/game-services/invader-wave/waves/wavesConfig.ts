@@ -12,7 +12,28 @@ export const waveConfigs: WaveConfig[] = [
     {
         delay: 20, // Seconde vague après 20 secondes
         invaders: [
-            { type: InvaderType.Advanced, count: 5, row: 1 },
+            { type: InvaderType.Light, count: 5, row: 1 },
+            { type: InvaderType.Light, count: 5, row: 2 },
+        ],
+    },
+    {
+        delay: 28, // Seconde vague après 20 secondes
+        invaders: [
+            { type: InvaderType.Light, count: 5, row: 1 },
+            { type: InvaderType.Light, count: 5, row: 2 },
+        ],
+    },
+    {
+        delay: 30, // Seconde vague après 20 secondes
+        invaders: [
+            { type: InvaderType.Light, count: 5, row: 1 },
+            { type: InvaderType.Light, count: 5, row: 2 },
+        ],
+    },
+    {
+        delay: 35, // Seconde vague après 20 secondes
+        invaders: [
+            { type: InvaderType.Strong, count: 5, row: 1 },
             { type: InvaderType.Strong, count: 5, row: 2 },
         ],
     },

@@ -5,6 +5,7 @@ import { waveConfigs } from "./waves/wavesConfig";
 import { WaveInvaderConfig } from "./types/WaveInvaderConfig";
 
 export class InvaderWaveService {
+    private isInit: boolean = false;
     private nextWaveTime: number = 0;
     private currentWaveIndex: number = 0;
     private pendingInvaders: Invader[] = [];
@@ -15,17 +16,19 @@ export class InvaderWaveService {
     }
 
     private scheduleNextWave(): void {
+        console.log('scheduleNextWave', this.currentWaveIndex, waveConfigs.length);
         if (this.currentWaveIndex < waveConfigs.length) {
-            this.nextWaveTime = waveConfigs[this.currentWaveIndex].delay;
+            this.nextWaveTime = waveConfigs[this.currentWaveIndex].delay * 1000;
         }
     }
 
     async update(deltaTime: number): Promise<void> {
         this.nextWaveTime -= deltaTime;
         if (this.nextWaveTime <= 0 && this.currentWaveIndex < waveConfigs.length) {
+            this.scheduleNextWave();
+            this.isInit = true;
             const waveConfig = waveConfigs[this.currentWaveIndex++];
             await this.launchWave(waveConfig.invaders);
-            this.scheduleNextWave();
         }
     }
 
