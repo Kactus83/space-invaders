@@ -91,7 +91,7 @@ export class GamePlayScene implements IScene {
         if(!this.isSceneInit) {
             return;
         }
-        
+
         // Renvoie toutes les entités à dessiner
         return [
             this.player,
@@ -106,10 +106,26 @@ export class GamePlayScene implements IScene {
         this.player.cleanup();
         // Nettoyage de la scène si nécessaire
     }
-
+    
     private cleanupEntities() {
-        this.invaders = this.invaders.filter(invader => invader.state !== EntityState.ToBeRemoved);
-        this.projectiles = this.projectiles.filter(projectile => projectile.state !== EntityState.ToBeRemoved);
+        // Filtre les invaders qui doivent être supprimés et les désenregistre de la détection de collision
+        this.invaders = this.invaders.filter(invader => {
+            if (invader.state === EntityState.ToBeRemoved) {
+                this.collisionService.unregisterEntity(invader);
+                return false;
+            }
+            return true;
+        });
+
+        // Applique le même principe aux projectiles
+        this.projectiles = this.projectiles.filter(projectile => {
+            if (projectile.state === EntityState.ToBeRemoved) {
+                this.collisionService.unregisterEntity(projectile);
+                return false;
+            }
+            return true;
+        });
+
         // Appliquez le même principe aux murs et à d'autres entités si nécessaire
     }
 

@@ -55,30 +55,31 @@ export class Projectile extends GameEntity {
     }
 
     onCollisionWith(entity: GameEntity): void {
+
         if (entity instanceof Player) {
             console.log('Projectile collided with Player');
             // Spécifiez la logique de collision avec le joueur
+
         } else if (entity instanceof Invader) {
             console.log('Projectile collided with Invader');
             this.healthSystem.onCollision(entity.healthSystem);
-            if(this.healthSystem.health <= 0) {
-                this.state = EntityState.ToBeRemoved;
-            }
+            this.state = EntityState.ToBeRemoved;
+
         } else if (entity instanceof Wall) {
             console.log('Projectile collided with Wall');
             // Spécifiez la logique de collision avec un mur
+
         } else if (entity instanceof Projectile) {
             console.log('Projectile collided with another Projectile');
             this.healthSystem.onCollision(entity.healthSystem);
             if(this.healthSystem.health <= 0) {
                 this.state = EntityState.ToBeRemoved;
             }
+
         } else if (entity instanceof GroundLine) {
-            console.log('Projectile collided with another Projectile');
-            this.healthSystem.onCollision(entity.healthSystem);
-            if(this.healthSystem.health <= 0) {
-                this.state = EntityState.ToBeRemoved;
-            }
+            console.log('Projectile collided with Groundline');
+            this.state = EntityState.ToBeRemoved;
+            
         } else {
             throw new Error("Unknown entity type in collision");
         }

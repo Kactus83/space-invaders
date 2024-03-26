@@ -11,6 +11,7 @@ import { HealthSystem } from "../models/health-system/HealthSystem";
 import { WeaponSystem } from "../models/weapon-system/WeaponSystem";
 import { EntityState } from "../types/EntityState";
 import { IShooter } from "../types/IShooter";
+import { GroundLine } from "../ground-line/GroundLine";
 
 export class Invader extends GameEntity implements IShooter {
     private initialPosition: { x: number, y: number };
@@ -81,8 +82,16 @@ export class Invader extends GameEntity implements IShooter {
             if(this.healthSystem.health <= 0) {
                 this.state = EntityState.ToBeRemoved;
             }
+        } else if (entity instanceof GroundLine) {
+            this.healthSystem.onCollision(entity.healthSystem);
+            if(this.healthSystem.health <= 0) {
+                this.state = EntityState.ToBeRemoved;
+            }
         } else if (entity instanceof Projectile) {
             console.log("Invader hit by projectile");
+            if(entity.origin instanceof Invader) {
+                return;
+            }
             this.healthSystem.onCollision(entity.healthSystem);
             if(this.healthSystem.health <= 0) {
                 this.state = EntityState.ToBeRemoved;
@@ -102,7 +111,7 @@ export class Invader extends GameEntity implements IShooter {
     }
 
     private async shoot(): Promise<void> {
-        this.weaponSystem.shoot();
+        await this.weaponSystem.shoot();
     }
     
 
