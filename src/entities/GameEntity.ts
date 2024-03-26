@@ -4,8 +4,10 @@ import { ICollidable } from "../game-services/collision/ICollidable";
 import { GameEntityType } from "./types/GameEntityType";
 import { ThemeManager } from "../themes/services/ThemeManager";
 import { IDesign } from "../themes/types/IDesign";
+import { EntityState } from "./types/EntityState";
 
 export abstract class GameEntity implements IRenderable, ICollidable {
+    public state: EntityState = EntityState.Active;
     protected themeManager: ThemeManager = ThemeManager.getInstance();
     protected fabricObject: fabric.Object;
     public entityType: GameEntityType;
@@ -22,7 +24,7 @@ export abstract class GameEntity implements IRenderable, ICollidable {
         }
         return [this.fabricObject];
     }
-    
+
     async init(): Promise<void> {
         if (!this.isInitialized) {
             await this.loadDesign();

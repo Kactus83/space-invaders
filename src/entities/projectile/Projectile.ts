@@ -4,6 +4,7 @@ import { Player } from "../player/Player";
 import { Invader } from "../invader/Invader";
 import { Wall } from "../wall/Wall";
 import { ProjectileSpecs } from "./ProjectilesTypesSpecs";
+import { EntityState } from "../types/EntityState";
 
 export class Projectile extends GameEntity {
     x_Position: number;
@@ -42,6 +43,10 @@ export class Projectile extends GameEntity {
             this.fabricObject.top += this.speed * deltaTimeInSeconds * direction;
             this.y_Position = this.fabricObject.top;
             this.x_Position = this.fabricObject.left;
+        }
+        
+        if (this.y_Position < 0 - this.fabricObject.height) {
+            this.state = EntityState.ToBeRemoved; // Marque le projectile pour suppression si sorti de l'écran
         }
     }
 

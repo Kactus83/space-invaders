@@ -6,6 +6,7 @@ import { Wall } from "../../entities/wall/Wall";
 import { Projectile } from "../../entities/projectile/Projectile";
 import { InvaderWaveService } from "../../game-services/invader-wave/InvaderWaveService";
 import { CollisionService } from "../../game-services/collision/CollisionService";
+import { EntityState } from "../../entities/types/EntityState";
 
 export class GamePlayScene implements IScene {
     private invaderWaveService: InvaderWaveService = new InvaderWaveService();;
@@ -61,6 +62,9 @@ export class GamePlayScene implements IScene {
     
         // Vérification des collisions
         this.collisionService.checkCollisions();
+
+        // Cleanup des entités
+        this.cleanupEntities();
     }
     
 
@@ -77,6 +81,12 @@ export class GamePlayScene implements IScene {
     cleanup(): void {
         this.player.cleanup();
         // Nettoyage de la scène si nécessaire
+    }
+
+    private cleanupEntities() {
+        this.invaders = this.invaders.filter(invader => invader.state !== EntityState.ToBeRemoved);
+        this.projectiles = this.projectiles.filter(projectile => projectile.state !== EntityState.ToBeRemoved);
+        // Appliquez le même principe aux murs et à d'autres entités si nécessaire
     }
 
     // Ajoutez ici les méthodes spécifiques à la scène de gameplay si nécessaire
