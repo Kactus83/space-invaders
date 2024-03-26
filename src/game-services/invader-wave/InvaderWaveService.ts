@@ -1,44 +1,52 @@
 import { Invader } from "../../entities/invader/Invader";
 import { InvaderType } from "../../entities/invader/InvaderType";
-import { IWaveSubscriber } from "./IWaveSubscriber";
+import { AppConfig } from "../../core/config/AppConfig";
 
 export class InvaderWaveService {
-    private subscribers: IWaveSubscriber[] = [];
-    private waveInterval: number = 5000; // Interval en ms entre les vagues
-    private waveTimer: number = 0;
+    private pendingInvaders: Invader[] = [];
+    private waves: Array<{ delay: number, invaders: Promise<Invader[]> }> = [];
+    private timeSinceLastWave: number = 0;
+    private config = AppConfig.getInstance();
 
     constructor() {}
 
-    subscribe(subscriber: IWaveSubscriber): void {
-        this.subscribers.push(subscriber);
-    }
-
-    update(deltaTime: number): void {
-        this.waveTimer += deltaTime;
-
-        if (this.waveTimer >= this.waveInterval) {
-            this.spawnWave();
-            this.waveTimer = 0;
+    async prepareWaves() {
+        for (let waveNumber = 1; waveNumber <= 3; waveNumber++) {
+            // Notez que createWaveInvaders retourne maintenant une Promise
+            const invadersPromise = this.createWaveInvaders(waveNumber * 5, waveNumber);
+            const delay = waveNumber * 10000; // 10 secondes entre chaque vague
+            this.waves.push({ delay, invaders: invadersPromise });
         }
     }
 
-    private spawnWave(): void {
-        // Logique pour déterminer la composition de la vague et créer les invaders
-        const newInvaders = this.generateInvadersForWave();
-        
-        newInvaders.forEach(invader => {
-            this.subscribers.forEach(subscriber => subscriber.onInvaderSpawn(invader));
-        });
-    }
-
-    private generateInvadersForWave(): Invader[] {
-        // Implémentez la logique de création des invaders pour une vague ici
-        // Exemple simple :
+    private async createWaveInvaders(numberOfInvaders: number, waveIndex: number): Promise<Invader[]> {
         const invaders: Invader[] = [];
-        for (let i = 0; i < 5; i++) {
-            const position = { x: 100 * i, y: 50 }; // Position de départ simplifiée
-            invaders.push(new Invader(InvaderType.Basic, position));
+        const canvasWidth = this.config.canvasWidth;
+        const invaderSpacing = canvasWidth / (numberOfInvaders + 1);
+        
+        for (let i = 0; i < numberOfInvaders; i++) {
+            const position = { x: invaderSpacing * (i + 1), y: 50 + (waveIndex * 100) };
+            const invader = new Invader(InvaderType.Basic, position);
+            await invader.init(); // Assurez-vous que chaque invader est initialisé
+            invaders.push(invader);
         }
         return invaders;
+    }
+
+    async update(deltaTime: number): Promise<void> {
+        this.timeSinceLastWave += deltaTime;
+        
+        if (this.waves.length > 0 && this.timeSinceLastWave >= this.waves[0].delay) {
+            const invaders = await this.waves[0].invaders; 
+            this.pendingInvaders = this.pendingInvaders.concat(invaders);
+            this.waves.shift(); 
+            this.timeSinceLastWave = 0; 
+        }
+    }
+
+    getPendingInvaders(): Invader[] {
+        const invadersToSpawn = this.pendingInvaders;
+        this.pendingInvaders = [];
+        return invadersToSpawn;
     }
 }

@@ -3,14 +3,16 @@ import { IInteractive } from "../../core/input-manager/IInteractive";
 import { InputManager } from "../../core/input-manager/InputManager";
 import { UserInputType } from "../../core/input-manager/UserInputType";
 import { GameEntity } from "../GameEntity";
+import { Invader } from "../invader/Invader";
 import { Projectile } from "../projectile/Projectile";
 import { ProjectileType } from "../projectile/ProjectileType";
 import { IShooter } from "../types/IShooter";
+import { Wall } from "../wall/Wall";
 import { PlayerLevels, MaxLevel } from "./PlayerLevels";
 
 export class Player extends GameEntity implements IInteractive, IShooter {
     private subscriptionId: number;
-    private shootCallbacks: ((projectile: Projectile) => void)[] = [];
+    private newProjectiles: Projectile[] = [];
     private lastShootTime: number = 0;
     private level: number = 1;
     private projectileType: ProjectileType = PlayerLevels['1'].projectileType;
@@ -47,7 +49,19 @@ export class Player extends GameEntity implements IInteractive, IShooter {
     }
 
     onCollisionWith(entity: GameEntity): void {
-        // Implémentez la logique de collision
+        if (entity instanceof Player) {
+            // Logique de collision avec les joueurs
+        } else if (entity instanceof Projectile) {
+            console.log("Player hit by projectile");
+            // Logique de collision avec les projectiles
+        } else if (entity instanceof Wall) {
+            console.log("PLAYER hit wall");
+            // Logique de collision avec les murs
+        } else if (entity instanceof Invader) {
+            // Logique de collision avec les autres invaders
+        } else {
+            throw new Error("Unknown entity type");
+        }
     }
 
     private subscribeToInputManager(): void {
@@ -87,7 +101,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         }
     }
 
-    private shoot(): void {
+    private async shoot(): Promise<void> {
         // Obtient le timestamp actuel.
         const now = Date.now();
 
@@ -111,14 +125,16 @@ export class Player extends GameEntity implements IInteractive, IShooter {
             // Mise à jour du dernier moment de tir pour respecter le fireRate.
             this.lastShootTime = now;
 
-            // Notifie les abonnés que le joueur a tiré, permettant par exemple de gérer la création et l'animation du projectile dans le jeu.
-            this.shootCallbacks.forEach(callback => callback(projectile));
+            // Ajouter le projectile à la liste temporaire au lieu de déclencher un callback
+            await projectile.init();
+            this.newProjectiles.push(projectile);
         }
     }
 
-    public onShoot(callback: (projectile: Projectile) => void) {
-        console.log('Player subscribed to shoot event');
-        this.shootCallbacks.push(callback);
+    public getNewProjectiles(): Projectile[] {
+        const projectiles = this.newProjectiles;
+        this.newProjectiles = []; // Réinitialiser la liste après récupération
+        return projectiles;
     }
     
 

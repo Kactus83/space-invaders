@@ -18,7 +18,7 @@ export class Invader extends GameEntity {
     fireRate: number;
     shootProbability: number;
     public healthState: HealthState = HealthState.New
-    private shootCallbacks: ((projectile: Projectile) => void)[] = [];
+    private newProjectiles: Projectile[] = [];
     private lastShootTime: number = 0;
 
     constructor(public type: InvaderType, initialPosition: { x: number, y: number }) {
@@ -82,8 +82,10 @@ export class Invader extends GameEntity {
         if (entity instanceof Player) {
             // Logique de collision avec les joueurs
         } else if (entity instanceof Projectile) {
+            console.log("Invader hit by projectile");
             // Logique de collision avec les projectiles
         } else if (entity instanceof Wall) {
+            console.log("Invader hit wall");
             // Logique de collision avec les murs
         } else if (entity instanceof Invader) {
             // Logique de collision avec les autres invaders
@@ -92,17 +94,22 @@ export class Invader extends GameEntity {
         }
     }
 
-    onShoot(callback: (projectile: Projectile) => void): void {
-        this.shootCallbacks.push(callback);
+    public getNewProjectiles(): Projectile[] {
+        const projectiles = this.newProjectiles;
+        this.newProjectiles = []; // Réinitialiser la liste après récupération
+        return projectiles;
     }
 
-    private shoot(): void {
+    private async shoot(): Promise<void> {
         const now = Date.now();
         const fireRateInterval = 1000 / this.fireRate;
         if (now - this.lastShootTime >= fireRateInterval && Math.random() < this.shootProbability) {
             const projectile = new Projectile(this, this.projectileType, { x: this.fabricObject.left, y: this.fabricObject.top });
             this.lastShootTime = now;
-            this.shootCallbacks.forEach(callback => callback(projectile));
+            // Ajouter le projectile à la liste temporaire au lieu de déclencher un callback
+            await projectile.init();
+            this.newProjectiles.push(projectile);
+    
         }
     }
     

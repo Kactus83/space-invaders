@@ -5,47 +5,64 @@ import { Invader } from "../../entities/invader/Invader";
 import { Wall } from "../../entities/wall/Wall";
 import { Projectile } from "../../entities/projectile/Projectile";
 import { InvaderWaveService } from "../../game-services/invader-wave/InvaderWaveService";
+import { CollisionService } from "../../game-services/collision/CollisionService";
 
 export class GamePlayScene implements IScene {
+    private invaderWaveService: InvaderWaveService = new InvaderWaveService();;
+    private collisionService: CollisionService = new CollisionService();
     private player: Player;
-    private invaderWaveService: InvaderWaveService;
     private invaders: Invader[] = [];
     private walls: Wall[] = [];
     private projectiles: Projectile[] = [];
     
     async initialize(): Promise<void> {
         // Initialisation des entités
-        this.invaderWaveService = new InvaderWaveService();
-        this.invaderWaveService.subscribe({
-            onInvaderSpawn: this.onInvaderSpawn.bind(this)
-        });
-        
+        await this.invaderWaveService.prepareWaves();
+         
         this.player = new Player();
-        this.player.onShoot(projectile => this.projectiles.push(projectile));
-
-        // TODO: Initialiser les invaders, les murs, et les projectiles
-        
-        // Exemple d'initialisation d'un invader, à répéter pour créer plusieurs invaders
-        // this.invaders.push(new Invader(InvaderType.Basic));
-        // TODO: Positionnement initial des entités
+        await this.player.init();
+        this.collisionService.registerEntity(this.player);
     }
 
     update(deltaTime: number): void {
-        // Mise à jour du service de vagues d'envahisseurs
+        // Mise à jour des services
         this.invaderWaveService.update(deltaTime);
-        // Mise à jour des entités
+    
+        // Récupération et ajout des nouveaux invaders
+        this.invaderWaveService.update(deltaTime);
+
+        const newInvaders = this.invaderWaveService.getPendingInvaders();
+        newInvaders.forEach(invader => {
+            this.invaders.push(invader);
+            this.collisionService.registerEntity(invader);
+        });
+
+        // Récupérer les projectiles du joueur
+        const playerProjectiles = this.player.getNewProjectiles();
+        playerProjectiles.forEach(projectile => {
+            this.projectiles.push(projectile);
+            this.collisionService.registerEntity(projectile);
+        });
+
+        // Récupérer les projectiles des invaders
+        this.invaders.forEach(invader => {
+            const invaderProjectiles = invader.getNewProjectiles();
+            invaderProjectiles.forEach(projectile => {
+                this.projectiles.push(projectile);
+                this.collisionService.registerEntity(projectile);
+            });
+        });
+    
+        // Mise à jour des entités existantes...
         this.player.update(deltaTime);
         this.invaders.forEach(invader => invader.update(deltaTime));
         this.walls.forEach(wall => wall.update(deltaTime));
         this.projectiles.forEach(projectile => projectile.update(deltaTime));
-
-        // TODO: Gestion des collisions et autres logiques spécifiques de gameplay
+    
+        // Vérification des collisions
+        this.collisionService.checkCollisions();
     }
-
-    onInvaderSpawn(invader: Invader): void {
-        this.invaders.push(invader);
-        invader.onShoot(projectile => this.projectiles.push(projectile));
-    }
+    
 
     getDrawableObjects(): IRenderable[] {
         // Renvoie toutes les entités à dessiner

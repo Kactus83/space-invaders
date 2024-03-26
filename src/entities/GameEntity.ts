@@ -9,6 +9,7 @@ export abstract class GameEntity implements IRenderable, ICollidable {
     protected themeManager: ThemeManager = ThemeManager.getInstance();
     protected fabricObject: fabric.Object;
     public entityType: GameEntityType;
+    public isInitialized: boolean = false;
     protected shouldUpdateDesign: boolean = true;
 
     constructor() {
@@ -20,6 +21,13 @@ export abstract class GameEntity implements IRenderable, ICollidable {
             await this.loadDesign();
         }
         return [this.fabricObject];
+    }
+    
+    async init(): Promise<void> {
+        if (!this.isInitialized) {
+            await this.loadDesign();
+            this.isInitialized = true;
+        }
     }
 
     protected abstract loadDesign(): Promise<void>;
