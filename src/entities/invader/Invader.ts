@@ -88,7 +88,6 @@ export class Invader extends GameEntity implements IShooter {
                 this.state = EntityState.ToBeRemoved;
             }
         } else if (entity instanceof Projectile) {
-            console.log("Invader hit by projectile");
             if(entity.origin instanceof Invader) {
                 return;
             }
@@ -101,7 +100,6 @@ export class Invader extends GameEntity implements IShooter {
                 this.state = EntityState.ToBeRemoved;
             }
         } else if (entity instanceof Wall) {
-            console.log("Invader hit wall");
             // Logique de collision avec les murs
         } else if (entity instanceof Invader) {
             // Logique de collision avec les autres invaders

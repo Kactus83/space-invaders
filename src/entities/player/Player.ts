@@ -54,10 +54,8 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         if (entity instanceof Player) {
             // Logique de collision avec les joueurs
         } else if (entity instanceof Projectile) {
-            console.log("Player hit by projectile");
             // Logique de collision avec les projectiles
         } else if (entity instanceof Wall) {
-            console.log("PLAYER hit wall");
             // Logique de collision avec les murs
         } else if (entity instanceof Invader) {
             // Logique de collision avec les autres invaders
@@ -140,6 +138,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
             this.moveSpeed = levelCharacteristics.moveSpeed;
             this.healthSystem.updateCharacteristics(levelCharacteristics);
             this.weaponSystem.updateCharacteristics(levelCharacteristics);
+            this.shouldUpdateDesign = true;
             // Autres mises à jour liées au changement de niveau
         }
     }
