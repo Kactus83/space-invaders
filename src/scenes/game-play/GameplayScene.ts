@@ -89,7 +89,7 @@ export class GamePlayScene implements IScene {
         
         // Vérifier si la scène est initialisée
         if(!this.isSceneInit) {
-            return;
+            return [];
         }
 
         // Renvoie toutes les entités à dessiner
@@ -106,7 +106,7 @@ export class GamePlayScene implements IScene {
         this.player.cleanup();
         // Nettoyage de la scène si nécessaire
     }
-    
+
     private cleanupEntities() {
         // Filtre les invaders qui doivent être supprimés et les désenregistre de la détection de collision
         this.invaders = this.invaders.filter(invader => {
