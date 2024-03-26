@@ -4,15 +4,22 @@ import { Player } from "../../entities/player/Player";
 import { Invader } from "../../entities/invader/Invader";
 import { Wall } from "../../entities/wall/Wall";
 import { Projectile } from "../../entities/projectile/Projectile";
+import { InvaderWaveService } from "../../game-services/invader-wave/InvaderWaveService";
 
 export class GamePlayScene implements IScene {
     private player: Player;
+    private invaderWaveService: InvaderWaveService;
     private invaders: Invader[] = [];
     private walls: Wall[] = [];
     private projectiles: Projectile[] = [];
     
     async initialize(): Promise<void> {
         // Initialisation des entités
+        this.invaderWaveService = new InvaderWaveService();
+        this.invaderWaveService.subscribe({
+            onInvaderSpawn: this.onInvaderSpawn.bind(this)
+        });
+        
         this.player = new Player();
         this.player.onShoot(projectile => this.projectiles.push(projectile));
 
@@ -24,6 +31,8 @@ export class GamePlayScene implements IScene {
     }
 
     update(deltaTime: number): void {
+        // Mise à jour du service de vagues d'envahisseurs
+        this.invaderWaveService.update(deltaTime);
         // Mise à jour des entités
         this.player.update(deltaTime);
         this.invaders.forEach(invader => invader.update(deltaTime));
@@ -31,6 +40,11 @@ export class GamePlayScene implements IScene {
         this.projectiles.forEach(projectile => projectile.update(deltaTime));
 
         // TODO: Gestion des collisions et autres logiques spécifiques de gameplay
+    }
+
+    onInvaderSpawn(invader: Invader): void {
+        this.invaders.push(invader);
+        invader.onShoot(projectile => this.projectiles.push(projectile));
     }
 
     getDrawableObjects(): IRenderable[] {
