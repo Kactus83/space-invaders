@@ -9,10 +9,11 @@ import { HealthState } from "../types/HealthState";
 import { AppConfig } from "../../core/config/AppConfig";
 import { HealthSystem } from "../models/health-system/HealthSystem";
 import { WeaponSystem } from "../models/weapon-system/WeaponSystem";
+import { EntityState } from "../types/EntityState";
 
 export class Invader extends GameEntity {
     private initialPosition: { x: number, y: number };
-    private healthSystem: HealthSystem;
+    public healthSystem: HealthSystem;
     private weaponSystem: WeaponSystem;
     private speed: number;
     private score: number;
@@ -75,10 +76,16 @@ export class Invader extends GameEntity {
 
     onCollisionWith(entity: GameEntity): void {
         if (entity instanceof Player) {
-            // Logique de collision avec les joueurs
+            this.healthSystem.onCollision(entity.healthSystem);
+            if(this.healthSystem.health <= 0) {
+                this.state = EntityState.ToBeRemoved;
+            }
         } else if (entity instanceof Projectile) {
             console.log("Invader hit by projectile");
-            // Logique de collision avec les projectiles
+            this.healthSystem.onCollision(entity.healthSystem);
+            if(this.healthSystem.health <= 0) {
+                this.state = EntityState.ToBeRemoved;
+            }
         } else if (entity instanceof Wall) {
             console.log("Invader hit wall");
             // Logique de collision avec les murs

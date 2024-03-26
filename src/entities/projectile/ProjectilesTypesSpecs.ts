@@ -1,8 +1,17 @@
-import { ProjectileType } from './ProjectileType';
+import { IProjectileCharacteristics } from "./IProjectileCharacteristics";
+import { ProjectileType } from "./ProjectileType";
 
-export const ProjectileSpecs: Record<ProjectileType, { level: number, speed: number, damage: number }> = {
-    [ProjectileType.None]: { level: 0, speed: 0, damage: 0 },
-    [ProjectileType.Basic]: { level: 1, speed: 250, damage: 1 },
-    [ProjectileType.Advanced]: { level: 2, speed: 350, damage: 2 },
-    [ProjectileType.Ultimate]: { level: 3, speed: 500, damage: 3 },
+export const ProjectileSpecs: Record<ProjectileType, IProjectileCharacteristics> = {
+    [ProjectileType.None]: {
+        speed: 0, damage: 0, hp: 0, shield: 0, regenerationRate: 0, projectileType: ProjectileType.None
+    },
+    [ProjectileType.Basic]: {
+        speed: 250, damage: 1, hp: 1, shield: 0, regenerationRate: 0, projectileType: ProjectileType.Basic
+    },
+    [ProjectileType.Advanced]: {
+        speed: 350, damage: 2, hp: 2, shield: 0, regenerationRate: 0, projectileType: ProjectileType.Advanced
+    },
+    [ProjectileType.Ultimate]: {
+        speed: 500, damage: 3, hp: 3, shield: 0, regenerationRate: 0, projectileType: ProjectileType.Ultimate
+    },
 };

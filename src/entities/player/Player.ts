@@ -18,7 +18,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
     private score: number = 0;
     private moveSpeed: number = PlayerLevels[1].moveSpeed;
     // Nouveaux systèmes intégrés
-    private healthSystem: HealthSystem;
+    public healthSystem: HealthSystem;
     private weaponSystem: WeaponSystem;
 
     constructor() {

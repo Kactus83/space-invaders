@@ -5,14 +5,16 @@ import { Invader } from "../invader/Invader";
 import { Wall } from "../wall/Wall";
 import { ProjectileSpecs } from "./ProjectilesTypesSpecs";
 import { EntityState } from "../types/EntityState";
+import { HealthSystem } from "../models/health-system/HealthSystem";
+import { IProjectileCharacteristics } from "./IProjectileCharacteristics";
 
 export class Projectile extends GameEntity {
-    x_Position: number;
-    y_Position: number;
-    speed: number;
-    damage: number;
-    origin: GameEntity;
-    projectileType: ProjectileType;
+    private x_Position: number;
+    private y_Position: number;
+    private speed: number;  
+    public origin: GameEntity;
+    public projectileType: ProjectileType;
+    public healthSystem: HealthSystem;
 
     constructor(origin: GameEntity, type: ProjectileType, initialPosition: { x: number, y: number }) {
         super();
@@ -20,9 +22,10 @@ export class Projectile extends GameEntity {
         this.y_Position = initialPosition.y;
         this.origin = origin;
         this.projectileType = type;
-        const specs = ProjectileSpecs[type];
+        const specs: IProjectileCharacteristics = ProjectileSpecs[type];
         this.speed = specs.speed;
-        this.damage = specs.damage;
+        // Initialise le système de santé avec les spécifications du projectile
+        this.healthSystem = new HealthSystem(this, specs);
     }
     
     protected async loadDesign(): Promise<void> {
@@ -56,13 +59,19 @@ export class Projectile extends GameEntity {
             // Spécifiez la logique de collision avec le joueur
         } else if (entity instanceof Invader) {
             console.log('Projectile collided with Invader');
-            // Spécifiez la logique de collision avec un invader
+            this.healthSystem.onCollision(entity.healthSystem);
+            if(this.healthSystem.health <= 0) {
+                this.state = EntityState.ToBeRemoved;
+            }
         } else if (entity instanceof Wall) {
             console.log('Projectile collided with Wall');
             // Spécifiez la logique de collision avec un mur
         } else if (entity instanceof Projectile) {
             console.log('Projectile collided with another Projectile');
-            // Spécifiez la logique de collision avec un autre projectile
+            this.healthSystem.onCollision(entity.healthSystem);
+            if(this.healthSystem.health <= 0) {
+                this.state = EntityState.ToBeRemoved;
+            }
         } else {
             throw new Error("Unknown entity type in collision");
         }
