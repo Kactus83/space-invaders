@@ -9,6 +9,9 @@ export class GameSettingsScene implements IScene {
     private menu: Menu;
 
     async initialize(): Promise<void> {
+        this.toggleGodMode = this.toggleGodMode.bind(this);
+        this.onBack = this.onBack.bind(this);
+
         const buttonNames = ['God Mode: ' + (AppConfig.getInstance().god_Mode ? 'On' : 'Off'), 'Back'];
         const buttonActions = [this.toggleGodMode, this.onBack];
 
@@ -30,6 +33,9 @@ export class GameSettingsScene implements IScene {
     private toggleGodMode(): void {
         const config = AppConfig.getInstance();
         config.god_Mode = !config.god_Mode; 
+        // Mise à jour du texte du bouton pour le mode Dieu
+        this.menu.updateButton(0, 'God Mode: ' + (config.god_Mode ? 'On' : 'Off'));
+        console.log('God Mode: ' + (config.god_Mode ? 'On' : 'Off'));
     }
 
     private onBack(): void {

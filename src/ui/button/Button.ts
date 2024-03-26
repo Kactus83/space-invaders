@@ -48,6 +48,11 @@ export class Button implements IRenderable {
             this.fabricRect.set({ fill: 'rgba(0,0,0,0.5)' }); 
         }
     }
+    
+    public updateText(newText: string): void {
+        this.text = newText;
+        this.fabricText.set({ text: newText });
+    }
 
     trigger(): void {
         if (this.triggerAction) {

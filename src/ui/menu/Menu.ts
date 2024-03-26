@@ -87,4 +87,10 @@ export class Menu implements IRenderable, IInteractive {
     private highlightSelectedButton(): void {
         this.buttons.forEach((button, index) => button.setHighlight(index === this.selectedIndex));
     }
+    
+    public updateButton(index: number, newText: string): void {
+        if (index >= 0 && index < this.buttons.length) {
+            this.buttons[index].updateText(newText);
+        }
+    }
 }
