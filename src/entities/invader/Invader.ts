@@ -1,11 +1,9 @@
 import { GameEntity } from "../GameEntity";
-import { ProjectileType } from "../projectile/ProjectileType";
 import { InvaderType } from "./InvaderType";
 import { InvaderSpecs } from "./InvaderTypesSpecs";
 import { Player } from "../player/Player";
 import { Projectile } from "../projectile/Projectile";
 import { Wall } from "../wall/Wall";
-import { HealthState } from "../types/HealthState";
 import { AppConfig } from "../../core/config/AppConfig";
 import { HealthSystem } from "../models/health-system/HealthSystem";
 import { WeaponSystem } from "../models/weapon-system/WeaponSystem";
@@ -24,13 +22,13 @@ export class Invader extends GameEntity implements IShooter {
     constructor(type: InvaderType, initialPosition: { x: number, y: number }) {
         super();
         this.type = type;
+        this.entityType = this;
         const specs = InvaderSpecs[type];
-        this.healthSystem = new HealthSystem(this, specs);
-        this.weaponSystem = new WeaponSystem(this, specs);
         this.speed = specs.speed;
         this.score = specs.score;
         this.initialPosition = initialPosition;
-        this.loadDesign();
+        this.healthSystem = new HealthSystem(this, specs);
+        this.weaponSystem = new WeaponSystem(this, specs);
     }
     
     protected async loadDesign(): Promise<void> {
@@ -54,7 +52,7 @@ export class Invader extends GameEntity implements IShooter {
         this.shouldUpdateDesign = false;
     }    
 
-    update(deltaTime: number): void {
+    async update(deltaTime: number): Promise<void> {
         const config = AppConfig.getInstance();
     
         if (this.fabricObject) {
@@ -72,7 +70,7 @@ export class Invader extends GameEntity implements IShooter {
             }
     
             // Tentative de tir
-            this.shoot();
+            await this.shoot();
         }
     }
 

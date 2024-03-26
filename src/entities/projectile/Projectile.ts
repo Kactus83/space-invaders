@@ -60,6 +60,9 @@ export class Projectile extends GameEntity {
             // Spécifiez la logique de collision avec le joueur
 
         } else if (entity instanceof Invader) {
+            if(this.origin instanceof Invader) {
+                return;
+            }
             this.healthSystem.onCollision(entity.healthSystem);
             this.state = EntityState.ToBeRemoved;
 

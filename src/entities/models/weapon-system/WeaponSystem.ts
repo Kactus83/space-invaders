@@ -1,4 +1,5 @@
 import { GameEntity } from "../../GameEntity";
+import { Player } from "../../player/Player";
 import { Projectile } from "../../projectile/Projectile";
 import { ProjectileType } from "../../projectile/ProjectileType";
 import { IWeaponCharacteristics } from "./IWeaponCharacteristics";
@@ -31,7 +32,13 @@ export class WeaponSystem {
         const timeSinceLastShoot = currentTime - this.lastShootTime;
         const bounds = this.owner.getCollisionBounds();
         const x_Origin:number = bounds.x + bounds.width / 2;
-        const y_Origin:number = bounds.y - bounds.height / 2;
+        let temp_Y: number;
+        if(this.owner instanceof Player) {
+            temp_Y = bounds.y - bounds.height / 2;
+        }else{
+            temp_Y = bounds.y + bounds.height / 2;
+        }
+        const y_Origin:number = temp_Y;
         if (timeSinceLastShoot >= 1000 / this.fireRate) {
             if (Math.random() <= this.shootProbability) {
                 const projectile = new Projectile(
