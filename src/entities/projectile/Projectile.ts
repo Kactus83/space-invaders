@@ -7,6 +7,7 @@ import { ProjectileSpecs } from "./ProjectilesTypesSpecs";
 import { EntityState } from "../types/EntityState";
 import { HealthSystem } from "../models/health-system/HealthSystem";
 import { IProjectileCharacteristics } from "./IProjectileCharacteristics";
+import { GroundLine } from "../ground-line/GroundLine";
 
 export class Projectile extends GameEntity {
     private x_Position: number;
@@ -67,6 +68,12 @@ export class Projectile extends GameEntity {
             console.log('Projectile collided with Wall');
             // Spécifiez la logique de collision avec un mur
         } else if (entity instanceof Projectile) {
+            console.log('Projectile collided with another Projectile');
+            this.healthSystem.onCollision(entity.healthSystem);
+            if(this.healthSystem.health <= 0) {
+                this.state = EntityState.ToBeRemoved;
+            }
+        } else if (entity instanceof GroundLine) {
             console.log('Projectile collided with another Projectile');
             this.healthSystem.onCollision(entity.healthSystem);
             if(this.healthSystem.health <= 0) {

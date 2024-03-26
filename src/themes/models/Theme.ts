@@ -6,15 +6,18 @@ import { IDesign } from "../types/IDesign";
 export class Theme {
     private invaderDesigns: Record<InvaderType, Record<string, IDesign>>;
     private playerDesigns: Record<number, IDesign>;
+    private groundLineDesigns: Record<number, IDesign>;
     private projectileDesigns: Record<ProjectileType, IDesign>;
     private wallDesigns: Record<WallType, IDesign>;
 
     constructor(invaderDesigns: Record<InvaderType, Record<string, IDesign>>, 
                 playerDesigns: Record<number, IDesign>, 
+                groundLineDesigns: Record<number, IDesign>,
                 projectileDesigns: Record<ProjectileType, IDesign>, 
                 wallDesigns: Record<WallType, IDesign>) {
         this.invaderDesigns = invaderDesigns;
         this.playerDesigns = playerDesigns;
+        this.groundLineDesigns = groundLineDesigns;
         this.projectileDesigns = projectileDesigns;
         this.wallDesigns = wallDesigns;
     }
@@ -28,6 +31,12 @@ export class Theme {
     public getPlayerDesign(level: number): IDesign {
         const design = this.playerDesigns[level];
         if (!design) throw new Error(`Player design not found for level ${level}`);
+        return design;
+    }
+
+    public getGroundLineDesign(level: number): IDesign {
+        const design = this.groundLineDesigns[level];
+        if (!design) throw new Error(`GroundLine design not found for level ${level}`);
         return design;
     }
 

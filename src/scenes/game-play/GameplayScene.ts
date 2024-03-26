@@ -7,11 +7,14 @@ import { Projectile } from "../../entities/projectile/Projectile";
 import { InvaderWaveService } from "../../game-services/invader-wave/InvaderWaveService";
 import { CollisionService } from "../../game-services/collision/CollisionService";
 import { EntityState } from "../../entities/types/EntityState";
+import { GroundLine } from "../../entities/ground-line/GroundLine";
 
 export class GamePlayScene implements IScene {
+    private isSceneInit: boolean = false;
     private invaderWaveService: InvaderWaveService = new InvaderWaveService();;
     private collisionService: CollisionService = new CollisionService();
     private player: Player;
+    private groundLine: GroundLine;
     private invaders: Invader[] = [];
     private walls: Wall[] = [];
     private projectiles: Projectile[] = [];
@@ -19,13 +22,26 @@ export class GamePlayScene implements IScene {
     async initialize(): Promise<void> {
         // Initialisation des entités
         await this.invaderWaveService.prepareWaves();
-         
+        
+        this.groundLine = new GroundLine();
+        await this.groundLine.init();
+        this.collisionService.registerEntity(this.groundLine);
+
         this.player = new Player();
         await this.player.init();
         this.collisionService.registerEntity(this.player);
+
+        this.isSceneInit = true;
+        console.log("Gameplay scene initialized");
     }
 
     update(deltaTime: number): void {
+
+        // Vérifier si la scène est initialisée
+        if(!this.isSceneInit) {
+            return;
+        }
+
         // Mise à jour des services
         this.invaderWaveService.update(deltaTime);
     
@@ -56,6 +72,7 @@ export class GamePlayScene implements IScene {
     
         // Mise à jour des entités existantes...
         this.player.update(deltaTime);
+        this.groundLine.update(deltaTime);
         this.invaders.forEach(invader => invader.update(deltaTime));
         this.walls.forEach(wall => wall.update(deltaTime));
         this.projectiles.forEach(projectile => projectile.update(deltaTime));
@@ -69,9 +86,16 @@ export class GamePlayScene implements IScene {
     
 
     getDrawableObjects(): IRenderable[] {
+        
+        // Vérifier si la scène est initialisée
+        if(!this.isSceneInit) {
+            return;
+        }
+        
         // Renvoie toutes les entités à dessiner
         return [
             this.player,
+            this.groundLine,
             ...this.invaders,
             ...this.walls,
             ...this.projectiles

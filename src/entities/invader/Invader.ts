@@ -10,8 +10,9 @@ import { AppConfig } from "../../core/config/AppConfig";
 import { HealthSystem } from "../models/health-system/HealthSystem";
 import { WeaponSystem } from "../models/weapon-system/WeaponSystem";
 import { EntityState } from "../types/EntityState";
+import { IShooter } from "../types/IShooter";
 
-export class Invader extends GameEntity {
+export class Invader extends GameEntity implements IShooter {
     private initialPosition: { x: number, y: number };
     public healthSystem: HealthSystem;
     private weaponSystem: WeaponSystem;
