@@ -1,52 +1,51 @@
 import { Invader } from "../../entities/invader/Invader";
 import { InvaderType } from "../../entities/invader/InvaderType";
 import { AppConfig } from "../../core/config/AppConfig";
+import { waveConfigs } from "./waves/wavesConfig";
+import { WaveInvaderConfig } from "./types/WaveInvaderConfig";
 
 export class InvaderWaveService {
+    private nextWaveTime: number = 0;
+    private currentWaveIndex: number = 0;
     private pendingInvaders: Invader[] = [];
-    private waves: Array<{ delay: number, invaders: Promise<Invader[]> }> = [];
-    private timeSinceLastWave: number = 0;
     private config = AppConfig.getInstance();
 
-    constructor() {}
-
-    async prepareWaves() {
-        for (let waveNumber = 1; waveNumber <= 3; waveNumber++) {
-            // Notez que createWaveInvaders retourne maintenant une Promise
-            const invadersPromise = this.createWaveInvaders(waveNumber * 5, waveNumber);
-            const delay = waveNumber * 10000; // 10 secondes entre chaque vague
-            this.waves.push({ delay, invaders: invadersPromise });
-        }
+    constructor() {
+        this.scheduleNextWave();
     }
 
-    private async createWaveInvaders(numberOfInvaders: number, waveIndex: number): Promise<Invader[]> {
-        const invaders: Invader[] = [];
-        const canvasWidth = this.config.canvasWidth;
-        const invaderSpacing = canvasWidth / (numberOfInvaders + 1);
-        
-        for (let i = 0; i < numberOfInvaders; i++) {
-            const position = { x: invaderSpacing * (i + 1), y: 50 + (waveIndex * 100) };
-            const invader = new Invader(InvaderType.Basic, position);
-            await invader.init(); // Assurez-vous que chaque invader est initialisé
-            invaders.push(invader);
+    private scheduleNextWave(): void {
+        if (this.currentWaveIndex < waveConfigs.length) {
+            this.nextWaveTime = waveConfigs[this.currentWaveIndex].delay;
         }
-        return invaders;
     }
 
     async update(deltaTime: number): Promise<void> {
-        this.timeSinceLastWave += deltaTime;
-        
-        if (this.waves.length > 0 && this.timeSinceLastWave >= this.waves[0].delay) {
-            const invaders = await this.waves[0].invaders; 
-            this.pendingInvaders = this.pendingInvaders.concat(invaders);
-            this.waves.shift(); 
-            this.timeSinceLastWave = 0; 
+        this.nextWaveTime -= deltaTime;
+        if (this.nextWaveTime <= 0 && this.currentWaveIndex < waveConfigs.length) {
+            const waveConfig = waveConfigs[this.currentWaveIndex++];
+            await this.launchWave(waveConfig.invaders);
+            this.scheduleNextWave();
+        }
+    }
+
+    private async launchWave(invadersConfig: WaveInvaderConfig[]): Promise<void> {
+        const canvasWidth = this.config.canvasWidth;
+        for (const { type, count, row } of invadersConfig) {
+            const yPosition = -row * 60; // Position juste au-dessus du canvas
+            const spacing = canvasWidth / (count + 1);
+            for (let i = 0; i < count; i++) {
+                const xPosition = (i + 1) * spacing;
+                const invader = new Invader(type, { x: xPosition, y: yPosition });
+                await invader.init(); // Assurez-vous que chaque invader est correctement initialisé
+                this.pendingInvaders.push(invader);
+            }
         }
     }
 
     getPendingInvaders(): Invader[] {
-        const invadersToSpawn = this.pendingInvaders;
+        const invaders = [...this.pendingInvaders];
         this.pendingInvaders = [];
-        return invadersToSpawn;
+        return invaders;
     }
 }

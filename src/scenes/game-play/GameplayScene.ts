@@ -20,8 +20,6 @@ export class GamePlayScene implements IScene {
     private projectiles: Projectile[] = [];
     
     async initialize(): Promise<void> {
-        // Initialisation des entités
-        await this.invaderWaveService.prepareWaves();
         
         this.groundLine = new GroundLine();
         await this.groundLine.init();
