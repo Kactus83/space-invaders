@@ -7,36 +7,31 @@ import { Projectile } from "../projectile/Projectile";
 import { Wall } from "../wall/Wall";
 import { HealthState } from "../types/HealthState";
 import { AppConfig } from "../../core/config/AppConfig";
+import { HealthSystem } from "../models/health-system/HealthSystem";
+import { WeaponSystem } from "../models/weapon-system/WeaponSystem";
 
 export class Invader extends GameEntity {
     private initialPosition: { x: number, y: number };
-    hp: number;
-    speed: number;
-    score: number;
-    damage: number;
-    projectileType: ProjectileType;
-    fireRate: number;
-    shootProbability: number;
-    public healthState: HealthState = HealthState.New
-    private newProjectiles: Projectile[] = [];
-    private lastShootTime: number = 0;
+    private healthSystem: HealthSystem;
+    private weaponSystem: WeaponSystem;
+    private speed: number;
+    private score: number;
+    private type: InvaderType;
 
-    constructor(public type: InvaderType, initialPosition: { x: number, y: number }) {
+    constructor(type: InvaderType, initialPosition: { x: number, y: number }) {
         super();
-        this.initialPosition = initialPosition;
+        this.type = type;
         const specs = InvaderSpecs[type];
-        this.hp = specs.hp;
+        this.healthSystem = new HealthSystem(this, specs);
+        this.weaponSystem = new WeaponSystem(this, specs);
         this.speed = specs.speed;
         this.score = specs.score;
-        this.damage = specs.damage;
-        this.projectileType = specs.projectileType;
-        this.fireRate = specs.fireRate;
-        this.shootProbability = specs.shootProbability;
-        // Initialisation du fabricObject à venir
+        this.initialPosition = initialPosition;
+        this.loadDesign();
     }
     
     protected async loadDesign(): Promise<void> {
-        const design = this.themeManager.getTheme().getInvaderDesign(this.type, this.healthState);
+        const design = this.themeManager.getTheme().getInvaderDesign(this.type, this.healthSystem.healthState);
     
         let x_position: number;
         let y_position: number;
@@ -95,22 +90,11 @@ export class Invader extends GameEntity {
     }
 
     public getNewProjectiles(): Projectile[] {
-        const projectiles = this.newProjectiles;
-        this.newProjectiles = []; // Réinitialiser la liste après récupération
-        return projectiles;
+        return this.weaponSystem.getNewProjectiles();
     }
 
     private async shoot(): Promise<void> {
-        const now = Date.now();
-        const fireRateInterval = 1000 / this.fireRate;
-        if (now - this.lastShootTime >= fireRateInterval && Math.random() < this.shootProbability) {
-            const projectile = new Projectile(this, this.projectileType, { x: this.fabricObject.left, y: this.fabricObject.top });
-            this.lastShootTime = now;
-            // Ajouter le projectile à la liste temporaire au lieu de déclencher un callback
-            await projectile.init();
-            this.newProjectiles.push(projectile);
-    
-        }
+        this.weaponSystem.shoot();
     }
     
 

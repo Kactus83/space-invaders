@@ -4,6 +4,8 @@ import { InputManager } from "../../core/input-manager/InputManager";
 import { UserInputType } from "../../core/input-manager/UserInputType";
 import { GameEntity } from "../GameEntity";
 import { Invader } from "../invader/Invader";
+import { HealthSystem } from "../models/health-system/HealthSystem";
+import { WeaponSystem } from "../models/weapon-system/WeaponSystem";
 import { Projectile } from "../projectile/Projectile";
 import { ProjectileType } from "../projectile/ProjectileType";
 import { IShooter } from "../types/IShooter";
@@ -12,19 +14,19 @@ import { PlayerLevels, MaxLevel } from "./PlayerLevels";
 
 export class Player extends GameEntity implements IInteractive, IShooter {
     private subscriptionId: number;
-    private newProjectiles: Projectile[] = [];
-    private lastShootTime: number = 0;
     private level: number = 1;
-    private projectileType: ProjectileType = PlayerLevels['1'].projectileType;
-    private fireRate: number = PlayerLevels['1'].fireRate;
-    private hp: number = PlayerLevels['1'].lifeBonus; 
-    private shield: number = PlayerLevels['1'].shield;
     private score: number = 0;
-    private moveSpeed: number = PlayerLevels['1'].moveSpeed;
+    private moveSpeed: number = PlayerLevels[1].moveSpeed;
+    // Nouveaux systèmes intégrés
+    private healthSystem: HealthSystem;
+    private weaponSystem: WeaponSystem;
 
     constructor() {
         super();
         this.subscribeToInputManager();
+        const levelCharacteristics = PlayerLevels[this.level];
+        this.healthSystem = new HealthSystem(this, levelCharacteristics);
+        this.weaponSystem = new WeaponSystem(this, levelCharacteristics);
     }
     
     protected async loadDesign(): Promise<void> {
@@ -101,40 +103,15 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         }
     }
 
-    private async shoot(): Promise<void> {
-        // Obtient le timestamp actuel.
-        const now = Date.now();
-
-        // Calcule l'intervalle minimal entre les tirs en millisecondes, basé sur le fireRate actuel du joueur.
-        // Le fireRate est considéré comme le nombre de tirs autorisés par seconde.
-        const fireRateInterval = 1000 / this.fireRate;
-
-        // Vérifie si le joueur est autorisé à tirer en se basant sur le dernier moment de tir et le fireRate,
-        // ou si le GodMode est activé, permettant de tirer sans restriction.
-        if ((now - this.lastShootTime >= fireRateInterval) || AppConfig.getInstance().god_Mode) {
-            
-            const projectile = new Projectile(
-                this,
-                this.projectileType,
-                {
-                    x: this.fabricObject.left + this.fabricObject.width / 2, 
-                    y: this.fabricObject.top - this.fabricObject.height / 1.99 
-                }
-            );
-
-            // Mise à jour du dernier moment de tir pour respecter le fireRate.
-            this.lastShootTime = now;
-
-            // Ajouter le projectile à la liste temporaire au lieu de déclencher un callback
-            await projectile.init();
-            this.newProjectiles.push(projectile);
-        }
+    public async shoot(): Promise<void> {
+        // Utiliser le système d'armement pour tirer
+        this.weaponSystem.shoot();
+        const newProjectiles = this.weaponSystem.getNewProjectiles();
+        // Traiter les nouveaux projectiles...
     }
 
     public getNewProjectiles(): Projectile[] {
-        const projectiles = this.newProjectiles;
-        this.newProjectiles = []; // Réinitialiser la liste après récupération
-        return projectiles;
+        return this.weaponSystem.getNewProjectiles();
     }
     
 
@@ -156,15 +133,14 @@ export class Player extends GameEntity implements IInteractive, IShooter {
     }
 
     private setLevel(newLevel: number): void {
+        // Mise à jour du niveau et des caractéristiques des systèmes
         if (newLevel !== this.level && newLevel <= MaxLevel) {
-            const levelSpecs = PlayerLevels[newLevel];
             this.level = newLevel;
-            this.projectileType = levelSpecs.projectileType;
-            this.fireRate = levelSpecs.fireRate;
-            this.moveSpeed = levelSpecs.moveSpeed;
-            this.hp += levelSpecs.lifeBonus; 
-            this.shield = levelSpecs.shield;
-            this.shouldUpdateDesign = true;
+            const levelCharacteristics = PlayerLevels[newLevel];
+            this.moveSpeed = levelCharacteristics.moveSpeed;
+            this.healthSystem.updateCharacteristics(levelCharacteristics);
+            this.weaponSystem.updateCharacteristics(levelCharacteristics);
+            // Autres mises à jour liées au changement de niveau
         }
     }
 
