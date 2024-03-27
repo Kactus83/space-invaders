@@ -108,6 +108,7 @@ export class GamePlayScene implements IScene {
 
     cleanup(): void {
         this.player.cleanup();
+        this.hud.cleanup();
         // Nettoyage de la scène si nécessaire
     }
 
