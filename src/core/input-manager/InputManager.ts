@@ -12,6 +12,7 @@ export class InputManager {
         "ArrowUp": UserInputType.Up,
         "ArrowDown": UserInputType.Down,
         "Enter": UserInputType.Enter,
+        "i": UserInputType.ToggleHUD,
     };
 
     private constructor() {

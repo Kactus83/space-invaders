@@ -14,8 +14,8 @@ import { PlayerLevels, MaxLevel } from "./PlayerLevels";
 
 export class Player extends GameEntity implements IInteractive, IShooter {
     private subscriptionId: number;
-    private level: number = 1;
-    private score: number = 0;
+    public level: number = 1;
+    public score: number = 0;
     private moveSpeed: number = PlayerLevels[1].moveSpeed;
     // Nouveaux systèmes intégrés
     public healthSystem: HealthSystem;

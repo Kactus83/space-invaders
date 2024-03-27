@@ -8,6 +8,7 @@ import { InvaderWaveService } from "../../game-services/invader-wave/InvaderWave
 import { CollisionService } from "../../game-services/collision/CollisionService";
 import { EntityState } from "../../entities/types/EntityState";
 import { GroundLine } from "../../entities/ground-line/GroundLine";
+import { HUD } from "../../ui/HUD/hud";
 
 export class GamePlayScene implements IScene {
     private isSceneInit: boolean = false;
@@ -18,6 +19,7 @@ export class GamePlayScene implements IScene {
     private invaders: Invader[] = [];
     private walls: Wall[] = [];
     private projectiles: Projectile[] = [];
+    private hud: HUD;
     
     async initialize(): Promise<void> {
         
@@ -28,6 +30,8 @@ export class GamePlayScene implements IScene {
         this.player = new Player();
         await this.player.init();
         this.collisionService.registerEntity(this.player);
+        
+        this.hud = new HUD(this.player, this.groundLine);
 
         this.isSceneInit = true;
         console.log("Gameplay scene initialized");
@@ -74,6 +78,7 @@ export class GamePlayScene implements IScene {
         this.invaders.forEach(invader => invader.update(deltaTime));
         this.walls.forEach(wall => wall.update(deltaTime));
         this.projectiles.forEach(projectile => projectile.update(deltaTime));
+        this.hud.updateHUD();
     
         // Vérification des collisions
         this.collisionService.checkCollisions();
@@ -96,7 +101,8 @@ export class GamePlayScene implements IScene {
             this.groundLine,
             ...this.invaders,
             ...this.walls,
-            ...this.projectiles
+            ...this.projectiles,
+            this.hud
         ];
     }
 

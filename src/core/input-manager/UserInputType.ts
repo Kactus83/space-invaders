@@ -8,4 +8,5 @@ export enum UserInputType {
     Up = "ArrowUp",
     Down = "ArrowDown",
     Enter = "Enter",
+    ToggleHUD = "ToggleHUD",
 }
