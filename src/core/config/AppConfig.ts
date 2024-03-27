@@ -7,6 +7,7 @@ export class AppConfig implements IGlobalConfig {
     public readonly canvasHeight: number = 600;
     public readonly player_InitialX: number = 400;
     public readonly player_InitialY: number = 500;
+    public readonly wall_initialY: number = 450;
     public god_Mode: boolean = false;
 
     // Empêche l'instanciation en dehors de la classe

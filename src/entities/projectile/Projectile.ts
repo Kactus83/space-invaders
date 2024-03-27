@@ -75,7 +75,7 @@ export class Projectile extends GameEntity {
             }
 
         } else if (entity instanceof Wall) {
-            // Spécifiez la logique de collision avec un mur
+            this.state = EntityState.ToBeRemoved;
 
         } else if (entity instanceof Projectile) {
             this.healthSystem.onCollision(entity.healthSystem);

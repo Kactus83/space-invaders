@@ -8,7 +8,7 @@ import { Wall } from "../wall/Wall";
 import { Invader } from "../invader/Invader";
 
 export class GroundLine extends GameEntity {
-    private level: number = 1;
+    public  level: number = 1;
     public healthSystem: HealthSystem;
 
     constructor() {

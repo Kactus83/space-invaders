@@ -8,11 +8,13 @@ import { InvaderWaveService } from "../../game-services/invader-wave/InvaderWave
 import { CollisionService } from "../../game-services/collision/CollisionService";
 import { EntityState } from "../../entities/types/EntityState";
 import { GroundLine } from "../../entities/ground-line/GroundLine";
-import { HUD } from "../../ui/HUD/hud";
+import { HUD } from "../../ui/HUD/HUD";
+import { WallService } from "../../game-services/walls/WallService";
 
 export class GamePlayScene implements IScene {
     private isSceneInit: boolean = false;
-    private invaderWaveService: InvaderWaveService = new InvaderWaveService();;
+    private invaderWaveService: InvaderWaveService = new InvaderWaveService();
+    private wallService: WallService;
     private collisionService: CollisionService = new CollisionService();
     private player: Player;
     private groundLine: GroundLine;
@@ -31,6 +33,8 @@ export class GamePlayScene implements IScene {
         await this.player.init();
         this.collisionService.registerEntity(this.player);
         
+        this.wallService = new WallService(this.groundLine);
+        
         this.hud = new HUD(this.player, this.groundLine);
 
         this.isSceneInit = true;
@@ -42,6 +46,21 @@ export class GamePlayScene implements IScene {
         // Vérifier si la scène est initialisée
         if(!this.isSceneInit) {
             return;
+        }
+         
+        this.wallService.update(deltaTime);
+        
+        // Récupération et mise à jour des murs
+        const newWalls = this.wallService.getWallsAndClear();
+        if (newWalls.length > 0) {
+            // Désenregistrer les anciens murs de la détection des collisions
+            this.walls.forEach(wall => this.collisionService.unregisterEntity(wall));
+
+            // Mise à jour de la liste des murs dans la scène
+            this.walls = newWalls;
+
+            // Enregistrer les nouveaux murs pour la détection des collisions
+            this.walls.forEach(wall => this.collisionService.registerEntity(wall));
         }
 
         // Mise à jour des services
@@ -126,6 +145,15 @@ export class GamePlayScene implements IScene {
         this.projectiles = this.projectiles.filter(projectile => {
             if (projectile.state === EntityState.ToBeRemoved) {
                 this.collisionService.unregisterEntity(projectile);
+                return false;
+            }
+            return true;
+        });
+
+        // Applique le même principe aux projectiles
+        this.walls = this.walls.filter(wall => {
+            if (wall.state === EntityState.ToBeRemoved) {
+                this.collisionService.unregisterEntity(wall);
                 return false;
             }
             return true;
