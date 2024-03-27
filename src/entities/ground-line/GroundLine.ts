@@ -54,13 +54,12 @@ export class GroundLine extends GameEntity {
         if (entity instanceof Player) {
             // Logique de collision avec les joueurs
         } else if (entity instanceof Projectile) {
-            console.log("Player hit by projectile");
-            // Logique de collision avec les projectiles
+            this.healthSystem.takeDamage(entity.healthSystem.damage);
         } else if (entity instanceof Wall) {
             console.log("PLAYER hit wall");
             // Logique de collision avec les murs
         } else if (entity instanceof Invader) {
-            // Logique de collision avec les autres invaders
+            this.healthSystem.takeDamage(entity.healthSystem.damage);
         } else {
             throw new Error("Unknown entity type");
         }

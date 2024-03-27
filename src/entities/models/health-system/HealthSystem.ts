@@ -1,4 +1,5 @@
 import { GameEntity } from "../../GameEntity";
+import { Projectile } from "../../projectile/Projectile";
 import { HealthState } from "../../types/HealthState";
 import { IHealthCharacteristics } from "./IHealthCharasteristics";
 
@@ -35,9 +36,8 @@ export class HealthSystem {
     }
 
     public onCollision(other: HealthSystem): void {
-        // Example collision handling, could take damage based on the other's damage
         this.takeDamage(other.characteristics.damage);
-    }
+    }    
 
     public get health(): number {
         return this.characteristics.hp;

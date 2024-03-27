@@ -54,11 +54,11 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         if (entity instanceof Player) {
             // Logique de collision avec les joueurs
         } else if (entity instanceof Projectile) {
-            // Logique de collision avec les projectiles
+            this.healthSystem.takeDamage(entity.healthSystem.damage);
         } else if (entity instanceof Wall) {
             // Logique de collision avec les murs
         } else if (entity instanceof Invader) {
-            // Logique de collision avec les autres invaders
+            this.healthSystem.takeDamage(entity.healthSystem.damage);
         } else {
             throw new Error("Unknown entity type");
         }

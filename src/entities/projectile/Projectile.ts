@@ -57,14 +57,22 @@ export class Projectile extends GameEntity {
     onCollisionWith(entity: GameEntity): void {
 
         if (entity instanceof Player) {
-            // Spécifiez la logique de collision avec le joueur
+            if(this.origin instanceof Player) {
+                return;
+            }
+            this.healthSystem.onCollision(entity.healthSystem);
+            if(this.healthSystem.health <= 0) {
+                this.state = EntityState.ToBeRemoved;
+            }
 
         } else if (entity instanceof Invader) {
             if(this.origin instanceof Invader) {
                 return;
             }
             this.healthSystem.onCollision(entity.healthSystem);
-            this.state = EntityState.ToBeRemoved;
+            if(this.healthSystem.health <= 0) {
+                this.state = EntityState.ToBeRemoved;
+            }
 
         } else if (entity instanceof Wall) {
             // Spécifiez la logique de collision avec un mur
