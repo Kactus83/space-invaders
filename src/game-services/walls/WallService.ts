@@ -7,55 +7,59 @@ export class WallService {
     private groundLine: GroundLine;
     private currentWalls: Wall[] = [];
     private newWalls: Wall[] = [];
-    private lastLevel: number = -1; // Initialisé à une valeur non valide pour forcer la première mise à jour
+    private lastLevel: number = -1;
 
     constructor(groundLine: GroundLine) {
         this.groundLine = groundLine;
-        this.initWallsForCurrentLevel();
+        // Initiez la préparation des murs pour le niveau actuel dès le démarrage
+        this.prepareAndInitWallsForLevel(this.groundLine.level);
     }
 
-    private async initWallsForCurrentLevel(): Promise<void> {
-        // Vérifie si le niveau de la GroundLine a changé
-        if (this.groundLine.level !== this.lastLevel) {
-            console.log("Init walls for current level", this.groundLine.level);
-            this.newWalls = [];
+    // Préparation et initialisation des murs pour un niveau donné
+    private async prepareAndInitWallsForLevel(level: number): Promise<void> {
+        // Assurez-vous que nous ne préparons les murs que si le niveau a changé
+        if (level === this.lastLevel) return;
 
-            const config = AppConfig.getInstance();
-            const currentConfig = defenseLineConfigurations.find(config => config.level === this.groundLine.level);
+        this.lastLevel = level;
+        const config = AppConfig.getInstance();
+        const currentConfig = defenseLineConfigurations.find(config => config.level === level);
+        let wallsToInit: Wall[] = [];
 
-            if (currentConfig) {
-                for (let lineIndex = 0; lineIndex < currentConfig.lines.length; lineIndex++) {
-                    const line = currentConfig.lines[lineIndex];
-                    for (let blockIndex = 0; blockIndex < line.blocks.length; blockIndex++) {
-                        const block = line.blocks[blockIndex];
-                        for (let i = 0; i < block.count; i++) {
-                            const xPosition = blockIndex * (config.canvasWidth / line.blocks.length) + (i * (config.canvasWidth / 10)); // Ajustement pour la largeur du bloc
-                            const yPosition = config.wall_initialY - (lineIndex * 60); // Ajustement basé sur lineIndex
-                            const wall = new Wall(block.type, { x: xPosition, y: yPosition });
-                            await wall.init();
-                            this.newWalls.push(wall);
-                        }
+        if (currentConfig) {
+            for (let lineIndex = 0; lineIndex < currentConfig.lines.length; lineIndex++) {
+                const line = currentConfig.lines[lineIndex];
+                for (let blockIndex = 0; blockIndex < line.blocks.length; blockIndex++) {
+                    const block = line.blocks[blockIndex];
+                    for (let i = 0; i < block.count; i++) {
+                        const xPosition = blockIndex * (config.canvasWidth / line.blocks.length) + (i * (config.canvasWidth / 10));
+                        const yPosition = config.wall_initialY - (lineIndex * 60);
+                        const wall = new Wall(block.type, { x: xPosition, y: yPosition });
+                        await wall.init(); // Initialisez le mur avant de l'ajouter à la liste
+                        wallsToInit.push(wall);
                     }
                 }
             }
-
-            this.lastLevel = this.groundLine.level; // Mise à jour du dernier niveau traité
         }
+
+        this.newWalls = wallsToInit; // Stockez les nouveaux murs préparés et initialisés
     }
 
-    public async update(deltaTime: number): Promise<void> {
-        await this.initWallsForCurrentLevel();
+    public update(deltaTime: number): void {
+        if (this.groundLine.level !== this.lastLevel) {
+            // Si le niveau a changé, préparez et initialisez les nouveaux murs pour le nouveau niveau
+            this.prepareAndInitWallsForLevel(this.groundLine.level);
+        }
     }
 
     public getWallsAndClear(): Wall[] {
-        // Si de nouveaux murs ont été créés, retourner ces nouveaux murs et effacer la liste actuelle
         if (this.newWalls.length > 0) {
+            // Retournez les nouveaux murs préparés et réinitialisez les listes de murs
+            let wallsForScene = this.newWalls;
             this.currentWalls = [...this.newWalls];
             this.newWalls = [];
-            return this.currentWalls;
+            return wallsForScene;
         }
-
-        // Sinon, retourner les murs actuels sans changement
+        // Si aucun nouveau mur n'est prêt, continuez à utiliser les murs actuels
         return this.currentWalls;
     }
 }
