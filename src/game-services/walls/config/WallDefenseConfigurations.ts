@@ -10,12 +10,12 @@ export const defenseLineConfigurations: DefenseLineConfig[] = [
         { type: WallType.None}, 
         { type: WallType.Basic}, 
         { type: WallType.None}, 
-        { type: WallType.Basic}, 
+        { type: WallType.Strong}, 
+        { type: WallType.Strong}, 
         { type: WallType.None}, 
         { type: WallType.Basic}, 
         { type: WallType.None}, 
-        { type: WallType.Basic}, 
-        { type: WallType.None}
+        { type: WallType.Basic}
       ] }, 
     ]
   },

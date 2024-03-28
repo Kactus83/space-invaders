@@ -35,11 +35,12 @@ export class WallService {
         }
     
         this.newWalls = []; // Réinitialisation pour le nouveau niveau
-        let startY = AppConfig.getInstance().wall_InitialY; // Y de départ pour la première ligne
+        const config = AppConfig.getInstance();
+        let startY = config.wall_InitialY; // Y de départ pour la première ligne
     
         for (const lineConfig of currentConfig.lines) {
             await this.createDefenseLine(lineConfig, startY);
-            startY -= 600; // Décaler startY pour la prochaine ligne (supposer que chaque ligne de défense a une hauteur de 600px)
+            startY -= config.wall_Size * 10; // Décaler startY pour la prochaine ligne
         }
     }        
 
