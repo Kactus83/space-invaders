@@ -49,7 +49,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         regenerationRate: 0.2,
         projectileType: ProjectileType.Advanced,
         fireRate: 3,
-        shootProbability: 0.004,
+        shootProbability: 0.0004,
     },
     [InvaderType.Strong]: {
         type: InvaderType.Strong,
@@ -61,7 +61,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         regenerationRate: 0.3,
         projectileType: ProjectileType.Advanced,
         fireRate: 4,
-        shootProbability: 0.001,
+        shootProbability: 0.0001,
     },
     [InvaderType.Elite]: {
         type: InvaderType.Elite,
@@ -73,7 +73,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         regenerationRate: 0.4,
         projectileType: ProjectileType.Ultimate,
         fireRate: 5,
-        shootProbability: 0.001,
+        shootProbability: 0.0005,
     },
     [InvaderType.Boss]: {
         type: InvaderType.Boss,
@@ -85,6 +85,6 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         regenerationRate: 0.5,
         projectileType: ProjectileType.Ultimate,
         fireRate: 6,
-        shootProbability: 0.01,
+        shootProbability: 0.002,
     },
 };

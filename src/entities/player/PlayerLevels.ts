@@ -95,7 +95,7 @@ const PlayerLevels: Record<number, IPlayerLevelCharacteristics> = {
     },
     8: {
         level: 8,
-        scoreThreshold: 500,
+        scoreThreshold: 5000,
         projectileType: ProjectileType.Ultimate,
         fireRate: 2,
         shootProbability: 1,
@@ -108,7 +108,7 @@ const PlayerLevels: Record<number, IPlayerLevelCharacteristics> = {
     },
     9: {
         level: 9,
-        scoreThreshold: 5000,
+        scoreThreshold: 10000,
         projectileType: ProjectileType.Advanced,
         fireRate: 1.75,
         shootProbability: 1,
@@ -121,7 +121,7 @@ const PlayerLevels: Record<number, IPlayerLevelCharacteristics> = {
     },
     10: {
         level: 10,
-        scoreThreshold: 10000,
+        scoreThreshold: 15000,
         projectileType: ProjectileType.Ultimate,
         fireRate: 2,
         shootProbability: 1,
