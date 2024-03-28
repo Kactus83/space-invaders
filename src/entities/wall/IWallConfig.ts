@@ -1,3 +1,4 @@
 export interface IWallConfig {
-    wall_initialY: number;
+    wall_InitialY: number;
+    wall_Size: number;
   }

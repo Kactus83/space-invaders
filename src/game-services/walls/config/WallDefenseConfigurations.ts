@@ -5,8 +5,18 @@ export const defenseLineConfigurations: DefenseLineConfig[] = [
   {
     level: 1,
     lines: [
-      { blocks: [{ type: WallType.Basic, count: 10 }] }, 
-      { blocks: [{ type: WallType.Basic, count: 10 }] }  
+      { blocks: [
+        { type: WallType.Basic}, 
+        { type: WallType.None}, 
+        { type: WallType.Basic}, 
+        { type: WallType.None}, 
+        { type: WallType.Basic}, 
+        { type: WallType.None}, 
+        { type: WallType.Basic}, 
+        { type: WallType.None}, 
+        { type: WallType.Basic}, 
+        { type: WallType.None}
+      ] }, 
     ]
   },
 ];
