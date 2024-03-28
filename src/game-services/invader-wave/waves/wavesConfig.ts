@@ -74,3 +74,6 @@ export const waveConfigs: WaveConfig[] = [
     },
     // Ajoutez d'autres configurations de vague comme nécessaire
 ];
+
+
+export const maxWave: number = waveConfigs.length;

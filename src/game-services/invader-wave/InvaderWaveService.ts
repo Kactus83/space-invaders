@@ -1,14 +1,15 @@
 import { Invader } from "../../entities/invader/Invader";
 import { InvaderType } from "../../entities/invader/InvaderType";
 import { AppConfig } from "../../core/config/AppConfig";
-import { waveConfigs } from "./waves/wavesConfig";
+import { maxWave, waveConfigs } from "./waves/wavesConfig";
 import { WaveInvaderConfig } from "./types/WaveInvaderConfig";
 
 export class InvaderWaveService {
-    private isInit: boolean = false;
+    public isInit: boolean = false;
     private nextWaveTime: number = 0;
     private currentWaveIndex: number = 0;
     private pendingInvaders: Invader[] = [];
+    private allWavesLaunched: boolean = false;
     private config = AppConfig.getInstance();
 
     constructor() {
@@ -24,11 +25,15 @@ export class InvaderWaveService {
 
     async update(deltaTime: number): Promise<void> {
         this.nextWaveTime -= deltaTime;
-        if (this.nextWaveTime <= 0 && this.currentWaveIndex < waveConfigs.length) {
-            this.scheduleNextWave();
-            this.isInit = true;
-            const waveConfig = waveConfigs[this.currentWaveIndex++];
-            await this.launchWave(waveConfig.invaders);
+        if (this.nextWaveTime <= 0) {
+            if (this.currentWaveIndex < waveConfigs.length) {
+                this.scheduleNextWave();
+                this.isInit = true;
+                const waveConfig = waveConfigs[this.currentWaveIndex++];
+                await this.launchWave(waveConfig.invaders);
+            } else if (!this.allWavesLaunched) {
+                this.allWavesLaunched = true;
+            }
         }
     }
 
@@ -50,5 +55,10 @@ export class InvaderWaveService {
         const invaders = [...this.pendingInvaders];
         this.pendingInvaders = [];
         return invaders;
+    }
+
+
+    get allWavesCompleted(): boolean {
+        return this.allWavesLaunched && this.pendingInvaders.length === 0;
     }
 }
