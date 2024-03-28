@@ -1,4 +1,7 @@
 import { GameEntity } from "../../entities/GameEntity";
+import { GroundLine } from "../../entities/ground-line/GroundLine";
+import { Player } from "../../entities/player/Player";
+import { Wall } from "../../entities/wall/Wall";
 import { ICollidable } from "./ICollidable";
 
 export class CollisionService {
@@ -16,6 +19,25 @@ export class CollisionService {
                 }
             }
         }
+    }
+
+    private shouldCheckCollision(entityA: GameEntity, entityB: GameEntity): boolean {
+        // Évitez les collisions entre les murs
+        if (entityA instanceof Wall && entityB instanceof Wall) {
+            return false;
+        }
+    
+        // Évitez les collisions entre le joueur et les murs/groundline
+        if (entityA instanceof Player && (entityB instanceof Wall || entityB instanceof GroundLine)) {
+            return false;
+        }
+    
+        if (entityB instanceof Player && (entityA instanceof Wall || entityA instanceof GroundLine)) {
+            return false;
+        }
+    
+        // Ajoutez d'autres conditions selon les besoins de votre jeu
+        return true;
     }
 
     private areColliding(entityA: ICollidable, entityB: ICollidable): boolean {
