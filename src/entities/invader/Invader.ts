@@ -98,7 +98,10 @@ export class Invader extends GameEntity implements IShooter {
                 this.state = EntityState.ToBeRemoved;
             }
         } else if (entity instanceof Wall) {
-            // Logique de collision avec les murs
+            this.healthSystem.onCollision(entity.healthSystem);
+            if(this.healthSystem.health <= 0) {
+                this.state = EntityState.ToBeRemoved;
+            }
         } else if (entity instanceof Invader) {
             // Logique de collision avec les autres invaders
         } else {

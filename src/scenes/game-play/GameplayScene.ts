@@ -14,6 +14,7 @@ import { GameStatusService } from "../../game-services/game-status/GameStatusSer
 
 export class GamePlayScene implements IScene {
     private isSceneInit: boolean = false;
+    public allInvadersDead: boolean = false;
     private gameStatusService: GameStatusService;
     private invaderWaveService: InvaderWaveService = new InvaderWaveService();
     private wallService: WallService;
@@ -43,7 +44,7 @@ export class GamePlayScene implements IScene {
         this.gameStatusService = new GameStatusService(
             this.player,
             this.invaderWaveService,
-            this.invaders,
+            this,
             this.groundLine
         );
 
@@ -116,6 +117,10 @@ export class GamePlayScene implements IScene {
 
         // Cleanup des entités
         this.cleanupEntities();
+
+        if(this.invaders.length === 0 && this.invaderWaveService.allWavesCompleted) {
+            this.allInvadersDead = true;
+        }
 
         // Check game status
         this.gameStatusService.update();

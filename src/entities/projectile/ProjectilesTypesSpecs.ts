@@ -12,6 +12,6 @@ export const ProjectileSpecs: Record<ProjectileType, IProjectileCharacteristics>
         speed: 350, damage: 2, hp: 2, shield: 0, regenerationRate: 0, projectileType: ProjectileType.Advanced
     },
     [ProjectileType.Ultimate]: {
-        speed: 500, damage: 3, hp: 3, shield: 0, regenerationRate: 0, projectileType: ProjectileType.Ultimate
+        speed: 500, damage: 4, hp: 3, shield: 0, regenerationRate: 0, projectileType: ProjectileType.Ultimate
     },
 };

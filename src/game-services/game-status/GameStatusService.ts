@@ -3,18 +3,19 @@ import { SceneIds } from "../../core/scene-manager/types/SceneIds";
 import { GroundLine } from "../../entities/ground-line/GroundLine";
 import { Invader } from "../../entities/invader/Invader";
 import { Player } from "../../entities/player/Player";
+import { GamePlayScene } from "../../scenes/game-play/GameplayScene";
 import { InvaderWaveService } from "../invader-wave/InvaderWaveService";
 
 export class GameStatusService {
     private player: Player;
     private invaderWaveService: InvaderWaveService;
-    private invaders: Invader[];
     private groundLine: GroundLine;
+    private gamePlayScene: GamePlayScene;
 
-    constructor(player: Player, invaderWaveService: InvaderWaveService, invaders: Invader[], groundLine: GroundLine) {
+    constructor(player: Player, invaderWaveService: InvaderWaveService, gamePlayScene: GamePlayScene, groundLine: GroundLine) {
         this.player = player;
         this.invaderWaveService = invaderWaveService;
-        this.invaders = invaders;
+        this.gamePlayScene = gamePlayScene;
         this.groundLine = groundLine;
     }
 
@@ -34,7 +35,8 @@ export class GameStatusService {
 
     private checkWinCondition(): void {
         // Condition de victoire (par exemple, tous les envahisseurs ont été détruits)
-        if (this.invaderWaveService.allWavesCompleted && this.invaders.length === 0) {
+        if (this.invaderWaveService.allWavesCompleted && this.gamePlayScene.allInvadersDead) {
+            console.log("Game won!", this.invaderWaveService.allWavesCompleted, this.gamePlayScene.allInvadersDead);
             this.handleGameWin();
         }
     }

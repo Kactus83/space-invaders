@@ -12,7 +12,7 @@ const PlayerLevels: Record<number, IPlayerLevelCharacteristics> = {
         shield: 0,
         damage: 1,
         regenerationRate: 0,
-        moveSpeed: 2,
+        moveSpeed: 5,
         lifeBonus: 5
     },
     2: {
@@ -25,7 +25,7 @@ const PlayerLevels: Record<number, IPlayerLevelCharacteristics> = {
         shield: 0,
         damage: 1,
         regenerationRate: 0,
-        moveSpeed: 2.2,
+        moveSpeed: 6,
         lifeBonus: 1
     },
     3: {
@@ -38,7 +38,7 @@ const PlayerLevels: Record<number, IPlayerLevelCharacteristics> = {
         shield: 1,
         damage: 2,
         regenerationRate: 0.1,
-        moveSpeed: 2.4,
+        moveSpeed: 7,
         lifeBonus: 2
     },
     4: {
@@ -51,7 +51,7 @@ const PlayerLevels: Record<number, IPlayerLevelCharacteristics> = {
         shield: 1,
         damage: 2,
         regenerationRate: 0.1,
-        moveSpeed: 2.6,
+        moveSpeed: 8,
         lifeBonus: 4
     },
     5: {
@@ -64,7 +64,7 @@ const PlayerLevels: Record<number, IPlayerLevelCharacteristics> = {
         shield: 2,
         damage: 2,
         regenerationRate: 0.1,
-        moveSpeed: 2.6,
+        moveSpeed: 8,
         lifeBonus: 5
     },
     6: {
@@ -77,7 +77,7 @@ const PlayerLevels: Record<number, IPlayerLevelCharacteristics> = {
         shield: 2,
         damage: 2,
         regenerationRate: 0.1,
-        moveSpeed: 2.6,
+        moveSpeed: 8,
         lifeBonus: 5
     },
     7: {
@@ -90,7 +90,7 @@ const PlayerLevels: Record<number, IPlayerLevelCharacteristics> = {
         shield: 3,
         damage: 3,
         regenerationRate: 0.1,
-        moveSpeed: 5,
+        moveSpeed: 10,
         lifeBonus: 5
     },
     8: {
@@ -103,7 +103,7 @@ const PlayerLevels: Record<number, IPlayerLevelCharacteristics> = {
         shield: 4,
         damage: 4,
         regenerationRate: 0.1,
-        moveSpeed: 5,
+        moveSpeed: 11,
         lifeBonus: 5
     },
     9: {
@@ -116,7 +116,7 @@ const PlayerLevels: Record<number, IPlayerLevelCharacteristics> = {
         shield: 4,
         damage: 5,
         regenerationRate: 0.1,
-        moveSpeed: 7,
+        moveSpeed: 12,
         lifeBonus: 5
     },
     10: {
@@ -129,7 +129,7 @@ const PlayerLevels: Record<number, IPlayerLevelCharacteristics> = {
         shield: 5,
         damage: 10,
         regenerationRate: 0.5,
-        moveSpeed: 10,
+        moveSpeed: 15,
         lifeBonus: 10
     },
 };
