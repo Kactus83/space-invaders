@@ -72,6 +72,27 @@ export const waveConfigs: WaveConfig[] = [
             { type: InvaderType.Basic, count: 5, row: 2 },
         ],
     },
+    {
+        delay: 10, // Seconde vague après 20 secondes
+        invaders: [
+            { type: InvaderType.Advanced, count: 5, row: 1 },
+            { type: InvaderType.Strong, count: 5, row: 2 },
+        ],
+    },
+    {
+        delay: 10, // Seconde vague après 20 secondes
+        invaders: [
+            { type: InvaderType.Elite, count: 5, row: 1 },
+            { type: InvaderType.Advanced, count: 5, row: 2 },
+        ],
+    },
+    {
+        delay: 10, // Seconde vague après 20 secondes
+        invaders: [
+            { type: InvaderType.Elite, count: 5, row: 1 },
+            { type: InvaderType.Boss, count: 5, row: 2 },
+        ],
+    },
     // Ajoutez d'autres configurations de vague comme nécessaire
 ];
 
