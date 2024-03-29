@@ -75,12 +75,14 @@ export class CollisionService {
             }
     
             // Collision Projectile avec GroundLine
-            this.groundLines.forEach(groundLine => {
-                if (this.areColliding(projectile, groundLine)) {
-                    projectile.onCollisionWith(groundLine);
-                    groundLine.onCollisionWith(projectile);
-                }
-            });
+            if (projectile.isInCollisionZone()) {
+                this.groundLines.forEach(groundLine => {
+                    if (this.areColliding(projectile, groundLine)) {
+                        projectile.onCollisionWith(groundLine);
+                        groundLine.onCollisionWith(projectile);
+                    }
+                });
+            }
         });
     
         // Vérifications des collisions pour les invaders
@@ -94,23 +96,25 @@ export class CollisionService {
             });
     
             // Collision Invader avec Walls
-            this.walls.forEach(wall => {
-                if (this.areColliding(invader, wall)) {
-                    invader.onCollisionWith(wall);
-                    wall.onCollisionWith(invader);
-                }
-            });
+            if (invader.isInCollisionZone()) {
+                this.walls.forEach(wall => {
+                    if (this.areColliding(invader, wall)) {
+                        invader.onCollisionWith(wall);
+                        wall.onCollisionWith(invader);
+                    }
+                });
+            }
     
             // Collision Invader avec GroundLine
-            this.groundLines.forEach(groundLine => {
-                if (this.areColliding(invader, groundLine)) {
-                    invader.onCollisionWith(groundLine);
-                    groundLine.onCollisionWith(invader);
-                }
-            });
+            if (invader.isInCollisionZone()) {
+                this.groundLines.forEach(groundLine => {
+                    if (this.areColliding(invader, groundLine)) {
+                        invader.onCollisionWith(groundLine);
+                        groundLine.onCollisionWith(invader);
+                    }
+                });
+            }
         });
-    
-        // Note: Vous pouvez ajuster et ajouter d'autres types de vérifications si nécessaire
     }    
 
     private areColliding(entityA: ICollidable, entityB: ICollidable): boolean {
