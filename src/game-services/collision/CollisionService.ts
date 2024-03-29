@@ -64,14 +64,15 @@ export class CollisionService {
                     player.onCollisionWith(projectile);
                 }
             });
-    
-            // Collision Projectile avec Walls
-            this.walls.forEach(wall => {
-                if (this.areColliding(projectile, wall)) {
-                    projectile.onCollisionWith(wall);
-                    wall.onCollisionWith(projectile);
-                }
-            });
+
+            if (projectile.isInCollisionZone()) {
+                this.walls.forEach(wall => {
+                    if (this.areColliding(projectile, wall)) {
+                        projectile.onCollisionWith(wall);
+                        wall.onCollisionWith(projectile);
+                    }
+                });
+            }
     
             // Collision Projectile avec GroundLine
             this.groundLines.forEach(groundLine => {

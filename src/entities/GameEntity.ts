@@ -5,6 +5,7 @@ import { GameEntityType } from "./types/GameEntityType";
 import { ThemeManager } from "../themes/services/ThemeManager";
 import { IDesign } from "../themes/types/IDesign";
 import { EntityState } from "./types/EntityState";
+import { AppConfig } from "../core/config/AppConfig";
 
 export abstract class GameEntity implements IRenderable, ICollidable {
     public state: EntityState = EntityState.Active;
@@ -76,6 +77,13 @@ export abstract class GameEntity implements IRenderable, ICollidable {
             width: this.fabricObject.width,
             height: this.fabricObject.height
         };
+    }
+    
+    isInCollisionZone(): boolean {
+        const config = AppConfig.getInstance();
+        const wallCollisionZoneTop = config.wall_InitialY - (config.wall_Size * 10); // Zone de collision en dessous de cette valeur
+
+        return this.getCollisionBounds().y + this.getCollisionBounds().height >= wallCollisionZoneTop;
     }
 
     abstract onCollisionWith(entity: GameEntity): void;
