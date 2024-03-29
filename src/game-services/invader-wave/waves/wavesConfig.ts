@@ -1,4 +1,4 @@
-import { InvaderType } from "../../../../old-src/entities/game/invader/InvaderType";
+import { InvaderType } from "../../../entities/invader/InvaderType";
 import { WaveConfig } from "../types/WaveConfig";
 
 export const waveConfigs: WaveConfig[] = [
@@ -31,6 +31,13 @@ export const waveConfigs: WaveConfig[] = [
         ],
     },
     {
+        delay: 10, // Seconde vague après 20 secondes
+        invaders: [
+            { type: InvaderType.Medium, count: 5, row: 1 },
+            { type: InvaderType.Medium, count: 5, row: 2 },
+        ],
+    },
+    {
         delay: 15, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Strong, count: 5, row: 1 },
@@ -48,7 +55,7 @@ export const waveConfigs: WaveConfig[] = [
         delay: 8, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Basic, count: 5, row: 1 },
-            { type: InvaderType.Light, count: 5, row: 2 },
+            { type: InvaderType.Heavy, count: 5, row: 2 },
         ],
     },
     {
@@ -69,7 +76,7 @@ export const waveConfigs: WaveConfig[] = [
         delay: 10, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Basic, count: 5, row: 1 },
-            { type: InvaderType.Basic, count: 5, row: 2 },
+            { type: InvaderType.Heavy, count: 5, row: 2 },
         ],
     },
     {

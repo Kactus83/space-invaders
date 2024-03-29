@@ -1,7 +1,7 @@
-import { InvaderType } from "../../../../old-src/entities/game/invader/InvaderType";
+import { InvaderType } from "../../../entities/invader/InvaderType";
 
 export interface WaveInvaderConfig {
-    type: InvaderType;
+    type: InvaderType
     count: number;
     row: number; 
 }

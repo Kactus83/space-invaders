@@ -11,15 +11,25 @@ export const invaderDesigns: Record<string, { new: InvaderDesign, damaged: Invad
         damaged: new InvaderDesign("Basic", "assets/themes/default/invaders/basic_damaged.svg", 40, 40),
         critical: new InvaderDesign("Basic", "assets/themes/default/invaders/basic_critical.svg", 40, 40),
     },
-    "Advanced": {
-        new: new InvaderDesign("Advanced", "assets/themes/default/invaders/advanced.svg", 50, 50),
-        damaged: new InvaderDesign("Advanced", "assets/themes/default/invaders/advanced_damaged.svg", 50, 50),
-        critical: new InvaderDesign("Advanced", "assets/themes/default/invaders/advanced_critical.svg", 50, 50),
+    "Medium": {
+        new: new InvaderDesign("Medium", "assets/themes/default/invaders/medium.svg", 40, 40),
+        damaged: new InvaderDesign("Medium", "assets/themes/default/invaders/medium_damaged.svg", 40, 40),
+        critical: new InvaderDesign("Medium", "assets/themes/default/invaders/medium_critical.svg", 40, 40),
     },
     "Strong": {
         new: new InvaderDesign("Strong", "assets/themes/default/invaders/strong.svg", 60, 60),
         damaged: new InvaderDesign("Strong", "assets/themes/default/invaders/strong_damaged.svg", 60, 60),
         critical: new InvaderDesign("Strong", "assets/themes/default/invaders/strong_critical.svg", 60, 60),
+    },
+    "Advanced": {
+        new: new InvaderDesign("Advanced", "assets/themes/default/invaders/advanced.svg", 50, 50),
+        damaged: new InvaderDesign("Advanced", "assets/themes/default/invaders/advanced_damaged.svg", 50, 50),
+        critical: new InvaderDesign("Advanced", "assets/themes/default/invaders/advanced_critical.svg", 50, 50),
+    },
+    "Heavy": {
+        new: new InvaderDesign("Heavy", "assets/themes/default/invaders/heavy.svg", 60, 60),
+        damaged: new InvaderDesign("Heavy", "assets/themes/default/invaders/heavy_damaged.svg", 60, 60),
+        critical: new InvaderDesign("Heavy", "assets/themes/default/invaders/heavy_critical.svg", 60, 60),
     },
     "Elite": {
         new: new InvaderDesign("Elite", "assets/themes/default/invaders/elite.svg", 55, 55),
