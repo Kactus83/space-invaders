@@ -5,7 +5,7 @@ import { InvaderType } from "./InvaderType";
 export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
     [InvaderType.None]: {
         type: InvaderType.None,
-        speed: 0,
+        moveSpeed: 0,
         score: 0,
         hp: 0,
         shield: 0,
@@ -17,7 +17,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
     },
     [InvaderType.Light]: {
         type: InvaderType.Light,
-        speed: 150,
+        moveSpeed: 150,
         score: 10,
         hp: 1,
         shield: 0,
@@ -29,7 +29,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
     },
     [InvaderType.Basic]: {
         type: InvaderType.Basic,
-        speed: 80,
+        moveSpeed: 80,
         score: 20,
         hp: 2,
         shield: 0,
@@ -41,7 +41,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
     },
     [InvaderType.Medium]: {
         type: InvaderType.Medium,
-        speed: 80,
+        moveSpeed: 80,
         score: 30,
         hp: 4,
         shield: 0,
@@ -53,7 +53,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
     },
     [InvaderType.Strong]: {
         type: InvaderType.Strong,
-        speed: 40,
+        moveSpeed: 40,
         score: 40,
         hp: 5,
         shield: 1,
@@ -65,7 +65,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
     },
     [InvaderType.Advanced]: {
         type: InvaderType.Advanced,
-        speed: 60,
+        moveSpeed: 60,
         score: 30,
         hp: 3,
         shield: 1,
@@ -77,7 +77,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
     },
     [InvaderType.Heavy]: {
         type: InvaderType.Heavy,
-        speed: 30,
+        moveSpeed: 30,
         score: 40,
         hp: 10,
         shield: 1,
@@ -89,7 +89,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
     },
     [InvaderType.Elite]: {
         type: InvaderType.Elite,
-        speed: 30,
+        moveSpeed: 30,
         score: 50,
         hp: 7,
         shield: 2,
@@ -101,7 +101,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
     },
     [InvaderType.Boss]: {
         type: InvaderType.Boss,
-        speed: 20,
+        moveSpeed: 20,
         score: 100,
         hp: 10,
         shield: 3,

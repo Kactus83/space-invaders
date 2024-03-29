@@ -5,6 +5,7 @@ import { UserInputType } from "../../core/input-manager/UserInputType";
 import { GameEntity } from "../GameEntity";
 import { Invader } from "../invader/Invader";
 import { HealthSystem } from "../models/health-system/HealthSystem";
+import { SpeedSystem } from "../models/speed-system/SpeedSystem";
 import { WeaponSystem } from "../models/weapon-system/WeaponSystem";
 import { Projectile } from "../projectile/Projectile";
 import { ProjectileType } from "../projectile/ProjectileType";
@@ -16,15 +17,16 @@ export class Player extends GameEntity implements IInteractive, IShooter {
     private subscriptionId: number;
     public level: number = 1;
     public score: number = 0;
-    private moveSpeed: number = PlayerLevels[1].moveSpeed;
     // Nouveaux systèmes intégrés
+    private speedSystem: SpeedSystem;
     public healthSystem: HealthSystem;
     private weaponSystem: WeaponSystem;
 
     constructor() {
         super();
         this.subscribeToInputManager();
-        const levelCharacteristics = PlayerLevels[this.level];
+        const levelCharacteristics = PlayerLevels[this.level]; 
+        this.speedSystem = new SpeedSystem(this, levelCharacteristics);
         this.healthSystem = new HealthSystem(this, levelCharacteristics);
         this.weaponSystem = new WeaponSystem(this, levelCharacteristics);
     }
@@ -93,14 +95,16 @@ export class Player extends GameEntity implements IInteractive, IShooter {
     }
 
     private moveLeft(): void {
+        // Utilisation de SpeedSystem pour déterminer la vitesse de déplacement
         if (this.fabricObject && this.fabricObject.left > 0) {
-            this.fabricObject.left -= this.moveSpeed;
+            this.fabricObject.left -= this.speedSystem.moveSpeed; // Utilisation de speedSystem ici
         }
     }
 
     private moveRight(): void {
+        // Utilisation de SpeedSystem pour déterminer la vitesse de déplacement
         if (this.fabricObject && (this.fabricObject.left + this.fabricObject.width) < AppConfig.getInstance().canvasWidth) {
-            this.fabricObject.left += this.moveSpeed;
+            this.fabricObject.left += this.speedSystem.moveSpeed; // Utilisation de speedSystem ici
         }
     }
 
@@ -138,7 +142,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         if (newLevel !== this.level && newLevel <= MaxLevel) {
             this.level = newLevel;
             const levelCharacteristics = PlayerLevels[newLevel];
-            this.moveSpeed = levelCharacteristics.moveSpeed;
+            this.speedSystem.updateCharacteristics(levelCharacteristics);
             this.healthSystem.updateCharacteristics(levelCharacteristics);
             this.weaponSystem.updateCharacteristics(levelCharacteristics);
             this.shouldUpdateDesign = true;

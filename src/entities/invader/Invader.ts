@@ -10,9 +10,11 @@ import { WeaponSystem } from "../models/weapon-system/WeaponSystem";
 import { EntityState } from "../types/EntityState";
 import { IShooter } from "../types/IShooter";
 import { GroundLine } from "../ground-line/GroundLine";
+import { SpeedSystem } from "../models/speed-system/SpeedSystem";
 
 export class Invader extends GameEntity implements IShooter {
     private initialPosition: { x: number, y: number };
+    private speedSystem: SpeedSystem;
     public healthSystem: HealthSystem;
     private weaponSystem: WeaponSystem;
     private speed: number;
@@ -24,9 +26,9 @@ export class Invader extends GameEntity implements IShooter {
         this.type = type;
         this.entityType = this;
         const specs = InvaderSpecs[type];
-        this.speed = specs.speed;
         this.score = specs.score;
         this.initialPosition = initialPosition;
+        this.speedSystem = new SpeedSystem(this, specs);
         this.healthSystem = new HealthSystem(this, specs);
         this.weaponSystem = new WeaponSystem(this, specs);
     }
