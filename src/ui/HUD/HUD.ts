@@ -46,7 +46,7 @@ export class HUD implements IRenderable, IInteractive {
         this.fabricObjects.push(hud);
 
         // Player Info
-        const playerInfo = `Score: ${this.player.score} | HP: ${this.player.healthSystem.health} | Shield: ${this.player.healthSystem.shield} | Level: ${this.player.level}`;
+        const playerInfo = `Score: ${this.player.levelSystem.currentScore} | HP: ${this.player.healthSystem.health} | Shield: ${this.player.healthSystem.shield} | Level: ${this.player.levelSystem.level}`;
         const playerText = new fabric.Text(playerInfo, {
             left: 10,
             top: hudHeight / 2,

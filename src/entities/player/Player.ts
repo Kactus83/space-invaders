@@ -5,6 +5,7 @@ import { UserInputType } from "../../core/input-manager/UserInputType";
 import { GameEntity } from "../GameEntity";
 import { Invader } from "../invader/Invader";
 import { HealthSystem } from "../models/health-system/HealthSystem";
+import { LevelSystem } from "../models/level-system/LevelSystem";
 import { SpeedSystem } from "../models/speed-system/SpeedSystem";
 import { WeaponSystem } from "../models/weapon-system/WeaponSystem";
 import { Projectile } from "../projectile/Projectile";
@@ -15,24 +16,24 @@ import { PlayerLevels, MaxLevel } from "./PlayerLevels";
 
 export class Player extends GameEntity implements IInteractive, IShooter {
     private subscriptionId: number;
-    public level: number = 1;
-    public score: number = 0;
     // Nouveaux systèmes intégrés
-    private speedSystem: SpeedSystem;
+    public speedSystem: SpeedSystem;
     public healthSystem: HealthSystem;
-    private weaponSystem: WeaponSystem;
+    public weaponSystem: WeaponSystem;
+    public levelSystem: LevelSystem;
 
     constructor() {
         super();
         this.subscribeToInputManager();
-        const levelCharacteristics = PlayerLevels[this.level]; 
+        const levelCharacteristics = PlayerLevels[1]; 
         this.speedSystem = new SpeedSystem(this, levelCharacteristics);
         this.healthSystem = new HealthSystem(this, levelCharacteristics);
         this.weaponSystem = new WeaponSystem(this, levelCharacteristics);
+        this.levelSystem = new LevelSystem(this, 1);
     }
     
-    protected async loadDesign(): Promise<void> {
-        const design = this.themeManager.getTheme().getPlayerDesign(this.level);
+    public async loadDesign(): Promise<void> {
+        const design = this.themeManager.getTheme().getPlayerDesign(this.levelSystem.level);
         const config = AppConfig.getInstance();
 
         let x_position: number;
@@ -124,30 +125,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
     }
     
     public increaseScore(amount: number): void {
-        this.score += amount;
-        this.checkForLevelUpdate();
-    }
-
-    private checkForLevelUpdate(): void {
-        for (let level = 2; level <= MaxLevel; level++) {
-            if (this.score >= PlayerLevels[level].scoreThreshold && this.level < level) {
-                this.setLevel(level);
-                break;
-            }
-        }
-    }
-
-    private setLevel(newLevel: number): void {
-        // Mise à jour du niveau et des caractéristiques des systèmes
-        if (newLevel !== this.level && newLevel <= MaxLevel) {
-            this.level = newLevel;
-            const levelCharacteristics = PlayerLevels[newLevel];
-            this.speedSystem.updateCharacteristics(levelCharacteristics);
-            this.healthSystem.updateCharacteristics(levelCharacteristics);
-            this.weaponSystem.updateCharacteristics(levelCharacteristics);
-            this.shouldUpdateDesign = true;
-            // Autres mises à jour liées au changement de niveau
-        }
+        this.levelSystem.increaseScore(amount);
     }
 
     public cleanup(): void {
