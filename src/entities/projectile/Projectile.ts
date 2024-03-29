@@ -8,13 +8,14 @@ import { EntityState } from "../types/EntityState";
 import { HealthSystem } from "../models/health-system/HealthSystem";
 import { IProjectileCharacteristics } from "./IProjectileCharacteristics";
 import { GroundLine } from "../ground-line/GroundLine";
+import { SpeedSystem } from "../models/speed-system/SpeedSystem";
 
 export class Projectile extends GameEntity {
     private x_Position: number;
     private y_Position: number;
-    private speed: number;  
     public origin: GameEntity;
     public projectileType: ProjectileType;
+    private speedSystem: SpeedSystem;
     public healthSystem: HealthSystem;
 
     constructor(origin: GameEntity, type: ProjectileType, initialPosition: { x: number, y: number }) {
@@ -24,7 +25,7 @@ export class Projectile extends GameEntity {
         this.origin = origin;
         this.projectileType = type;
         const specs: IProjectileCharacteristics = ProjectileSpecs[type];
-        this.speed = specs.speed;
+        this.speedSystem = new SpeedSystem(this, specs);
         // Initialise le système de santé avec les spécifications du projectile
         this.healthSystem = new HealthSystem(this, specs);
     }
@@ -44,7 +45,7 @@ export class Projectile extends GameEntity {
     
         // Met à jour la position y du projectile en fonction de la vitesse et de la direction
         if (this.fabricObject) {
-            this.fabricObject.top += this.speed * deltaTimeInSeconds * direction;
+            this.fabricObject.top += this.speedSystem.moveSpeed * deltaTimeInSeconds * direction;
             this.y_Position = this.fabricObject.top;
             this.x_Position = this.fabricObject.left;
         }

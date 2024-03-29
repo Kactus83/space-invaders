@@ -17,7 +17,6 @@ export class Invader extends GameEntity implements IShooter {
     private speedSystem: SpeedSystem;
     public healthSystem: HealthSystem;
     private weaponSystem: WeaponSystem;
-    private speed: number;
     private score: number;
     private type: InvaderType;
 
@@ -60,7 +59,7 @@ export class Invader extends GameEntity implements IShooter {
         if (this.fabricObject) {
             // Calcul du déplacement potentiel en tenant compte de deltaTime en millisecondes
             const deltaTimeInSeconds = deltaTime / 1000;
-            let potentialLeft = this.fabricObject.left + (this.speed * deltaTimeInSeconds * (this.fabricObject.flipX ? -1 : 1));
+            let potentialLeft = this.fabricObject.left + (this.speedSystem.moveSpeed * deltaTimeInSeconds * (this.fabricObject.flipX ? -1 : 1));
         
             // Gestion du changement de direction et du déplacement vertical lorsqu'un bord est atteint
             if (potentialLeft < 0 || potentialLeft + this.fabricObject.width > config.canvasWidth) {
