@@ -1,5 +1,0 @@
-<svg width="30" height="30" xmlns="http://www.w3.org/2000/svg">
-    <polygon points="15,0 30,15 15,30 0,15" fill="#342AA4"/>
-    <line x1="15" y1="0" x2="15" y2="30" stroke="#FFFFFF" stroke-width="2"/>
-    <line x1="0" y1="15" x2="30" y2="15" stroke="#FFFFFF" stroke-width="2"/>
-</svg>
