@@ -38,6 +38,17 @@ export class CollisionService {
     public checkCollisions(): void {
         // Vérifications des collisions pour les projectiles
         this.projectiles.forEach(projectile => {
+            // Collisions entre Projectiles
+            this.projectiles.forEach(other_Projectile => {
+                if(projectile === other_Projectile) {
+                    return;
+                }
+                if (this.areColliding(projectile, other_Projectile)) {
+                    projectile.onCollisionWith(other_Projectile);
+                    other_Projectile.onCollisionWith(projectile);
+                }
+            });
+
             // Collisions Projectile avec Invaders
             this.invaders.forEach(invader => {
                 if (this.areColliding(projectile, invader)) {
