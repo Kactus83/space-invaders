@@ -9,7 +9,6 @@ import { LevelSystem } from "../models/level-system/LevelSystem";
 import { SpeedSystem } from "../models/speed-system/SpeedSystem";
 import { WeaponSystem } from "../models/weapon-system/WeaponSystem";
 import { Projectile } from "../projectile/Projectile";
-import { ProjectileType } from "../projectile/ProjectileType";
 import { IShooter } from "../types/IShooter";
 import { Wall } from "../wall/Wall";
 import { PlayerLevels, MaxLevel } from "./PlayerLevels";
