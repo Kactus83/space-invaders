@@ -1,0 +1,6 @@
+<svg width="75" height="45" xmlns="http://www.w3.org/2000/svg">
+    <rect width="75" height="45" fill="#ffff00"/>
+    <circle cx="37.5" cy="22.5" r="15" fill="#ff0000"/>
+    <polygon points="15,45 37.5,5 60,45" fill="#ffa500"/>
+    <rect x="32.5" y="17.5" width="10" height="10" fill="#ffffff"/>
+</svg>
