@@ -3,6 +3,7 @@ import { InvaderType } from "../../entities/invader/InvaderType";
 import { AppConfig } from "../../core/config/AppConfig";
 import { maxWave, waveConfigs } from "./waves/wavesConfig";
 import { WaveInvaderConfig } from "./types/WaveInvaderConfig";
+import { InvaderSpecs } from "../../entities/invader/InvaderTypesSpecs";
 
 export class InvaderWaveService {
     public isInit: boolean = false;
@@ -40,7 +41,11 @@ export class InvaderWaveService {
     private async launchWave(invadersConfig: WaveInvaderConfig[]): Promise<void> {
         const canvasWidth = this.config.canvasWidth;
         for (const { type, count, row } of invadersConfig) {
-            const yPosition = -row * 60; // Position juste au-dessus du canvas
+            const specs = InvaderSpecs[type];
+            const lineHeight = specs.height <= 50 ? 50 : 100; // Hauteur de la ligne basée sur la hauteur de l'invader
+            const verticalOffset = (lineHeight - specs.height) / 2; // Décalage pour centrer l'invader
+            const yPosition = -row * lineHeight + verticalOffset; // Ajustement de la position Y en conséquence
+    
             const spacing = canvasWidth / (count + 1);
             for (let i = 0; i < count; i++) {
                 const xPosition = (i + 1) * spacing;
@@ -49,7 +54,7 @@ export class InvaderWaveService {
                 this.pendingInvaders.push(invader);
             }
         }
-    }
+    }   
 
     getPendingInvaders(): Invader[] {
         const invaders = [...this.pendingInvaders];

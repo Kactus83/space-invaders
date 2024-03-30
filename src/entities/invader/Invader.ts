@@ -15,6 +15,8 @@ import { SpeedSystem } from "../models/speed-system/SpeedSystem";
 export class Invader extends GameEntity implements IShooter {
     private initialPosition: { x: number, y: number };
     private isRushing: boolean = false;
+    private horizontalMovementDirection: 'left' | 'right' = 'right';
+    private verticalPosition: number;
     private speedSystem: SpeedSystem;
     public healthSystem: HealthSystem;
     private weaponSystem: WeaponSystem;
@@ -31,6 +33,7 @@ export class Invader extends GameEntity implements IShooter {
         this.speedSystem = new SpeedSystem(this, specs);
         this.healthSystem = new HealthSystem(this, specs);
         this.weaponSystem = new WeaponSystem(this, specs);
+        this.verticalPosition = initialPosition.y;
     }
     
     protected async loadDesign(): Promise<void> {
@@ -56,36 +59,70 @@ export class Invader extends GameEntity implements IShooter {
 
     async update(deltaTime: number): Promise<void> {
         const config = AppConfig.getInstance();
-        
-        if (this.fabricObject) {
-            const deltaTimeInSeconds = deltaTime / 1000;
-
-            if (!this.isRushing) {
-                // Comportement habituel avant le rush
-                let potentialLeft = this.fabricObject.left + (this.speedSystem.moveSpeed * deltaTimeInSeconds * (this.fabricObject.flipX ? -1 : 1));
-                
-                if (potentialLeft < 0 || potentialLeft + this.fabricObject.width > config.canvasWidth) {
-                    this.fabricObject.flipX = !this.fabricObject.flipX;
-                    this.fabricObject.top += 60; // Déplacement vertical standard
-                } else {
-                    this.fabricObject.left = potentialLeft;
-                }
-
-                // Vérification pour déclencher le rush
-                if (this.fabricObject.top > config.rushLineLimit && Math.random() < config.rushProbability) {
-                    this.isRushing = true;
-                }
-            }
-
-            if (this.isRushing) {
-                // Une fois que le rush est activé, l'Invader descend verticalement sans changer de direction
-                this.fabricObject.top += this.speedSystem.moveSpeed * deltaTimeInSeconds;
-            }
-        
-            // Tentative de tir
-            await this.shoot();
+    
+        if (!this.fabricObject) return;
+    
+        if (this.isRushing) {
+            this.rushDown(deltaTime);
+            return;
         }
-    }    
+    
+        const specs = InvaderSpecs[this.type];
+        const descentDistance = specs.height <= 50 ? 50 : 100; // Choix de la distance de descente basée sur la hauteur
+    
+        if (this.verticalPosition <= config.rushLineLimit) {
+            this.progressiveMovement(deltaTime, config, descentDistance);
+        } else {
+            this.horizontalMovement(deltaTime, config);
+        }
+    
+        await this.shoot();
+    }
+    
+    private progressiveMovement(deltaTime: number, config: AppConfig, descentDistance: number) {
+        const deltaTimeInSeconds = deltaTime / 1000;
+        const horizontalSpeed = this.speedSystem.moveSpeed * deltaTimeInSeconds;
+    
+        if (this.horizontalMovementDirection === 'right') {
+            if (this.fabricObject.left + horizontalSpeed + this.fabricObject.width > config.canvasWidth) {
+                this.horizontalMovementDirection = 'left';
+                this.verticalPosition += descentDistance; // Utilise descentDistance pour la descente
+                this.fabricObject.top += descentDistance;
+            } else {
+                this.fabricObject.left += horizontalSpeed;
+            }
+        } else {
+            if (this.fabricObject.left - horizontalSpeed < 0) {
+                this.horizontalMovementDirection = 'right';
+                this.verticalPosition += descentDistance; // Utilise descentDistance pour la descente
+                this.fabricObject.top += descentDistance;
+            } else {
+                this.fabricObject.left -= horizontalSpeed;
+            }
+        }
+    }
+
+    private horizontalMovement(deltaTime: number, config: AppConfig) {
+        const deltaTimeInSeconds = deltaTime / 1000;
+        let potentialMove = this.speedSystem.moveSpeed * deltaTimeInSeconds * (this.horizontalMovementDirection === 'right' ? 1 : -1);
+
+        // Si l'Invader atteint un bord, il change simplement de direction sans descendre
+        if (this.fabricObject.left + potentialMove < 0 || this.fabricObject.left + potentialMove + this.fabricObject.width > config.canvasWidth) {
+            this.horizontalMovementDirection = this.horizontalMovementDirection === 'right' ? 'left' : 'right';
+        } else {
+            this.fabricObject.left += potentialMove;
+        }
+
+        if (this.verticalPosition > config.rushLineLimit && Math.random() < config.rushProbability) {
+            this.isRushing = true;
+        }
+    }
+
+    private rushDown(deltaTime: number) {
+        // Logique pour le rush vers le bas
+        const deltaTimeInSeconds = deltaTime / 1000;
+        this.fabricObject.top += this.speedSystem.moveSpeed * deltaTimeInSeconds;
+    }
 
     onCollisionWith(entity: GameEntity): void {
         if (entity instanceof Player) {
