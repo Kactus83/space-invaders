@@ -47,7 +47,6 @@ export class Wall extends GameEntity {
             // Logique de collision avec le joueur
         } else if (entity instanceof Projectile) {
             this.healthSystem.takeDamage(entity.healthSystem.damage);
-            console.log(this.healthSystem.health);
             if(this.healthSystem.health <= 0) {
                 this.state = EntityState.ToBeRemoved;
             }

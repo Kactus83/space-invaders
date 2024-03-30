@@ -14,6 +14,10 @@ export class CollisionService {
     private projectiles: GameEntity[] = [];
     private groundLines: GroundLine[] = [];
 
+    /**
+     * Register an entity to the collision service
+     * @param entity 
+     */
     public registerEntity(entity: GameEntity): void {
         if (entity instanceof Player) {
             this.players.push(entity);
@@ -27,7 +31,10 @@ export class CollisionService {
             this.groundLines.push(entity);
         }
     }
-
+    /**
+     * Unregister an entity from the collision service
+     * @param entity 
+     */
     public unregisterEntity(entity: GameEntity): void {
         let array = this.getArrayForEntity(entity);
         const index = array.indexOf(entity);
@@ -36,6 +43,9 @@ export class CollisionService {
         }
     }
 
+    /**
+     * Check collisions between entities
+     */
     public checkCollisions(): void {
         // Vérifications des collisions pour les projectiles
         this.projectiles.forEach(projectile => {
@@ -118,6 +128,12 @@ export class CollisionService {
         });
     }    
 
+    /**
+     * Check if two entities are colliding
+     * @param entityA 
+     * @param entityB 
+     * @returns 
+     */
     private areColliding(entityA: ICollidable, entityB: ICollidable): boolean {
         const boundsA = entityA.getCollisionBounds();
         const boundsB = entityB.getCollisionBounds();
@@ -128,6 +144,11 @@ export class CollisionService {
                  boundsB.y + boundsB.height < boundsA.y);
     }
 
+    /**
+     * Get the array of entities for a given entity type
+     * @param entity 
+     * @returns 
+     */
     private getArrayForEntity(entity: GameEntity): GameEntity[] {
         if (entity instanceof Player) {
             return this.players;
