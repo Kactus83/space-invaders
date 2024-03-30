@@ -6,15 +6,18 @@ import { IHealthCharacteristics } from "./IHealthCharasteristics";
 export class HealthSystem {
     healthState: HealthState = HealthState.New;
     private characteristics: IHealthCharacteristics;
+    private maxHP: number;
     private owner: GameEntity;
 
     constructor(owner: GameEntity, characteristics: IHealthCharacteristics) {
         this.owner = owner;
         this.characteristics = characteristics;
+        this.maxHP = characteristics.hp;
     }
 
     public updateCharacteristics(newCharacteristics: IHealthCharacteristics): void {
         this.characteristics = newCharacteristics;
+        this.maxHP = newCharacteristics.hp;
     }
 
     public takeDamage(amount: number): void {
@@ -23,10 +26,12 @@ export class HealthSystem {
 
         this.characteristics.hp -= effectiveDamage;
 
-        if (this.characteristics.hp < this.characteristics.hp * 0.3) {
+        if (this.characteristics.hp < this.maxHP * 0.3) {
             this.healthState = HealthState.Critical;
-        } else if (this.characteristics.hp < this.characteristics.hp * 0.6) { 
+            this.owner.shouldUpdateDesign = true;
+        } else if (this.characteristics.hp < this.maxHP * 0.6) { 
             this.healthState = HealthState.Damaged;
+            this.owner.shouldUpdateDesign = true;
         }
     }
 

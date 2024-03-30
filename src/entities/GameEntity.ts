@@ -13,7 +13,7 @@ export abstract class GameEntity implements IRenderable, ICollidable {
     protected fabricObject: fabric.Object;
     public entityType: GameEntityType;
     public isInitialized: boolean = false;
-    protected shouldUpdateDesign: boolean = true;
+    public shouldUpdateDesign: boolean = true;
 
     constructor() {
     }
