@@ -11,12 +11,12 @@ export class HealthSystem {
 
     constructor(owner: GameEntity, characteristics: IHealthCharacteristics) {
         this.owner = owner;
-        this.characteristics = characteristics;
+        this.characteristics = JSON.parse(JSON.stringify(characteristics));
         this.maxHP = characteristics.hp;
     }
 
     public updateCharacteristics(newCharacteristics: IHealthCharacteristics): void {
-        this.characteristics = newCharacteristics;
+        this.characteristics = JSON.parse(JSON.stringify(newCharacteristics));
         this.maxHP = newCharacteristics.hp;
     }
 

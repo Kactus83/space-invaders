@@ -3,6 +3,7 @@ import { GroundLine } from "../../entities/ground-line/GroundLine";
 import { Invader } from "../../entities/invader/Invader";
 import { Player } from "../../entities/player/Player";
 import { Projectile } from "../../entities/projectile/Projectile";
+import { EntityState } from "../../entities/types/EntityState";
 import { Wall } from "../../entities/wall/Wall";
 import { ICollidable } from "./ICollidable";
 
@@ -40,7 +41,7 @@ export class CollisionService {
         this.projectiles.forEach(projectile => {
             // Collisions entre Projectiles
             this.projectiles.forEach(other_Projectile => {
-                if(projectile === other_Projectile) {
+                if(projectile === other_Projectile || projectile.state !== EntityState.ToBeRemoved || other_Projectile.state !== EntityState.ToBeRemoved) {
                     return;
                 }
                 if (this.areColliding(projectile, other_Projectile)) {
@@ -51,7 +52,7 @@ export class CollisionService {
 
             // Collisions Projectile avec Invaders
             this.invaders.forEach(invader => {
-                if (this.areColliding(projectile, invader)) {
+                if (this.areColliding(projectile, invader) && projectile.state !== EntityState.ToBeRemoved) {
                     projectile.onCollisionWith(invader);
                     invader.onCollisionWith(projectile);
                 }
@@ -59,13 +60,13 @@ export class CollisionService {
     
             // Collision Projectile avec Player
             this.players.forEach(player => {
-                if (this.areColliding(projectile, player)) {
+                if (this.areColliding(projectile, player) && projectile.state !== EntityState.ToBeRemoved) {
                     projectile.onCollisionWith(player);
                     player.onCollisionWith(projectile);
                 }
             });
 
-            if (projectile.isInCollisionZone()) {
+            if (projectile.isInCollisionZone() && projectile.state !== EntityState.ToBeRemoved) {
                 this.walls.forEach(wall => {
                     if (this.areColliding(projectile, wall)) {
                         projectile.onCollisionWith(wall);
@@ -75,7 +76,7 @@ export class CollisionService {
             }
     
             // Collision Projectile avec GroundLine
-            if (projectile.isInCollisionZone()) {
+            if (projectile.isInCollisionZone() && projectile.state !== EntityState.ToBeRemoved) {
                 this.groundLines.forEach(groundLine => {
                     if (this.areColliding(projectile, groundLine)) {
                         projectile.onCollisionWith(groundLine);
