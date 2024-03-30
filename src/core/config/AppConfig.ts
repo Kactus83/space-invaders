@@ -9,6 +9,8 @@ export class AppConfig implements IGlobalConfig {
     public readonly player_InitialY: number = 515;
     public readonly wall_InitialY: number = 490;
     public readonly wall_Size: number = 8;
+    public readonly rushLineLimit: number = 270;
+    public readonly rushProbability: number = 0.0005;
     public god_Mode: boolean = false;
 
     // Empêche l'instanciation en dehors de la classe
