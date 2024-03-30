@@ -14,9 +14,10 @@ import { SpeedSystem } from "../models/speed-system/SpeedSystem";
 
 export class Invader extends GameEntity implements IShooter {
     private initialPosition: { x: number, y: number };
+    private descendingToNextLine: boolean = false;
+    private nextLinePosition: number;
     private isRushing: boolean = false;
     private horizontalMovementDirection: 'left' | 'right' = 'right';
-    private verticalPosition: number;
     private speedSystem: SpeedSystem;
     public healthSystem: HealthSystem;
     private weaponSystem: WeaponSystem;
@@ -33,7 +34,8 @@ export class Invader extends GameEntity implements IShooter {
         this.speedSystem = new SpeedSystem(this, specs);
         this.healthSystem = new HealthSystem(this, specs);
         this.weaponSystem = new WeaponSystem(this, specs);
-        this.verticalPosition = initialPosition.y;
+        const descentStep = InvaderSpecs[this.type].height <= 50 ? 50 : 100;
+        this.nextLinePosition = initialPosition.y + descentStep;
     }
     
     protected async loadDesign(): Promise<void> {
@@ -66,11 +68,16 @@ export class Invader extends GameEntity implements IShooter {
             this.rushDown(deltaTime);
             return;
         }
+
+        if(this.descendingToNextLine) {
+            this.descendToNextLine(deltaTime);
+            return;
+        }
     
         const specs = InvaderSpecs[this.type];
         const descentDistance = specs.height <= 50 ? 50 : 100; // Choix de la distance de descente basée sur la hauteur
     
-        if (this.verticalPosition <= config.rushLineLimit) {
+        if (this.fabricObject.top <= config.rushLineLimit) {
             this.progressiveMovement(deltaTime, config, descentDistance);
         } else {
             this.horizontalMovement(deltaTime, config);
@@ -86,19 +93,32 @@ export class Invader extends GameEntity implements IShooter {
         if (this.horizontalMovementDirection === 'right') {
             if (this.fabricObject.left + horizontalSpeed + this.fabricObject.width > config.canvasWidth) {
                 this.horizontalMovementDirection = 'left';
-                this.verticalPosition += descentDistance; // Utilise descentDistance pour la descente
-                this.fabricObject.top += descentDistance;
+                this.startDescending();
             } else {
                 this.fabricObject.left += horizontalSpeed;
             }
         } else {
             if (this.fabricObject.left - horizontalSpeed < 0) {
                 this.horizontalMovementDirection = 'right';
-                this.verticalPosition += descentDistance; // Utilise descentDistance pour la descente
-                this.fabricObject.top += descentDistance;
+                this.startDescending();
             } else {
                 this.fabricObject.left -= horizontalSpeed;
             }
+        }
+    }
+
+    private startDescending() {
+        this.descendingToNextLine = true;
+        const descentStep = InvaderSpecs[this.type].height <= 50 ? 50 : 100;
+        this.nextLinePosition = this.fabricObject.top + descentStep;
+    }
+
+    private descendToNextLine(deltaTime: number) {
+        const deltaTimeInSeconds = deltaTime / 1000;
+        if (this.fabricObject.top < this.nextLinePosition) {
+            this.fabricObject.top += deltaTimeInSeconds * this.speedSystem.moveSpeed;
+        } else {
+            this.descendingToNextLine = false;
         }
     }
 
@@ -113,7 +133,7 @@ export class Invader extends GameEntity implements IShooter {
             this.fabricObject.left += potentialMove;
         }
 
-        if (this.verticalPosition > config.rushLineLimit && Math.random() < config.rushProbability) {
+        if (this.fabricObject.top > config.rushLineLimit && Math.random() < config.rushProbability) {
             this.isRushing = true;
         }
     }
