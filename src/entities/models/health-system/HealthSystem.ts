@@ -1,8 +1,9 @@
 import { GameEntity } from "../../GameEntity";
-import { Projectile } from "../../projectile/Projectile";
 import { HealthState } from "../../types/HealthState";
+import { BonusEffectType } from "../bonus-system/BonusEffectType";
 import { BonusReceiver } from "../bonus-system/BonusReceiver";
 import { HealthBonus } from "./HealthBonus";
+import { HealthBonusEffect } from "./HealthBonusEffect";
 import { IHealthCharacteristics } from "./IHealthCharasteristics";
 
 export class HealthSystem  extends BonusReceiver<HealthBonus> {
@@ -29,7 +30,7 @@ export class HealthSystem  extends BonusReceiver<HealthBonus> {
 
         this.characteristics.hp -= effectiveDamage;
 
-        if (this.characteristics.hp < this.maxHP * 0.3) {
+        if (this.health < this.maxHP * 0.3) {
             this.healthState = HealthState.Critical;
             this.owner.shouldUpdateDesign = true;
         } else if (this.characteristics.hp < this.maxHP * 0.6) { 
@@ -48,18 +49,49 @@ export class HealthSystem  extends BonusReceiver<HealthBonus> {
     }    
 
     public get health(): number {
-        return this.characteristics.hp;
+        return this.applyBonusToCharacteristic(this.characteristics.hp, 'hp');
     }
 
     public get shield(): number {
-        return this.characteristics.shield;
+        return this.applyBonusToCharacteristic(this.characteristics.shield, 'shield');
     }
 
     public get damage(): number {
-        return this.characteristics.damage;
+        return this.applyBonusToCharacteristic(this.characteristics.damage, 'damage');
     }
 
     public get regenerationRate(): number {
-        return this.characteristics.regenerationRate;
+        return this.applyBonusToCharacteristic(this.characteristics.regenerationRate, 'regenerationRate');
     }
+
+        // Ajustement des méthodes pour appliquer les bonus
+    private applyBonusToCharacteristic(characteristicValue: number, characteristic: keyof IHealthCharacteristics): number {
+        let value = characteristicValue;
+
+        // Appliquer l'effet de bonus permanent s'il y en a un
+        if (this.permanentBonus?.effect) {
+            const effect = this.permanentBonus.effect as HealthBonusEffect;
+            value = this.applyEffect(value, effect, characteristic);
+        }
+
+        // Appliquer l'effet de bonus temporaire s'il y en a un et s'il est actif
+        if (this.temporaryBonus?.effect && this.temporaryBonus.getState() === 'active') {
+            const tempEffect = this.temporaryBonus.effect as HealthBonusEffect;
+            value = this.applyEffect(value, tempEffect, characteristic);
+        }
+
+        return value;
+    }
+
+    // Nouvelle méthode pour appliquer un effet spécifique basé sur la caractéristique
+    private applyEffect(value: number, effect: HealthBonusEffect, characteristic: keyof IHealthCharacteristics): number {
+        const effectValue = effect[characteristic];
+        if (effect.effectType === BonusEffectType.Additive) {
+            return value + effectValue;
+        } else if (effect.effectType === BonusEffectType.Multiplicative) {
+            return value * effectValue;
+        }
+        return value; // Cas par défaut si aucun effet n'est applicable
+    }
+
 }

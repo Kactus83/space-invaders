@@ -22,7 +22,7 @@ export abstract class Bonus {
     checkExpiration(): void {
         if (this.state !== 'active' || this.activationTimestamp === null) return;
 
-        if ((Date.now() - this.activationTimestamp) >= this.duration * 1000) {
+        if ((Date.now() - this.activationTimestamp) >= this.effect.duration * 1000) {
             this.state = 'expired';
         }
     }
