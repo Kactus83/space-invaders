@@ -1,3 +1,4 @@
+import { GameBonusType } from "../../entities/bonus/GameBonusTypeS";
 import { InvaderType } from "../../entities/invader/InvaderType";
 import { ProjectileType } from "../../entities/projectile/ProjectileType";
 import { WallType } from "../../entities/wall/WallType";
@@ -9,17 +10,20 @@ export class Theme {
     private groundLineDesigns: Record<number, IDesign>;
     private projectileDesigns: Record<ProjectileType, IDesign>;
     private wallDesigns: Record<WallType, IDesign>;
+    gameBonusDesigns: Record<string, IDesign>;
 
     constructor(invaderDesigns: Record<InvaderType, Record<string, IDesign>>, 
                 playerDesigns: Record<number, IDesign>, 
                 groundLineDesigns: Record<number, IDesign>,
                 projectileDesigns: Record<ProjectileType, IDesign>, 
-                wallDesigns: Record<WallType, IDesign>) {
+                wallDesigns: Record<WallType, IDesign>,
+                gameBonusDesigns: Record<GameBonusType, IDesign>) {
         this.invaderDesigns = invaderDesigns;
         this.playerDesigns = playerDesigns;
         this.groundLineDesigns = groundLineDesigns;
         this.projectileDesigns = projectileDesigns;
         this.wallDesigns = wallDesigns;
+        this.gameBonusDesigns = gameBonusDesigns;
     }
 
     public getInvaderDesign(type: InvaderType, state: 'new' | 'damaged' | 'critical'): IDesign {
@@ -49,6 +53,12 @@ export class Theme {
     public getWallDesign(type: WallType): IDesign {
         const design = this.wallDesigns[type];
         if (!design) throw new Error(`Wall design not found for type ${type}`);
+        return design;
+    }
+
+    public getGameBonusDesign(type: GameBonusType): IDesign {
+        const design = this.gameBonusDesigns[type];
+        if (!design) throw new Error(`GameBonus design not found for type ${type}`);
         return design;
     }
 }
