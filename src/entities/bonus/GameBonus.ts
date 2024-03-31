@@ -8,6 +8,7 @@ import { Player } from "../player/Player";
 import { EntityState } from "../types/EntityState";
 import { GameBonusType } from "./GameBonusTypes";
 import { GameBonusSpecs } from "./GameBonusTypesSpecs";
+import { fabric } from "fabric";
 
 export class GameBonus extends GameEntity {
     initialPosition: { x: number, y: number };
@@ -46,6 +47,7 @@ export class GameBonus extends GameEntity {
     
             // Vérifier si le bonus est sorti du bas du canvas et le marquer pour suppression si nécessaire
             if (this.fabricObject.top > AppConfig.getInstance().canvasHeight) {
+                console.log('Bonus is out of canvas');
                 this.state = EntityState.ToBeRemoved;
             }
         }
@@ -64,9 +66,11 @@ export class GameBonus extends GameEntity {
         if (this.fabricObject) {
             this.fabricObject.left = position.x;
             this.fabricObject.top = position.y;
+            this.shouldUpdateDesign = false;
         } else {
             // Si l'objet Fabric.js n'est pas encore créé, ajustez l'initialPosition ou gérez autrement
             this.initialPosition = position;
+            this.shouldUpdateDesign = false;
         }
     }
 }

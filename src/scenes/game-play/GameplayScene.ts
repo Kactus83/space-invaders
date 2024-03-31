@@ -60,9 +60,6 @@ export class GamePlayScene implements IScene {
         if(!this.isSceneInit) {
             return;
         }
-
-        // Mise à jour des bonus
-        this.gameBonus.forEach(bonus => bonus.update(deltaTime));
          
         this.wallService.update(deltaTime);
         
@@ -108,6 +105,7 @@ export class GamePlayScene implements IScene {
         });
     
         // Mise à jour des entités existantes...
+        this.gameBonus.forEach(bonus => bonus.update(deltaTime));
         this.player.update(deltaTime);
         this.groundLine.update(deltaTime);
         this.invaders.forEach(invader => invader.update(deltaTime));
@@ -143,10 +141,10 @@ export class GamePlayScene implements IScene {
         return [
             this.player,
             this.groundLine,
-            ...this.gameBonus,
-            ...this.invaders,
             ...this.walls,
+            ...this.invaders,
             ...this.projectiles,
+            ...this.gameBonus,
             this.hud
         ];
     }
