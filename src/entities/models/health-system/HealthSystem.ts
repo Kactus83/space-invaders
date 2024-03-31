@@ -1,15 +1,18 @@
 import { GameEntity } from "../../GameEntity";
 import { Projectile } from "../../projectile/Projectile";
 import { HealthState } from "../../types/HealthState";
+import { BonusReceiver } from "../bonus-system/BonusReceiver";
+import { HealthBonus } from "./HealthBonus";
 import { IHealthCharacteristics } from "./IHealthCharasteristics";
 
-export class HealthSystem {
+export class HealthSystem  extends BonusReceiver<HealthBonus> {
     healthState: HealthState = HealthState.New;
     private characteristics: IHealthCharacteristics;
     private maxHP: number;
     private owner: GameEntity;
 
     constructor(owner: GameEntity, characteristics: IHealthCharacteristics) {
+        super();
         this.owner = owner;
         this.characteristics = JSON.parse(JSON.stringify(characteristics));
         this.maxHP = characteristics.hp;
