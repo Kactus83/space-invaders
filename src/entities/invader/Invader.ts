@@ -11,6 +11,8 @@ import { EntityState } from "../types/EntityState";
 import { IShooter } from "../types/IShooter";
 import { GroundLine } from "../ground-line/GroundLine";
 import { SpeedSystem } from "../models/speed-system/SpeedSystem";
+import { BonusEmitterSystem } from "../models/bonus-system/bonus-emitter/BonusEmitterSystem";
+import { GameBonus } from "../bonus/GameBonus";
 
 export class Invader extends GameEntity implements IShooter {
     private initialPosition: { x: number, y: number };
@@ -21,6 +23,7 @@ export class Invader extends GameEntity implements IShooter {
     private speedSystem: SpeedSystem;
     public healthSystem: HealthSystem;
     private weaponSystem: WeaponSystem;
+    private bonusEmitterSystem: BonusEmitterSystem;
     private score: number;
     private type: InvaderType;
 
@@ -34,6 +37,8 @@ export class Invader extends GameEntity implements IShooter {
         this.speedSystem = new SpeedSystem(this, specs);
         this.healthSystem = new HealthSystem(this, specs);
         this.weaponSystem = new WeaponSystem(this, specs);
+        this.bonusEmitterSystem = new BonusEmitterSystem(this, specs);
+        this.bonusEmitterSystem.prepareBonus();
         const descentStep = InvaderSpecs[this.type].height <= 50 ? 50 : 100;
         this.nextLinePosition = initialPosition.y + descentStep;
     }
@@ -181,6 +186,15 @@ export class Invader extends GameEntity implements IShooter {
 
     public getNewProjectiles(): Projectile[] {
         return this.weaponSystem.getNewProjectiles();
+    }
+
+    public getGameBonus(): GameBonus | null {
+        const bonus = this.bonusEmitterSystem.getPreparedBonus();
+        if (bonus) {
+            console.log("Bonus emitted");
+            bonus.setPosition({ x: this.fabricObject?.left ?? 0, y: this.fabricObject?.top ?? 0 });
+        }
+        return bonus;
     }
 
     private async shoot(): Promise<void> {

@@ -6,7 +6,7 @@ import { BonusType } from "../models/bonus-system/BonusType";
 import { SpeedSystem } from "../models/speed-system/SpeedSystem";
 import { Player } from "../player/Player";
 import { EntityState } from "../types/EntityState";
-import { GameBonusType } from "./GameBonusTypeS";
+import { GameBonusType } from "./GameBonusTypes";
 import { GameBonusSpecs } from "./GameBonusTypesSpecs";
 
 export class GameBonus extends GameEntity {
@@ -60,5 +60,13 @@ export class GameBonus extends GameEntity {
         }
     }
 
-    // Méthodes update et getCollisionBounds selon les besoins
+    public setPosition(position: { x: number, y: number }): void {
+        if (this.fabricObject) {
+            this.fabricObject.left = position.x;
+            this.fabricObject.top = position.y;
+        } else {
+            // Si l'objet Fabric.js n'est pas encore créé, ajustez l'initialPosition ou gérez autrement
+            this.initialPosition = position;
+        }
+    }
 }

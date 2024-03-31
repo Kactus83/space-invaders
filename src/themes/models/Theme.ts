@@ -1,4 +1,4 @@
-import { GameBonusType } from "../../entities/bonus/GameBonusTypeS";
+import { GameBonusType } from "../../entities/bonus/GameBonusTypes";
 import { InvaderType } from "../../entities/invader/InvaderType";
 import { ProjectileType } from "../../entities/projectile/ProjectileType";
 import { WallType } from "../../entities/wall/WallType";

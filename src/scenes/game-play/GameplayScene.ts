@@ -11,6 +11,7 @@ import { GroundLine } from "../../entities/ground-line/GroundLine";
 import { HUD } from "../../ui/HUD/HUD";
 import { WallService } from "../../game-services/walls/WallService";
 import { GameStatusService } from "../../game-services/game-status/GameStatusService";
+import { GameBonus } from "../../entities/bonus/GameBonus";
 
 export class GamePlayScene implements IScene {
     private isSceneInit: boolean = false;
@@ -24,6 +25,7 @@ export class GamePlayScene implements IScene {
     private invaders: Invader[] = [];
     private walls: Wall[] = [];
     private projectiles: Projectile[] = [];
+    private gameBonus: GameBonus[] = [];
     private hud: HUD;
     
     async initialize(): Promise<void> {
@@ -58,6 +60,9 @@ export class GamePlayScene implements IScene {
         if(!this.isSceneInit) {
             return;
         }
+
+        // Mise à jour des bonus
+        this.gameBonus.forEach(bonus => bonus.update(deltaTime));
          
         this.wallService.update(deltaTime);
         
@@ -155,6 +160,11 @@ export class GamePlayScene implements IScene {
         // Filtre les invaders qui doivent être supprimés et les désenregistre de la détection de collision
         this.invaders = this.invaders.filter(invader => {
             if (invader.state === EntityState.ToBeRemoved) {
+                const bonus = invader.getGameBonus();
+                if(bonus) {
+                    console.log("Bonus created");
+                    this.gameBonus.push(bonus);
+                }
                 this.collisionService.unregisterEntity(invader);
                 return false;
             }

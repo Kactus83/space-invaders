@@ -7,7 +7,7 @@ import { SpeedBonusEffect } from "../models/speed-system/bonus/SpeedBonusEffect"
 import { WeaponBonus } from "../models/weapon-system/bonus/WeaponBonus";
 import { WeaponBonusEffect } from "../models/weapon-system/bonus/WeaponBonusEffect";
 import { ProjectileType } from "../projectile/ProjectileType";
-import { GameBonusType } from "./GameBonusTypeS";
+import { GameBonusType } from "./GameBonusTypes";
 import { IGameBonusCharacteristics } from "./IGameBonusCharacteristics";
 
 

@@ -1,4 +1,4 @@
-import { GameBonusType } from "../../../../entities/bonus/GameBonusTypeS";
+import { GameBonusType } from "../../../../entities/bonus/GameBonusTypes";
 import { GameBonusDesign } from "../../../models/GameBonusDesign";
 
 export const gameBonusDesigns: Record<GameBonusType, GameBonusDesign> = {
