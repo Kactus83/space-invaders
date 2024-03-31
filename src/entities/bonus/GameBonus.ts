@@ -1,22 +1,32 @@
+import { ThemeManager } from "../../themes/services/ThemeManager";
 import { GameEntity } from "../GameEntity";
 import { BonusType } from "../models/bonus-system/BonusType";
 import { SpeedSystem } from "../models/speed-system/SpeedSystem";
 import { Player } from "../player/Player";
-import { IGameBonusCharacteristics } from "./IGameBonusCharacteristics";
+import { GameBonusType } from "./GameBonusTypeS";
+import { GameBonusSpecs } from "./GameBonusTypesSpecs";
 
 export class GameBonus extends GameEntity {
+    initialPosition: { x: number, y: number };
     bonus: BonusType;
+    type: GameBonusType;
     speedSystem: SpeedSystem;
 
-    constructor(characteristics: IGameBonusCharacteristics) {
+    constructor(type: GameBonusType, initialPosition: { x: number, y: number }) {
         super();
+        this.initialPosition = initialPosition;
+        this.type = type;
+        const characteristics = GameBonusSpecs[type];
         this.bonus = characteristics.bonus;
         this.speedSystem = new SpeedSystem(this, characteristics);
         // Initialisation supplémentaire si nécessaire
     }
 
     protected async loadDesign(): Promise<void> {
-        // Chargement du design SVG basé sur le type de bonus
+        const themeManager = ThemeManager.getInstance();
+        const design = themeManager.getTheme().getGameBonusDesign(this.type);
+        // Supposons que createFabricObject accepte un objet de design qui contient le chemin vers l'image SVG et d'autres propriétés
+        this.fabricObject = await this.createFabricObject(design, { x: this.initialPosition.x, y: this.initialPosition.y });
     }
 
     public update(deltaTime: number): void {
