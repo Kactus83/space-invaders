@@ -143,6 +143,7 @@ export class GamePlayScene implements IScene {
         return [
             this.player,
             this.groundLine,
+            ...this.gameBonus,
             ...this.invaders,
             ...this.walls,
             ...this.projectiles,

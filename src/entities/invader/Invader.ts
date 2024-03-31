@@ -192,7 +192,7 @@ export class Invader extends GameEntity implements IShooter {
         const bonus = this.bonusEmitterSystem.getPreparedBonus();
         if (bonus) {
             console.log("Bonus emitted");
-            bonus.setPosition({ x: this.fabricObject?.left ?? 0, y: this.fabricObject?.top ?? 0 });
+            bonus.setPosition({ x: this.fabricObject?.left ?? 300, y: this.fabricObject?.top ?? 400 });
         }
         return bonus;
     }
