@@ -1,11 +1,14 @@
 import { GameEntity } from "../../GameEntity";
+import { BonusReceiver } from "../bonus-system/BonusReceiver";
 import { ISpeedCharacteristics } from "./ISpeedCharacteristics";
+import { SpeedBonus } from "./SpeedBonus";
 
-export class SpeedSystem {
+export class SpeedSystem extends BonusReceiver<SpeedBonus> {
     private characteristics: ISpeedCharacteristics;
     private owner: GameEntity;
 
     constructor(owner: GameEntity, characteristics: ISpeedCharacteristics) {
+        super();
         this.owner = owner;
         this.characteristics = characteristics;
     }

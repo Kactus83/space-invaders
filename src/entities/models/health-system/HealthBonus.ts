@@ -1,9 +1,9 @@
 import { Bonus } from "../bonus-system/Bonus";
-import { BonusType } from "../bonus-system/BonusType";
+import { BonusTypes } from "../bonus-system/BonusTypes";
 import { HealthBonusEffect } from "./HealthBonusEffect";
 
 export class HealthBonus extends Bonus {
     constructor(effect: HealthBonusEffect) {
-        super(BonusType.Health, effect);
+        super(BonusTypes.Health, effect);
     }
 }

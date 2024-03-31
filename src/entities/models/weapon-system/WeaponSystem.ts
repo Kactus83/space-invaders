@@ -2,9 +2,11 @@ import { GameEntity } from "../../GameEntity";
 import { Player } from "../../player/Player";
 import { Projectile } from "../../projectile/Projectile";
 import { ProjectileType } from "../../projectile/ProjectileType";
+import { BonusReceiver } from "../bonus-system/BonusReceiver";
 import { IWeaponCharacteristics } from "./IWeaponCharacteristics";
+import { WeaponBonus } from "./WeaponBonus";
 
-export class WeaponSystem {
+export class WeaponSystem extends BonusReceiver<WeaponBonus> {
     projectileType: ProjectileType;
     fireRate: number;
     shootProbability: number;
@@ -14,6 +16,7 @@ export class WeaponSystem {
     private owner: GameEntity;
 
     constructor(owner: GameEntity, characteristics: IWeaponCharacteristics) {
+        super();
         this.owner = owner;
         this.projectileType = characteristics.projectileType;
         this.fireRate = characteristics.fireRate;

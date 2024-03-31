@@ -1,13 +1,13 @@
-import { BonusType } from "./BonusType";
+import { BonusTypes } from "./BonusTypes";
 import { IBonusEffect } from "./IBonusEffect";
 
 export abstract class Bonus {
-    protected type: BonusType;
+    protected type: BonusTypes;
     public readonly effect: IBonusEffect;
     protected activationTimestamp: number | null = null;
     protected state: 'available' | 'active' | 'expired' = 'available';
 
-    constructor(type: BonusType, effect: IBonusEffect) {
+    constructor(type: BonusTypes, effect: IBonusEffect) {
         this.type = type;
         this.effect = effect;
     }
