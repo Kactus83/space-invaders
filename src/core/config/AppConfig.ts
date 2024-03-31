@@ -12,6 +12,7 @@ export class AppConfig implements IGlobalConfig {
     public readonly wall_Size: number = 8;
     public readonly rushLineLimit: number = 300;
     public readonly rushProbability: number = 0.001;
+    public readonly bonusBaseSpeed: number = 25;
 
     // Game Settings
     public god_Mode: boolean = false;

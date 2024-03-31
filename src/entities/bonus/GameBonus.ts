@@ -1,13 +1,17 @@
 import { GameEntity } from "../GameEntity";
+import { BonusType } from "../models/bonus-system/BonusType";
+import { SpeedSystem } from "../models/speed-system/SpeedSystem";
 import { Player } from "../player/Player";
-import { IBonusCharacteristics } from "./IBonusCharacteristics";
+import { IGameBonusCharacteristics } from "./IGameBonusCharacteristics";
 
-export class Bonus extends GameEntity {
-    characteristics: IBonusCharacteristics;
+export class GameBonus extends GameEntity {
+    bonus: BonusType;
+    speedSystem: SpeedSystem;
 
-    constructor(characteristics: IBonusCharacteristics) {
+    constructor(characteristics: IGameBonusCharacteristics) {
         super();
-        this.characteristics = characteristics;
+        this.bonus = characteristics.bonus;
+        this.speedSystem = new SpeedSystem(this, characteristics);
         // Initialisation supplémentaire si nécessaire
     }
 
