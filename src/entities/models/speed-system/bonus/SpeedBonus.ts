@@ -1,5 +1,5 @@
-import { Bonus } from "../bonus-system/Bonus";
-import { BonusTypes } from "../bonus-system/BonusTypes";
+import { Bonus } from "../../bonus-system/Bonus";
+import { BonusTypes } from "../../bonus-system/BonusTypes";
 import { SpeedBonusEffect } from "./SpeedBonusEffect";
 
 export class SpeedBonus extends Bonus {

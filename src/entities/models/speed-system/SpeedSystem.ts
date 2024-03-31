@@ -1,7 +1,7 @@
 import { GameEntity } from "../../GameEntity";
 import { BonusReceiver } from "../bonus-system/BonusReceiver";
 import { ISpeedCharacteristics } from "./ISpeedCharacteristics";
-import { SpeedBonus } from "./SpeedBonus";
+import { SpeedBonus } from "./bonus/SpeedBonus";
 
 export class SpeedSystem extends BonusReceiver<SpeedBonus> {
     private characteristics: ISpeedCharacteristics;

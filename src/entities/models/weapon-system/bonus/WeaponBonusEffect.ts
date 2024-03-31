@@ -1,7 +1,7 @@
-import { ProjectileType } from "../../projectile/ProjectileType";
-import { BonusEffectType } from "../bonus-system/BonusEffectType";
-import { IBonusEffect } from "../bonus-system/IBonusEffect";
-import { IWeaponCharacteristics } from "./IWeaponCharacteristics";
+import { ProjectileType } from "../../../projectile/ProjectileType";
+import { BonusEffectType } from "../../bonus-system/BonusEffectType";
+import { IBonusEffect } from "../../bonus-system/IBonusEffect";
+import { IWeaponCharacteristics } from "../IWeaponCharacteristics";
 
 export class WeaponBonusEffect implements IBonusEffect, IWeaponCharacteristics {
     duration: number;

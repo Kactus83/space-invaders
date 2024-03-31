@@ -2,8 +2,8 @@ import { GameEntity } from "../../GameEntity";
 import { HealthState } from "../../types/HealthState";
 import { BonusEffectType } from "../bonus-system/BonusEffectType";
 import { BonusReceiver } from "../bonus-system/BonusReceiver";
-import { HealthBonus } from "./HealthBonus";
-import { HealthBonusEffect } from "./HealthBonusEffect";
+import { HealthBonus } from "./bonus/HealthBonus";
+import { HealthBonusEffect } from "./bonus/HealthBonusEffect";
 import { IHealthCharacteristics } from "./IHealthCharasteristics";
 
 export class HealthSystem  extends BonusReceiver<HealthBonus> {

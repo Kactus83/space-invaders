@@ -4,7 +4,7 @@ import { Projectile } from "../../projectile/Projectile";
 import { ProjectileType } from "../../projectile/ProjectileType";
 import { BonusReceiver } from "../bonus-system/BonusReceiver";
 import { IWeaponCharacteristics } from "./IWeaponCharacteristics";
-import { WeaponBonus } from "./WeaponBonus";
+import { WeaponBonus } from "./bonus/WeaponBonus";
 
 export class WeaponSystem extends BonusReceiver<WeaponBonus> {
     projectileType: ProjectileType;

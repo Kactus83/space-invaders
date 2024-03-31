@@ -1,5 +1,5 @@
-import { HealthBonus } from "../health-system/HealthBonus";
-import { SpeedBonus } from "../speed-system/SpeedBonus";
-import { WeaponBonus } from "../weapon-system/WeaponBonus";
+import { HealthBonus } from "../health-system/bonus/HealthBonus";
+import { SpeedBonus } from "../speed-system/bonus/SpeedBonus";
+import { WeaponBonus } from "../weapon-system/bonus/WeaponBonus";
 
 export type BonusType = HealthBonus | SpeedBonus | WeaponBonus;

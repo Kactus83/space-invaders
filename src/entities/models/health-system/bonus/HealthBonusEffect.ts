@@ -1,6 +1,6 @@
-import { BonusEffectType } from "../bonus-system/BonusEffectType";
-import { IBonusEffect } from "../bonus-system/IBonusEffect";
-import { IHealthCharacteristics } from "./IHealthCharasteristics";
+import { BonusEffectType } from "../../bonus-system/BonusEffectType";
+import { IBonusEffect } from "../../bonus-system/IBonusEffect";
+import { IHealthCharacteristics } from "../IHealthCharasteristics";
 
 export class HealthBonusEffect implements IBonusEffect, IHealthCharacteristics {
     duration: number; 

@@ -28,7 +28,7 @@ export abstract class Bonus {
     }
 
     // Getter pour le type de bonus
-    getType(): BonusType {
+    getType(): BonusTypes {
         return this.type;
     }
 
