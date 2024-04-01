@@ -33,7 +33,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         projectileType: ProjectileType.None,
         fireRate: 1,
         shootProbability: 0,
-        emitProbability: 0.5,
+        emitProbability: 0.05,
         bonusTypes: [GameBonusType.Speed_Increase_5_Speed_60sec],
     },
     [InvaderType.Basic]: {
@@ -49,8 +49,8 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         projectileType: ProjectileType.Light,
         fireRate: 2,
         shootProbability: 0.002,
-        emitProbability: 0,
-        bonusTypes: [],
+        emitProbability: 0.01,
+        bonusTypes: [GameBonusType.Health_Increase_5_Shield_60sec],
     },
     [InvaderType.Medium]: {
         type: InvaderType.Medium,
@@ -65,8 +65,8 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         projectileType: ProjectileType.Basic,
         fireRate: 4,
         shootProbability: 0.0035,
-        emitProbability: 0,
-        bonusTypes: [],
+        emitProbability: 0.005,
+        bonusTypes: [GameBonusType.Weapon_Increase_2_FireRate_60sec],
     },
     [InvaderType.Strong]: {
         type: InvaderType.Strong,
@@ -81,8 +81,8 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         projectileType: ProjectileType.Medium,
         fireRate: 4,
         shootProbability: 0.0001,
-        emitProbability: 0,
-        bonusTypes: [],
+        emitProbability: 0.02,
+        bonusTypes: [GameBonusType.Health_Increase_5_Shield_60sec],
     },
     [InvaderType.Advanced]: {
         type: InvaderType.Advanced,
@@ -97,8 +97,8 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         projectileType: ProjectileType.Advanced,
         fireRate: 3,
         shootProbability: 0.0004,
-        emitProbability: 0,
-        bonusTypes: [],
+        emitProbability: 0.005,
+        bonusTypes: [GameBonusType.Weapon_Double_FireRate_30sec],
     },
     [InvaderType.Heavy]: {
         type: InvaderType.Heavy,
@@ -113,7 +113,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         projectileType: ProjectileType.Advanced,
         fireRate: 3,
         shootProbability: 0.0001,
-        emitProbability: 0,
+        emitProbability: 0.1,
         bonusTypes: [GameBonusType.Health_Increase_5_Shield_60sec],
     },
     [InvaderType.Elite]: {
@@ -129,8 +129,8 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         projectileType: ProjectileType.Heavy,
         fireRate: 5,
         shootProbability: 0.0005,
-        emitProbability: 0,
-        bonusTypes: [],
+        emitProbability: 0.05,
+        bonusTypes: [GameBonusType.Weapon_Double_FireRate_30sec],
     },
     [InvaderType.Boss]: {
         type: InvaderType.Boss,
@@ -145,7 +145,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         projectileType: ProjectileType.Ultimate,
         fireRate: 6,
         shootProbability: 0.002,
-        emitProbability: 0,
+        emitProbability: 1,
         bonusTypes: [GameBonusType.Health_Double_Shield_30sec, GameBonusType.Weapon_Double_FireRate_30sec],
     },
 };
