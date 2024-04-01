@@ -6,11 +6,13 @@ import { UserInputType } from "../../core/input-manager/UserInputType";
 import { Player } from "../../entities/player/Player";
 import { GroundLine } from "../../entities/ground-line/GroundLine";
 import { AppConfig } from "../../core/config/AppConfig";
+import { BonusDisplayComponent } from "../bonus-display/BonusDisplayComponent";
 
 export class HUD implements IRenderable, IInteractive {
     private visible: boolean = true;
     private player: Player;
     private groundLine: GroundLine;
+    private bonusDisplayComponent: BonusDisplayComponent;
     private fabricObjects: fabric.Object[] = [];
     private subscriptionId: number;
 
@@ -19,6 +21,7 @@ export class HUD implements IRenderable, IInteractive {
         this.groundLine = groundLine;
         const inputManager = InputManager.getInstance();
         this.subscriptionId = inputManager.subscribe(this);
+        this.bonusDisplayComponent = new BonusDisplayComponent(player.bonusManagementSystem.getBonusInventory());
         this.updateHUD();
     }
 
@@ -66,6 +69,10 @@ export class HUD implements IRenderable, IInteractive {
             originY: 'center',
         });
         this.fabricObjects.push(groundLineText);
+
+        // Bonus
+        this.bonusDisplayComponent.setBonuses(this.player.bonusManagementSystem.getBonusInventory());
+        this.fabricObjects.push(...this.bonusDisplayComponent.getDrawableObjects());
     }
 
     async getDrawableObjects(): Promise<fabric.Object[]> {
