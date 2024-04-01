@@ -13,6 +13,8 @@ export class AppConfig implements IGlobalConfig {
     public readonly rushLineLimit: number = 300;
     public readonly rushProbability: number = 0.001;
     public readonly bonusBaseSpeed: number = 25;
+    public readonly shiftX_max: number = 50;
+    public readonly shiftX_Probability: number = 0.01;
 
     // Game Settings
     public god_Mode: boolean = false;

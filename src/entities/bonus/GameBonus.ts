@@ -11,6 +11,8 @@ import { GameBonusSpecs } from "./GameBonusTypesSpecs";
 
 export class GameBonus extends GameEntity {
     initialPosition: { x: number, y: number };
+    private targetX: number;
+    private lastChangeTime: number = 0;
     systemBonus: SystemBonusType;
     type: GameBonusType;
     speedSystem: SpeedSystem;
@@ -22,6 +24,7 @@ export class GameBonus extends GameEntity {
         const characteristics = GameBonusSpecs[type];
         this.systemBonus = characteristics.systemBonus;
         this.speedSystem = new SpeedSystem(this, characteristics);
+        this.targetX = Math.random() * AppConfig.getInstance().canvasWidth;
         // Initialisation supplémentaire si nécessaire
     }
 
@@ -33,24 +36,35 @@ export class GameBonus extends GameEntity {
     }
 
     public update(deltaTime: number): void {
-        // Vérifier si l'objet fabric existe avant de tenter de le déplacer
-        if (this.fabricObject) {
-            // Convertir deltaTime de millisecondes à secondes pour le calcul de la vitesse
-            const deltaTimeInSeconds = deltaTime / 1000;
+        if (!this.fabricObject) return;
     
-            // Calculer le déplacement basé sur la vitesse du bonus
-            const movement = this.speedSystem.moveSpeed * deltaTimeInSeconds;
+        const deltaTimeInSeconds = deltaTime / 1000;
+        const verticalMovement = this.speedSystem.moveSpeed * deltaTimeInSeconds;
+        this.fabricObject.top += verticalMovement;
     
-            // Mettre à jour la position verticale du bonus
-            this.fabricObject.top += movement;
+        // Dérive latérale vers la position cible
+        if (Math.random() < AppConfig.getInstance().shiftX_Probability) {
+            // Déterminer la direction de la dérive basée sur la position cible
+            const direction = this.targetX > this.fabricObject.left ? 1 : -1;
+            // Calculer le mouvement latéral avec une valeur aléatoire jusqu'à shiftX_max
+            const lateralMovement = direction * (Math.random() * AppConfig.getInstance().shiftX_max);
+            this.fabricObject.left += lateralMovement;
+            
+            // Assurer que le bonus reste dans les limites du canvas
+            this.fabricObject.left = Math.max(0, Math.min(this.fabricObject.left, AppConfig.getInstance().canvasWidth - this.fabricObject.width));
+        }
     
-            // Vérifier si le bonus est sorti du bas du canvas et le marquer pour suppression si nécessaire
+        // Vérifier si le bonus a atteint sa cible X ou est sorti du bas du canvas
+        if (Math.abs(this.fabricObject.left - this.targetX) < AppConfig.getInstance().shiftX_max || this.fabricObject.top > AppConfig.getInstance().canvasHeight) {
             if (this.fabricObject.top > AppConfig.getInstance().canvasHeight) {
-                console.log('Bonus is out of canvas');
                 this.state = EntityState.ToBeRemoved;
+            } else {
+                // Changer la position cible X
+                this.targetX = Math.random() * AppConfig.getInstance().canvasWidth;
             }
         }
-    }   
+    }
+        
 
     onCollisionWith(entity: GameEntity): void {
         if (entity instanceof Player) {
