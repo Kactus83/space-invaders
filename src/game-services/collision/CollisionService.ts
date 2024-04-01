@@ -1,4 +1,5 @@
 import { GameEntity } from "../../entities/GameEntity";
+import { GameBonus } from "../../entities/bonus/GameBonus";
 import { GroundLine } from "../../entities/ground-line/GroundLine";
 import { Invader } from "../../entities/invader/Invader";
 import { Player } from "../../entities/player/Player";
@@ -13,6 +14,7 @@ export class CollisionService {
     private walls: Wall[] = [];
     private projectiles: GameEntity[] = [];
     private groundLines: GroundLine[] = [];
+    private gameBonus: GameBonus[] = [];
 
     /**
      * Register an entity to the collision service
@@ -29,6 +31,8 @@ export class CollisionService {
             this.projectiles.push(entity);
         } else if (entity instanceof GroundLine) {
             this.groundLines.push(entity);
+        } else if (entity instanceof GameBonus) {
+            this.gameBonus.push(entity);
         }
     }
     /**
@@ -126,6 +130,27 @@ export class CollisionService {
                 });
             }
         });
+
+        // Vérifications des collisions pour les bonus
+        this.gameBonus.forEach(bonus => {
+            // Collision Bonus avec Player
+            this.players.forEach(player => {
+                if (this.areColliding(bonus, player)) {
+                    bonus.onCollisionWith(player);
+                    player.onCollisionWith(bonus);
+                }
+            });
+    
+            // Collision Bonus avec GroundLine
+            if (bonus.isInCollisionZone()) {
+                this.groundLines.forEach(groundLine => {
+                    if (this.areColliding(bonus, groundLine)) {
+                        bonus.onCollisionWith(groundLine);
+                        groundLine.onCollisionWith(bonus);
+                    }
+                });
+            }
+        });
     }    
 
     /**
@@ -160,6 +185,8 @@ export class CollisionService {
             return this.projectiles;
         } else if (entity instanceof GroundLine) {
             return this.groundLines;
+        }else if (entity instanceof GameBonus) {
+            return this.gameBonus;
         }
         throw new Error("Unknown entity type");
     }

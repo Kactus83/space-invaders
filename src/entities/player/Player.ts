@@ -3,7 +3,9 @@ import { IInteractive } from "../../core/input-manager/IInteractive";
 import { InputManager } from "../../core/input-manager/InputManager";
 import { UserInputType } from "../../core/input-manager/UserInputType";
 import { GameEntity } from "../GameEntity";
+import { GameBonus } from "../bonus/GameBonus";
 import { Invader } from "../invader/Invader";
+import { BonusManagementSystem } from "../models/bonus-system/bonus-management/BonusManagementSystem";
 import { HealthSystem } from "../models/health-system/HealthSystem";
 import { LevelSystem } from "../models/level-system/LevelSystem";
 import { SpeedSystem } from "../models/speed-system/SpeedSystem";
@@ -20,6 +22,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
     public healthSystem: HealthSystem;
     public weaponSystem: WeaponSystem;
     public levelSystem: LevelSystem;
+    public bonusManagementSystem: BonusManagementSystem;
 
     constructor() {
         super();
@@ -29,6 +32,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         this.healthSystem = new HealthSystem(this, levelCharacteristics);
         this.weaponSystem = new WeaponSystem(this, levelCharacteristics);
         this.levelSystem = new LevelSystem(this, 1);
+        this.bonusManagementSystem = new BonusManagementSystem(this);
     }
     
     public async loadDesign(): Promise<void> {
@@ -64,6 +68,8 @@ export class Player extends GameEntity implements IInteractive, IShooter {
             // Logique de collision avec les murs
         } else if (entity instanceof Invader) {
             this.healthSystem.takeDamage(entity.healthSystem.damage);
+        } else if (entity instanceof GameBonus) {
+            this.bonusManagementSystem.addBonusToInventory(entity.systemBonus);
         } else {
             throw new Error("Unknown entity type");
         }

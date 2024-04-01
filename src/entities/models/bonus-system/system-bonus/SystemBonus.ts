@@ -1,13 +1,13 @@
-import { BonusTypes } from "./BonusTypes";
-import { IBonusEffect } from "./IBonusEffect";
+import { SystemBonusTypes } from "./SystemBonusTypes";
+import { ISystemBonusEffect } from "./ISystemBonusEffect";
 
-export abstract class Bonus {
-    protected type: BonusTypes;
-    public readonly effect: IBonusEffect;
+export abstract class SystemBonus {
+    protected type: SystemBonusTypes;
+    public readonly effect: ISystemBonusEffect;
     protected activationTimestamp: number | null = null;
     protected state: 'available' | 'active' | 'expired' = 'available';
 
-    constructor(type: BonusTypes, effect: IBonusEffect) {
+    constructor(type: SystemBonusTypes, effect: ISystemBonusEffect) {
         this.type = type;
         this.effect = effect;
     }
@@ -28,7 +28,7 @@ export abstract class Bonus {
     }
 
     // Getter pour le type de bonus
-    getType(): BonusTypes {
+    getType(): SystemBonusTypes {
         return this.type;
     }
 

@@ -1,6 +1,6 @@
-import { Bonus } from "./Bonus";
+import { SystemBonus } from "../system-bonus/SystemBonus";
 
-export abstract class BonusReceiver<T extends Bonus> {
+export abstract class BonusReceiverTemplate<T extends SystemBonus> {
     protected temporaryBonus: T | null = null;
     protected permanentBonus: T | null = null;
 

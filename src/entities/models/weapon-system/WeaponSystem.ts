@@ -2,11 +2,11 @@ import { GameEntity } from "../../GameEntity";
 import { Player } from "../../player/Player";
 import { Projectile } from "../../projectile/Projectile";
 import { ProjectileType } from "../../projectile/ProjectileType";
-import { BonusReceiver } from "../bonus-system/BonusReceiver";
+import { BonusReceiverTemplate } from "../bonus-system/bonus-receiver/BonusReceiverTemplate";
 import { IWeaponCharacteristics } from "./IWeaponCharacteristics";
 import { WeaponBonus } from "./bonus/WeaponBonus";
 
-export class WeaponSystem extends BonusReceiver<WeaponBonus> {
+export class WeaponSystem extends BonusReceiverTemplate<WeaponBonus> {
     projectileType: ProjectileType;
     fireRate: number;
     shootProbability: number;

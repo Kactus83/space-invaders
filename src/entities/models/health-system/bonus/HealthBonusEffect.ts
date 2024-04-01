@@ -1,10 +1,10 @@
-import { BonusEffectType } from "../../bonus-system/BonusEffectType";
-import { IBonusEffect } from "../../bonus-system/IBonusEffect";
+import { SystemBonusEffectType } from "../../bonus-system/system-bonus/SystemBonusEffectType";
+import { ISystemBonusEffect } from "../../bonus-system/system-bonus/ISystemBonusEffect";
 import { IHealthCharacteristics } from "../IHealthCharasteristics";
 
-export class HealthBonusEffect implements IBonusEffect, IHealthCharacteristics {
+export class HealthBonusEffect implements ISystemBonusEffect, IHealthCharacteristics {
     duration: number; 
-    effectType: BonusEffectType;
+    effectType: SystemBonusEffectType;
     hp: number;
     shield: number;
     damage: number;
@@ -12,7 +12,7 @@ export class HealthBonusEffect implements IBonusEffect, IHealthCharacteristics {
 
     constructor(
         duration: number,
-        effectType: BonusEffectType,
+        effectType: SystemBonusEffectType,
         hp: number,
         shield: number,
         damage: number,

@@ -163,6 +163,7 @@ export class GamePlayScene implements IScene {
                 if(bonus) {
                     console.log("Bonus created");
                     this.gameBonus.push(bonus);
+                    this.collisionService.registerEntity(bonus);
                 }
                 this.collisionService.unregisterEntity(invader);
                 return false;
@@ -183,6 +184,15 @@ export class GamePlayScene implements IScene {
         this.walls = this.walls.filter(wall => {
             if (wall.state === EntityState.ToBeRemoved) {
                 this.collisionService.unregisterEntity(wall);
+                return false;
+            }
+            return true;
+        });
+
+        // Applique le même principe aux bonus
+        this.gameBonus = this.gameBonus.filter(bonus => {
+            if (bonus.state === EntityState.ToBeRemoved) {
+                this.collisionService.unregisterEntity(bonus);
                 return false;
             }
             return true;

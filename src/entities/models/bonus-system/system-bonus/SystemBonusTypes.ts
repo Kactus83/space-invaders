@@ -1,4 +1,4 @@
-export enum BonusTypes {
+export enum SystemBonusTypes {
     Health,
     Speed,
     Weapon,

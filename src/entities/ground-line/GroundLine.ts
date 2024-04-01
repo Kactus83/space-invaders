@@ -6,6 +6,7 @@ import { Player } from "../player/Player";
 import { Projectile } from "../projectile/Projectile";
 import { Wall } from "../wall/Wall";
 import { Invader } from "../invader/Invader";
+import { GameBonus } from "../bonus/GameBonus";
 
 export class GroundLine extends GameEntity {
     public  level: number = 1;
@@ -60,6 +61,8 @@ export class GroundLine extends GameEntity {
             // Logique de collision avec les murs
         } else if (entity instanceof Invader) {
             this.healthSystem.takeDamage(entity.healthSystem.damage);
+        } else if (entity instanceof GameBonus) {
+            // Logique de collision avec les bonus
         } else {
             throw new Error("Unknown entity type");
         }

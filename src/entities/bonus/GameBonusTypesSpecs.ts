@@ -1,5 +1,5 @@
 import { AppConfig } from "../../core/config/AppConfig";
-import { BonusEffectType } from "../models/bonus-system/BonusEffectType";
+import { SystemBonusEffectType } from "../models/bonus-system/system-bonus/SystemBonusEffectType";
 import { HealthBonus } from "../models/health-system/bonus/HealthBonus";
 import { HealthBonusEffect } from "../models/health-system/bonus/HealthBonusEffect";
 import { SpeedBonus } from "../models/speed-system/bonus/SpeedBonus";
@@ -13,27 +13,27 @@ import { IGameBonusCharacteristics } from "./IGameBonusCharacteristics";
 
 export const GameBonusSpecs: Record<GameBonusType, IGameBonusCharacteristics> = {
     [GameBonusType.Health_Double_Shield_30sec]: {
-        bonus: new HealthBonus(new HealthBonusEffect(30, BonusEffectType.Multiplicative, 1, 2, 1, 1)),
+        systemBonus: new HealthBonus(new HealthBonusEffect(30, SystemBonusEffectType.Multiplicative, 1, 2, 1, 1)),
         moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
     },
     [GameBonusType.Health_Increase_5_Shield_60sec]: {
-        bonus: new HealthBonus(new HealthBonusEffect(60, BonusEffectType.Additive, 0, 5, 0, 0)),
+        systemBonus: new HealthBonus(new HealthBonusEffect(60, SystemBonusEffectType.Additive, 0, 5, 0, 0)),
         moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
     },
     [GameBonusType.Weapon_Double_FireRate_30sec]: {
-        bonus: new WeaponBonus(new WeaponBonusEffect(30, BonusEffectType.Multiplicative, 2, ProjectileType.None, 1)),
+        systemBonus: new WeaponBonus(new WeaponBonusEffect(30, SystemBonusEffectType.Multiplicative, 2, ProjectileType.None, 1)),
         moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
     },
     [GameBonusType.Weapon_Increase_2_FireRate_60sec]: {
-        bonus: new WeaponBonus(new WeaponBonusEffect(60, BonusEffectType.Additive, 2, ProjectileType.None, 0)),
+        systemBonus: new WeaponBonus(new WeaponBonusEffect(60, SystemBonusEffectType.Additive, 2, ProjectileType.None, 0)),
         moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
     }, 
     [GameBonusType.Speed_Double_Speed_30sec]: {
-        bonus: new SpeedBonus(new SpeedBonusEffect(30, BonusEffectType.Multiplicative, 2)),
+        systemBonus: new SpeedBonus(new SpeedBonusEffect(30, SystemBonusEffectType.Multiplicative, 2)),
         moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
     },
     [GameBonusType.Speed_Increase_5_Speed_60sec]: {
-        bonus: new SpeedBonus(new SpeedBonusEffect(60, BonusEffectType.Additive, 5)),
+        systemBonus: new SpeedBonus(new SpeedBonusEffect(60, SystemBonusEffectType.Additive, 5)),
         moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
     },
 };

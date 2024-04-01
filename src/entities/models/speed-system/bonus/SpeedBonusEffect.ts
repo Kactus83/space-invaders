@@ -1,15 +1,15 @@
-import { BonusEffectType } from "../../bonus-system/BonusEffectType";
-import { IBonusEffect } from "../../bonus-system/IBonusEffect";
+import { SystemBonusEffectType } from "../../bonus-system/system-bonus/SystemBonusEffectType";
+import { ISystemBonusEffect } from "../../bonus-system/system-bonus/ISystemBonusEffect";
 import { ISpeedCharacteristics } from "../ISpeedCharacteristics";
 
-export class SpeedBonusEffect implements IBonusEffect, ISpeedCharacteristics {
+export class SpeedBonusEffect implements ISystemBonusEffect, ISpeedCharacteristics {
     duration: number;
-    effectType: BonusEffectType;
+    effectType: SystemBonusEffectType;
     moveSpeed: number;
 
     constructor(
         duration: number,
-        effectType: BonusEffectType,
+        effectType: SystemBonusEffectType,
         moveSpeed: number,
     ) {
         this.duration = duration;

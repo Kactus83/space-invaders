@@ -1,18 +1,18 @@
 import { ProjectileType } from "../../../projectile/ProjectileType";
-import { BonusEffectType } from "../../bonus-system/BonusEffectType";
-import { IBonusEffect } from "../../bonus-system/IBonusEffect";
+import { SystemBonusEffectType } from "../../bonus-system/system-bonus/SystemBonusEffectType";
+import { ISystemBonusEffect } from "../../bonus-system/system-bonus/ISystemBonusEffect";
 import { IWeaponCharacteristics } from "../IWeaponCharacteristics";
 
-export class WeaponBonusEffect implements IBonusEffect, IWeaponCharacteristics {
+export class WeaponBonusEffect implements ISystemBonusEffect, IWeaponCharacteristics {
     duration: number;
-    effectType: BonusEffectType;
+    effectType: SystemBonusEffectType;
     projectileType: ProjectileType;
     fireRate: number;
     shootProbability: number;
     
     constructor(
         duration: number,
-        effectType: BonusEffectType,
+        effectType: SystemBonusEffectType,
         fireRate: number,
         projectileType: ProjectileType,
         shootProbability: number,

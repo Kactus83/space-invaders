@@ -1,9 +1,9 @@
-import { Bonus } from "../../bonus-system/Bonus";
-import { BonusTypes } from "../../bonus-system/BonusTypes";
+import { SystemBonus } from "../../bonus-system/system-bonus/SystemBonus";
+import { SystemBonusTypes } from "../../bonus-system/system-bonus/SystemBonusTypes";
 import { SpeedBonusEffect } from "./SpeedBonusEffect";
 
-export class SpeedBonus extends Bonus {
+export class SpeedBonus extends SystemBonus {
     constructor(effect: SpeedBonusEffect) {
-        super(BonusTypes.Speed, effect);
+        super(SystemBonusTypes.Speed, effect);
     }
 }

@@ -2,17 +2,16 @@ import { AppConfig } from "../../core/config/AppConfig";
 import { ThemeManager } from "../../themes/services/ThemeManager";
 import { GameEntity } from "../GameEntity";
 import { GroundLine } from "../ground-line/GroundLine";
-import { BonusType } from "../models/bonus-system/BonusType";
+import { SystemBonusType } from "../models/bonus-system/system-bonus/SystemBonusType";
 import { SpeedSystem } from "../models/speed-system/SpeedSystem";
 import { Player } from "../player/Player";
 import { EntityState } from "../types/EntityState";
 import { GameBonusType } from "./GameBonusTypes";
 import { GameBonusSpecs } from "./GameBonusTypesSpecs";
-import { fabric } from "fabric";
 
 export class GameBonus extends GameEntity {
     initialPosition: { x: number, y: number };
-    bonus: BonusType;
+    systemBonus: SystemBonusType;
     type: GameBonusType;
     speedSystem: SpeedSystem;
 
@@ -21,7 +20,7 @@ export class GameBonus extends GameEntity {
         this.initialPosition = initialPosition;
         this.type = type;
         const characteristics = GameBonusSpecs[type];
-        this.bonus = characteristics.bonus;
+        this.systemBonus = characteristics.systemBonus;
         this.speedSystem = new SpeedSystem(this, characteristics);
         // Initialisation supplémentaire si nécessaire
     }
@@ -55,7 +54,7 @@ export class GameBonus extends GameEntity {
 
     onCollisionWith(entity: GameEntity): void {
         if (entity instanceof Player) {
-            // Appliquer le bonus au joueur
+            this.state = EntityState.ToBeRemoved;
         }
         if (entity instanceof GroundLine) {
             this.state = EntityState.ToBeRemoved;

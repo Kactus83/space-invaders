@@ -1,12 +1,12 @@
 import { GameEntity } from "../../GameEntity";
 import { HealthState } from "../../types/HealthState";
-import { BonusEffectType } from "../bonus-system/BonusEffectType";
-import { BonusReceiver } from "../bonus-system/BonusReceiver";
+import { SystemBonusEffectType } from "../bonus-system/system-bonus/SystemBonusEffectType";
+import { BonusReceiverTemplate } from "../bonus-system/bonus-receiver/BonusReceiverTemplate";
 import { HealthBonus } from "./bonus/HealthBonus";
 import { HealthBonusEffect } from "./bonus/HealthBonusEffect";
 import { IHealthCharacteristics } from "./IHealthCharasteristics";
 
-export class HealthSystem  extends BonusReceiver<HealthBonus> {
+export class HealthSystem  extends BonusReceiverTemplate<HealthBonus> {
     healthState: HealthState = HealthState.New;
     private characteristics: IHealthCharacteristics;
     private maxHP: number;
@@ -86,9 +86,9 @@ export class HealthSystem  extends BonusReceiver<HealthBonus> {
     // Nouvelle méthode pour appliquer un effet spécifique basé sur la caractéristique
     private applyEffect(value: number, effect: HealthBonusEffect, characteristic: keyof IHealthCharacteristics): number {
         const effectValue = effect[characteristic];
-        if (effect.effectType === BonusEffectType.Additive) {
+        if (effect.effectType === SystemBonusEffectType.Additive) {
             return value + effectValue;
-        } else if (effect.effectType === BonusEffectType.Multiplicative) {
+        } else if (effect.effectType === SystemBonusEffectType.Multiplicative) {
             return value * effectValue;
         }
         return value; // Cas par défaut si aucun effet n'est applicable

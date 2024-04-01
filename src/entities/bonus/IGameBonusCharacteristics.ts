@@ -1,7 +1,7 @@
-import { BonusType } from "../models/bonus-system/BonusType";
+import { SystemBonusType } from "../models/bonus-system/system-bonus/SystemBonusType";
 import { ISpeedCharacteristics } from "../models/speed-system/ISpeedCharacteristics";
 
 export interface IGameBonusCharacteristics extends ISpeedCharacteristics {
-    bonus: BonusType;
+    systemBonus: SystemBonusType;
     moveSpeed: number;
 }
