@@ -31,7 +31,7 @@ export const waveConfigs: WaveConfig[] = [
         ],
     },
     {
-        delay: 8, // Seconde vague après 20 secondes
+        delay: 18, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Medium, count: 5, row: 1 },
             { type: InvaderType.Medium, count: 5, row: 2 },
@@ -52,21 +52,28 @@ export const waveConfigs: WaveConfig[] = [
         ],
     },
     {
-        delay: 8, // Seconde vague après 20 secondes
+        delay: 18, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Basic, count: 5, row: 1 },
             { type: InvaderType.Heavy, count: 5, row: 2 },
         ],
     },
     {
-        delay: 10, // Seconde vague après 20 secondes
+        delay: 30, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Light, count: 5, row: 1 },
             { type: InvaderType.Light, count: 5, row: 2 },
         ],
     },
     {
-        delay: 25, // Seconde vague après 20 secondes
+        delay: 8, // Seconde vague après 20 secondes
+        invaders: [
+            { type: InvaderType.Light, count: 5, row: 1 },
+            { type: InvaderType.Light, count: 5, row: 2 },
+        ],
+    },
+    {
+        delay: 15, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Strong, count: 5, row: 1 },
             { type: InvaderType.Strong, count: 5, row: 2 },
@@ -97,7 +104,28 @@ export const waveConfigs: WaveConfig[] = [
         delay: 10, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Elite, count: 5, row: 1 },
+            { type: InvaderType.Elite, count: 5, row: 2 },
+        ],
+    },
+    {
+        delay: 15, // Seconde vague après 20 secondes
+        invaders: [
+            { type: InvaderType.Elite, count: 5, row: 1 },
             { type: InvaderType.Boss, count: 5, row: 2 },
+        ],
+    },
+    {
+        delay: 20, // Seconde vague après 20 secondes
+        invaders: [
+            { type: InvaderType.Boss, count: 5, row: 1 },
+            { type: InvaderType.Boss, count: 5, row: 2 },
+        ],
+    },
+    {
+        delay: 8, // Seconde vague après 20 secondes
+        invaders: [
+            { type: InvaderType.Light, count: 5, row: 1 },
+            { type: InvaderType.Light, count: 5, row: 2 },
         ],
     },
     // Ajoutez d'autres configurations de vague comme nécessaire
