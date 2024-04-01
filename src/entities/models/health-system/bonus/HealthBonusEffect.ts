@@ -3,6 +3,7 @@ import { ISystemBonusEffect } from "../../bonus-system/system-bonus/ISystemBonus
 import { IHealthCharacteristics } from "../IHealthCharasteristics";
 
 export class HealthBonusEffect implements ISystemBonusEffect, IHealthCharacteristics {
+    name: string;
     duration: number; 
     effectType: SystemBonusEffectType;
     hp: number;
@@ -11,6 +12,7 @@ export class HealthBonusEffect implements ISystemBonusEffect, IHealthCharacteris
     regenerationRate: number;
 
     constructor(
+        name: string,
         duration: number,
         effectType: SystemBonusEffectType,
         hp: number,
@@ -18,6 +20,7 @@ export class HealthBonusEffect implements ISystemBonusEffect, IHealthCharacteris
         damage: number,
         regenerationRate: number,
     ) {
+        this.name = name;
         this.duration = duration;
         this.effectType = effectType;
         this.hp = hp;

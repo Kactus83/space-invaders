@@ -4,6 +4,7 @@ import { ISystemBonusEffect } from "../../bonus-system/system-bonus/ISystemBonus
 import { IWeaponCharacteristics } from "../IWeaponCharacteristics";
 
 export class WeaponBonusEffect implements ISystemBonusEffect, IWeaponCharacteristics {
+    name: string;
     duration: number;
     effectType: SystemBonusEffectType;
     projectileType: ProjectileType;
@@ -11,12 +12,14 @@ export class WeaponBonusEffect implements ISystemBonusEffect, IWeaponCharacteris
     shootProbability: number;
     
     constructor(
+        name: string,
         duration: number,
         effectType: SystemBonusEffectType,
         fireRate: number,
         projectileType: ProjectileType,
         shootProbability: number,
     ) {
+        this.name = name;
         this.duration = duration;
         this.effectType = effectType;
         this.fireRate = fireRate;
