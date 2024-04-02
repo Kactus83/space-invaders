@@ -1,5 +1,7 @@
 import { AppConfig } from "../../core/config/AppConfig";
 import { SystemBonusEffectType } from "../models/bonus-system/system-bonus/SystemBonusEffectType";
+import { ExperienceBonus } from "../models/experience-system/bonus/ExperienceBonus";
+import { ExperienceBonusEffect } from "../models/experience-system/bonus/ExperienceBonusEffect";
 import { HealthBonus } from "../models/health-system/bonus/HealthBonus";
 import { HealthBonusEffect } from "../models/health-system/bonus/HealthBonusEffect";
 import { SpeedBonus } from "../models/speed-system/bonus/SpeedBonus";
@@ -34,6 +36,14 @@ export const GameBonusSpecs: Record<GameBonusType, IGameBonusCharacteristics> = 
     },
     [GameBonusType.Speed_Increase_5_Speed_60sec]: {
         systemBonus: new SpeedBonus(new SpeedBonusEffect("+5 Speed 60sec", 60, SystemBonusEffectType.Additive, 5)),
+        moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
+    },
+    [GameBonusType.Experience_Increase_1_Level]: {
+        systemBonus: new ExperienceBonus(new ExperienceBonusEffect("Increase 1 Level", 0, SystemBonusEffectType.Additive, 0, 0, 1)),
+        moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
+    },
+    [GameBonusType.Experience_Double_Score_60sec]: {
+        systemBonus: new ExperienceBonus(new ExperienceBonusEffect("Double Score 60sec", 60, SystemBonusEffectType.Multiplicative, 1, 0, 0)),
         moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
     },
 };

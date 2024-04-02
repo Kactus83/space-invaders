@@ -1,0 +1,6 @@
+<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="6" cy="14" r="3" fill="gold" />
+    <circle cx="14" cy="14" r="3" fill="gold" />
+    <path d="M10,2 L12,8 L18,8 L13,11 L15,17 L10,14 L5,17 L7,11 L2,8 L8,8 Z" fill="orange"/>
+    <text x="2" y="19" font-size="10" fill="darkorange">2X</text>
+</svg>

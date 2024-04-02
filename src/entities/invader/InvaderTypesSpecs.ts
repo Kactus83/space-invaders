@@ -98,7 +98,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         fireRate: 3,
         shootProbability: 0.0004,
         emitProbability: 0.005,
-        bonusTypes: [GameBonusType.Weapon_Double_FireRate_30sec],
+        bonusTypes: [GameBonusType.Weapon_Double_FireRate_30sec, GameBonusType.Experience_Double_Score_60sec],
     },
     [InvaderType.Heavy]: {
         type: InvaderType.Heavy,
@@ -130,7 +130,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         fireRate: 5,
         shootProbability: 0.0005,
         emitProbability: 0.05,
-        bonusTypes: [GameBonusType.Weapon_Double_FireRate_30sec],
+        bonusTypes: [GameBonusType.Weapon_Double_FireRate_30sec, GameBonusType.Experience_Double_Score_60sec],
     },
     [InvaderType.Boss]: {
         type: InvaderType.Boss,
@@ -146,6 +146,6 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         fireRate: 6,
         shootProbability: 0.002,
         emitProbability: 1,
-        bonusTypes: [GameBonusType.Health_Double_Shield_30sec, GameBonusType.Weapon_Double_FireRate_30sec],
+        bonusTypes: [GameBonusType.Health_Double_Shield_30sec, GameBonusType.Weapon_Double_FireRate_30sec, GameBonusType.Experience_Increase_1_Level],
     },
 };
