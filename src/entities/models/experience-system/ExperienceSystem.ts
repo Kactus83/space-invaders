@@ -1,9 +1,9 @@
 import { Player } from "../../player/Player";
 import { PlayerLevels } from "../../player/PlayerLevels";
-import { ILevelSystemCharacteristics } from "./ILevelSystemCharacteristics";
+import { IExperienceSystemCharacteristics } from "./IExperienceSystemCharacteristics";
 
-export class LevelSystem {
-    private characteristics: ILevelSystemCharacteristics;
+export class ExperienceSystem {
+    private characteristics: IExperienceSystemCharacteristics;
     private score: number = 0;
     private owner: Player;
 

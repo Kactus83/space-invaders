@@ -7,7 +7,7 @@ import { GameBonus } from "../bonus/GameBonus";
 import { Invader } from "../invader/Invader";
 import { BonusManagementSystem } from "../models/bonus-system/bonus-management/BonusManagementSystem";
 import { HealthSystem } from "../models/health-system/HealthSystem";
-import { LevelSystem } from "../models/level-system/LevelSystem";
+import { ExperienceSystem } from "../models/experience-system/ExperienceSystem";
 import { SpeedSystem } from "../models/speed-system/SpeedSystem";
 import { WeaponSystem } from "../models/weapon-system/WeaponSystem";
 import { Projectile } from "../projectile/Projectile";
@@ -21,7 +21,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
     public speedSystem: SpeedSystem;
     public healthSystem: HealthSystem;
     public weaponSystem: WeaponSystem;
-    public levelSystem: LevelSystem;
+    public levelSystem: ExperienceSystem;
     public bonusManagementSystem: BonusManagementSystem;
 
     constructor() {
@@ -31,7 +31,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         this.speedSystem = new SpeedSystem(this, levelCharacteristics);
         this.healthSystem = new HealthSystem(this, levelCharacteristics);
         this.weaponSystem = new WeaponSystem(this, levelCharacteristics);
-        this.levelSystem = new LevelSystem(this, 1);
+        this.levelSystem = new ExperienceSystem(this, 1);
         this.bonusManagementSystem = new BonusManagementSystem(this);
     }
     

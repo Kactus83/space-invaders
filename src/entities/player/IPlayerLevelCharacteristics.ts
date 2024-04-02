@@ -1,4 +1,4 @@
-import { ILevelSystemCharacteristics } from "../models/level-system/ILevelSystemCharacteristics";
+import { IExperienceSystemCharacteristics } from "../models/experience-system/IExperienceSystemCharacteristics";
 
-export interface IPlayerLevelCharacteristics extends ILevelSystemCharacteristics {
+export interface IPlayerLevelCharacteristics extends IExperienceSystemCharacteristics {
 }
