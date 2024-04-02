@@ -5,6 +5,7 @@ import { SystemBonusTypes } from "../system-bonus/SystemBonusTypes";
 
 export class BonusManagementSystem {
     private player: Player;
+    public availableBonuses: SystemBonus[] = [];
     public activeBonuses: SystemBonus[] = [];
 
     constructor(player: Player) {
@@ -13,8 +14,8 @@ export class BonusManagementSystem {
 
     // Ajouter un bonus et le placer correctement
     public addBonus(bonus: SystemBonus): void {
-        if (this.activeBonuses.length < 3) {
-            this.activateAndApplyBonus(bonus);
+        if (this.availableBonuses.length < 3) {
+            this.availableBonuses.push(bonus);
         } else {
             // Si les slots actifs sont pleins, le bonus va dans l'inventaire
             PlayerProfile.getInstance().getInventory().getBonusInventory().addBonus(bonus);
@@ -25,8 +26,10 @@ export class BonusManagementSystem {
     private activateAndApplyBonus(bonus: SystemBonus): void {
         bonus.activate();
         this.activeBonuses.push(bonus);
+        this.availableBonuses = this.availableBonuses.filter(b => b !== bonus);
         
         switch (bonus.getType()) {
+
             case SystemBonusTypes.Speed:
                 this.player.speedSystem.depositBonus(bonus);
                 break;
@@ -47,7 +50,7 @@ export class BonusManagementSystem {
 
     // Mise à jour régulière pour vérifier l'expiration des bonus
     public update(): void {
-        this.activeBonuses = this.activeBonuses.filter(bonus => {
+        this.availableBonuses = this.availableBonuses.filter(bonus => {
             if (bonus.getState() === 'expired') {
                 this.withdrawBonus(bonus); // Retirer le bonus expiré
                 return false; // Retirer de la liste des bonus actifs
@@ -86,8 +89,8 @@ export class BonusManagementSystem {
     }
 
     public activateFirstActiveBonus(): void {
-        if (this.activeBonuses.length > 0) {
-            this.activateAndApplyBonus(this.activeBonuses[0]);
+        if (this.availableBonuses.length > 0) {
+            this.activateAndApplyBonus(this.availableBonuses[0]);
         }
     }
 }
