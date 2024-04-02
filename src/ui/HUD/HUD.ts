@@ -21,7 +21,7 @@ export class HUD implements IRenderable, IInteractive {
         this.groundLine = groundLine;
         const inputManager = InputManager.getInstance();
         this.subscriptionId = inputManager.subscribe(this);
-        this.bonusDisplayComponent = new BonusDisplayComponent(player.bonusManagementSystem.getActiveBonuses());
+        this.bonusDisplayComponent = new BonusDisplayComponent(player.bonusManagementSystem.activeBonuses);
         this.updateHUD();
     }
 
@@ -71,7 +71,7 @@ export class HUD implements IRenderable, IInteractive {
         this.fabricObjects.push(groundLineText);
 
         // Bonus
-        this.bonusDisplayComponent.setBonuses(this.player.bonusManagementSystem.getActiveBonuses());
+        this.bonusDisplayComponent.setBonuses(this.player.bonusManagementSystem.activeBonuses);
         this.fabricObjects.push(...this.bonusDisplayComponent.getDrawableObjects());
     }
 

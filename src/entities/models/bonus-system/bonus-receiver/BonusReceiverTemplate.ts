@@ -1,27 +1,27 @@
 import { SystemBonus } from "../system-bonus/SystemBonus";
 
 export abstract class BonusReceiverTemplate<T extends SystemBonus> {
-    protected temporaryBonus: T | null = null;
-    protected permanentBonus: T | null = null;
+    protected currentBonus: T | null = null;
 
-    // Ajoute et active un bonus
-    addBonus(bonus: T): void {
-        if (bonus.effect.duration === Infinity) {
-            this.permanentBonus = bonus;
-        } else {
-            this.temporaryBonus = bonus;
-        }
-        bonus.activate();
+    // Déposer un bonus dans le système
+    public depositBonus(bonus: T): void {
+        this.currentBonus = bonus;
     }
 
-    // Vérifie et met à jour l'état des bonus
-    updateBonuses(): void {
-        if (this.temporaryBonus && this.temporaryBonus.getState() === 'active') {
-            this.temporaryBonus.checkExpiration();
-            if (this.temporaryBonus.getState() === 'expired') {
-                this.temporaryBonus = null;
-            }
-        }
-        // Ajout de logique pour le bonus permanent si nécessaire
+    // Retirer le bonus actuellement stocké
+    public withdrawBonus(): T | null {
+        const bonus = this.currentBonus;
+        this.currentBonus = null;
+        return bonus;
+    }
+
+    // Vérifier si le système possède un bonus actif
+    public hasActiveBonus(): boolean {
+        return this.currentBonus !== null;
+    }
+
+    // Récupérer le bonus actif (sans le retirer)
+    public getActiveBonus(): T | null {
+        return this.currentBonus;
     }
 }

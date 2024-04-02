@@ -4,7 +4,6 @@ import { SystemBonus } from "../system-bonus/SystemBonus";
 import { SystemBonusTypes } from "../system-bonus/SystemBonusTypes";
 
 export class BonusManagementSystem {
-    private static readonly MAX_ACTIVE_BONUSES = 3;
     private player: Player;
     public activeBonuses: SystemBonus[] = [];
 
@@ -12,46 +11,83 @@ export class BonusManagementSystem {
         this.player = player;
     }
 
-    // Ajouter un bonus à l'inventaire ou aux bonus actifs
+    // Ajouter un bonus et le placer correctement
     public addBonus(bonus: SystemBonus): void {
-        if (this.activeBonuses.length < BonusManagementSystem.MAX_ACTIVE_BONUSES) {
-            this.activateBonus(bonus);
+        if (this.activeBonuses.length < 3) {
+            this.activateAndApplyBonus(bonus);
         } else {
+            // Si les slots actifs sont pleins, le bonus va dans l'inventaire
             PlayerProfile.getInstance().getInventory().getBonusInventory().addBonus(bonus);
         }
     }
 
-    // Activer un bonus spécifique
-    private activateBonus(bonus: SystemBonus): void {
-        console.log("Activating bonus:", bonus.getType());
+    // Activer et appliquer un bonus spécifique
+    private activateAndApplyBonus(bonus: SystemBonus): void {
+        bonus.activate();
         this.activeBonuses.push(bonus);
+        
         switch (bonus.getType()) {
             case SystemBonusTypes.Speed:
-                this.player.speedSystem.addBonus(bonus);
+                this.player.speedSystem.depositBonus(bonus);
                 break;
             case SystemBonusTypes.Health:
-                this.player.healthSystem.addBonus(bonus);
+                this.player.healthSystem.depositBonus(bonus);
                 break;
             case SystemBonusTypes.Weapon:
-                this.player.weaponSystem.addBonus(bonus);
+                this.player.weaponSystem.depositBonus(bonus);
                 break;
             case SystemBonusTypes.Experience:
-                this.player.experienceSystem.addBonus(bonus);
+                this.player.experienceSystem.depositBonus(bonus);
                 break;
             default:
-                console.warn("Unhandled bonus type:", bonus.getType());
+                console.error("Unhandled bonus type:", bonus.getType());
+                break;
+        }
+    }
+
+    // Mise à jour régulière pour vérifier l'expiration des bonus
+    public update(): void {
+        this.activeBonuses = this.activeBonuses.filter(bonus => {
+            if (bonus.getState() === 'expired') {
+                this.withdrawBonus(bonus); // Retirer le bonus expiré
+                return false; // Retirer de la liste des bonus actifs
+            }
+            return true;
+        });
+    }
+
+    // Retirer un bonus du système correspondant
+    private withdrawBonus(bonus: SystemBonus): void {
+        switch (bonus.getType()) {
+            case SystemBonusTypes.Speed:
+                if (this.player.speedSystem.getActiveBonus() === bonus) {
+                    this.player.speedSystem.withdrawBonus();
+                }
+                break;
+            case SystemBonusTypes.Health:
+                if (this.player.healthSystem.getActiveBonus() === bonus) {
+                    this.player.healthSystem.withdrawBonus();
+                }
+                break;
+            case SystemBonusTypes.Weapon:
+                if (this.player.weaponSystem.getActiveBonus() === bonus) {
+                    this.player.weaponSystem.withdrawBonus();
+                }
+                break;
+            case SystemBonusTypes.Experience:
+                if(this.player.experienceSystem.getActiveBonus() === bonus) {
+                    this.player.experienceSystem.withdrawBonus();
+                }
+                break;
+            default:
+                console.error("Unhandled bonus type:", bonus.getType());
                 break;
         }
     }
 
     public activateFirstActiveBonus(): void {
         if (this.activeBonuses.length > 0) {
-            this.activateBonus(this.activeBonuses[0]);
+            this.activateAndApplyBonus(this.activeBonuses[0]);
         }
-    }
-
-    // Obtenir l'état actuel des bonus actifs
-    public getActiveBonuses(): SystemBonus[] {
-        return this.activeBonuses;
     }
 }

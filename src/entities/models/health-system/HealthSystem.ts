@@ -69,15 +69,9 @@ export class HealthSystem  extends BonusReceiverTemplate<HealthBonus> {
         let value = characteristicValue;
 
         // Appliquer l'effet de bonus permanent s'il y en a un
-        if (this.permanentBonus?.effect) {
-            const effect = this.permanentBonus.effect as HealthBonusEffect;
+        if (this.currentBonus?.effect) {
+            const effect = this.currentBonus.effect as HealthBonusEffect;
             value = this.applyEffect(value, effect, characteristic);
-        }
-
-        // Appliquer l'effet de bonus temporaire s'il y en a un et s'il est actif
-        if (this.temporaryBonus?.effect && this.temporaryBonus.getState() === 'active') {
-            const tempEffect = this.temporaryBonus.effect as HealthBonusEffect;
-            value = this.applyEffect(value, tempEffect, characteristic);
         }
 
         return value;
