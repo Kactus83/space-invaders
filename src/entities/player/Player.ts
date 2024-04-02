@@ -21,7 +21,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
     public speedSystem: SpeedSystem;
     public healthSystem: HealthSystem;
     public weaponSystem: WeaponSystem;
-    public levelSystem: ExperienceSystem;
+    public experienceSystem: ExperienceSystem;
     public bonusManagementSystem: BonusManagementSystem;
 
     constructor() {
@@ -31,12 +31,12 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         this.speedSystem = new SpeedSystem(this, levelCharacteristics);
         this.healthSystem = new HealthSystem(this, levelCharacteristics);
         this.weaponSystem = new WeaponSystem(this, levelCharacteristics);
-        this.levelSystem = new ExperienceSystem(this, 1);
+        this.experienceSystem = new ExperienceSystem(this, 1);
         this.bonusManagementSystem = new BonusManagementSystem(this);
     }
     
     public async loadDesign(): Promise<void> {
-        const design = this.themeManager.getTheme().getPlayerDesign(this.levelSystem.level);
+        const design = this.themeManager.getTheme().getPlayerDesign(this.experienceSystem.level);
         const config = AppConfig.getInstance();
 
         let x_position: number;
@@ -69,7 +69,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         } else if (entity instanceof Invader) {
             this.healthSystem.takeDamage(entity.healthSystem.damage);
         } else if (entity instanceof GameBonus) {
-            this.bonusManagementSystem.addBonusToInventory(entity.systemBonus);
+            this.bonusManagementSystem.addBonus(entity.systemBonus);
         } else {
             throw new Error("Unknown entity type");
         }
@@ -95,6 +95,8 @@ export class Player extends GameEntity implements IInteractive, IShooter {
                 if(AppConfig.getInstance().god_Mode) {
                     this.increaseScore(200);
                 }
+            case UserInputType.Up:
+                this.bonusManagementSystem.activateFirstActiveBonus();
                 break;
             // Implémentez d'autres cas si nécessaire
         }
@@ -117,8 +119,6 @@ export class Player extends GameEntity implements IInteractive, IShooter {
     public async shoot(): Promise<void> {
         // Utiliser le système d'armement pour tirer
         this.weaponSystem.shoot();
-        const newProjectiles = this.weaponSystem.getNewProjectiles();
-        // Traiter les nouveaux projectiles...
     }
 
     public getNewProjectiles(): Projectile[] {
@@ -130,7 +130,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
     }
     
     public increaseScore(amount: number): void {
-        this.levelSystem.increaseScore(amount);
+        this.experienceSystem.increaseScore(amount);
     }
 
     public cleanup(): void {

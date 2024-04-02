@@ -21,7 +21,7 @@ export class HUD implements IRenderable, IInteractive {
         this.groundLine = groundLine;
         const inputManager = InputManager.getInstance();
         this.subscriptionId = inputManager.subscribe(this);
-        this.bonusDisplayComponent = new BonusDisplayComponent(player.bonusManagementSystem.getBonusInventory());
+        this.bonusDisplayComponent = new BonusDisplayComponent(player.bonusManagementSystem.getActiveBonuses());
         this.updateHUD();
     }
 
@@ -49,7 +49,7 @@ export class HUD implements IRenderable, IInteractive {
         this.fabricObjects.push(hud);
 
         // Player Info
-        const playerInfo = `Score: ${this.player.levelSystem.currentScore} | HP: ${this.player.healthSystem.health} | Shield: ${this.player.healthSystem.shield} | Level: ${this.player.levelSystem.level}`;
+        const playerInfo = `Score: ${this.player.experienceSystem.currentScore} | HP: ${this.player.healthSystem.health} | Shield: ${this.player.healthSystem.shield} | Level: ${this.player.experienceSystem.level}`;
         const playerText = new fabric.Text(playerInfo, {
             left: 10,
             top: hudHeight / 2,
@@ -71,7 +71,7 @@ export class HUD implements IRenderable, IInteractive {
         this.fabricObjects.push(groundLineText);
 
         // Bonus
-        this.bonusDisplayComponent.setBonuses(this.player.bonusManagementSystem.getBonusInventory());
+        this.bonusDisplayComponent.setBonuses(this.player.bonusManagementSystem.getActiveBonuses());
         this.fabricObjects.push(...this.bonusDisplayComponent.getDrawableObjects());
     }
 
