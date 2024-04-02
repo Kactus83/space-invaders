@@ -10,29 +10,21 @@ export class ExperienceBonusEffect implements ISystemBonusEffect, IExperienceSys
     scoreThreshold: number;
     lifeBonus: number;
     level: number;
-    hp: number;
-    shield: number;
-    damage: number;
-    regenerationRate: number;
-    projectileType: ProjectileType;
-    fireRate: number;
-    shootProbability: number;
-    moveSpeed: number; 
+    hp: number = 0;
+    shield: number = 0;
+    damage: number = 0;
+    regenerationRate: number = 0;
+    projectileType: ProjectileType = ProjectileType.None;
+    fireRate: number = 0;
+    shootProbability: number = 0;
+    moveSpeed: number = 0; 
     
-    constructor(name: string, duration: number, effectType: SystemBonusEffectType, scoreThreshold: number, lifeBonus: number, level: number, hp: number, shield: number, damage: number, regenerationRate: number, projectileType: ProjectileType, fireRate: number, shootProbability: number, moveSpeed: number) {
+    constructor(name: string, duration: number, effectType: SystemBonusEffectType, scoreThreshold: number, lifeBonus: number, level: number) {
         this.name = name;
         this.duration = duration;
         this.effectType = effectType;
         this.scoreThreshold = scoreThreshold;
         this.lifeBonus = lifeBonus;
         this.level = level;
-        this.hp = hp;
-        this.shield = shield;
-        this.damage = damage;
-        this.regenerationRate = regenerationRate;
-        this.projectileType = projectileType;
-        this.fireRate = fireRate;
-        this.shootProbability = shootProbability;
-        this.moveSpeed = moveSpeed;
     }
 }
