@@ -2,5 +2,6 @@ export enum SystemBonusTypes {
     Health,
     Speed,
     Weapon,
-    Level
+    Level, 
+    Experience
 }

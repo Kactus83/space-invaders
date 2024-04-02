@@ -1,13 +1,16 @@
 import { Player } from "../../player/Player";
 import { PlayerLevels } from "../../player/PlayerLevels";
+import { BonusReceiverTemplate } from "../bonus-system/bonus-receiver/BonusReceiverTemplate";
 import { IExperienceSystemCharacteristics } from "./IExperienceSystemCharacteristics";
+import { ExperienceBonus } from "./bonus/ExperienceBonus";
 
-export class ExperienceSystem {
+export class ExperienceSystem extends BonusReceiverTemplate<ExperienceBonus> {
     private characteristics: IExperienceSystemCharacteristics;
     private score: number = 0;
     private owner: Player;
 
     constructor(owner: Player, initialLevel: number) {
+        super();
         this.owner = owner;
         this.characteristics = PlayerLevels[initialLevel];
         this.updateSystems();
