@@ -36,4 +36,6 @@ export abstract class SystemBonus {
     getState(): 'available' | 'active' | 'expired' {
         return this.state;
     }
+
+    abstract getEffect(): ISystemBonusEffect;
 }

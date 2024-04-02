@@ -25,7 +25,7 @@ export class HealthSystem  extends BonusReceiverTemplate<HealthBonus> {
     }
 
     public takeDamage(amount: number): void {
-        let effectiveDamage = amount - this.characteristics.shield;
+        let effectiveDamage = amount - this.shield;
         effectiveDamage = effectiveDamage > 0 ? effectiveDamage : 0; // Ensure damage isn't negative due to shield
 
         this.characteristics.hp -= effectiveDamage;
@@ -49,43 +49,38 @@ export class HealthSystem  extends BonusReceiverTemplate<HealthBonus> {
     }    
 
     public get health(): number {
-        return this.applyBonusToCharacteristic(this.characteristics.hp, 'hp');
+        let result = this.characteristics.hp;
+        if (this.currentBonus) {
+            result += this.currentBonus.getEffect().additional_Hp;
+            result *= this.currentBonus.getEffect().multiplicator_Hp;
+        }
+        return result;
     }
 
     public get shield(): number {
-        return this.applyBonusToCharacteristic(this.characteristics.shield, 'shield');
+        let result = this.characteristics.shield;
+        if (this.currentBonus) {
+            result += this.currentBonus.getEffect().additional_Shield;
+            result *= this.currentBonus.getEffect().multiplicator_Shield;
+        }
+        return result;
     }
 
     public get damage(): number {
-        return this.applyBonusToCharacteristic(this.characteristics.damage, 'damage');
+        let result = this.characteristics.damage;
+        if (this.currentBonus) {
+            result += this.currentBonus.getEffect().additional_Damage;
+            result *= this.currentBonus.getEffect().multiplicator_Damage;
+        }
+        return result;
     }
 
     public get regenerationRate(): number {
-        return this.applyBonusToCharacteristic(this.characteristics.regenerationRate, 'regenerationRate');
-    }
-
-        // Ajustement des méthodes pour appliquer les bonus
-    private applyBonusToCharacteristic(characteristicValue: number, characteristic: keyof IHealthCharacteristics): number {
-        let value = characteristicValue;
-
-        // Appliquer l'effet de bonus permanent s'il y en a un
-        if (this.currentBonus?.effect) {
-            const effect = this.currentBonus.effect as HealthBonusEffect;
-            value = this.applyEffect(value, effect, characteristic);
+        let result = this.characteristics.regenerationRate;
+        if (this.currentBonus) {
+            result += this.currentBonus.getEffect().additional_RegenerationRate;
+            result *= this.currentBonus.getEffect().multiplicator_RegenerationRate;
         }
-
-        return value;
+        return result;
     }
-
-    // Nouvelle méthode pour appliquer un effet spécifique basé sur la caractéristique
-    private applyEffect(value: number, effect: HealthBonusEffect, characteristic: keyof IHealthCharacteristics): number {
-        const effectValue = effect[characteristic];
-        if (effect.effectType === SystemBonusEffectType.Additive) {
-            return value + effectValue;
-        } else if (effect.effectType === SystemBonusEffectType.Multiplicative) {
-            return value * effectValue;
-        }
-        return value; // Cas par défaut si aucun effet n'est applicable
-    }
-
 }

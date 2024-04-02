@@ -1,29 +1,29 @@
 import { ProjectileType } from "../../../projectile/ProjectileType";
-import { SystemBonusEffectType } from "../../bonus-system/system-bonus/SystemBonusEffectType";
 import { ISystemBonusEffect } from "../../bonus-system/system-bonus/ISystemBonusEffect";
-import { IWeaponCharacteristics } from "../IWeaponCharacteristics";
-
-export class WeaponBonusEffect implements ISystemBonusEffect, IWeaponCharacteristics {
+export class WeaponBonusEffect implements ISystemBonusEffect {
     name: string;
     duration: number;
-    effectType: SystemBonusEffectType;
-    projectileType: ProjectileType;
-    fireRate: number;
-    shootProbability: number;
+    upgrade_ProjectileType: number;
+    multiplicator_fireRate: number;
+    additional_fireRate: number;
+    multiplicator_ShootProbability: number;
+    additional_ShootProbability: number;
     
     constructor(
         name: string,
         duration: number,
-        effectType: SystemBonusEffectType,
-        fireRate: number,
-        projectileType: ProjectileType,
-        shootProbability: number,
+        additional_fireRate: number,
+        multiplicator_fireRate: number,
+        upgrade_ProjectileType: number,
+        multiplicator_ShootProbability: number,
+        additional_ShootProbability: number,
     ) {
         this.name = name;
         this.duration = duration;
-        this.effectType = effectType;
-        this.fireRate = fireRate;
-        this.projectileType = projectileType;
-        this.shootProbability = shootProbability;
+        this.additional_fireRate = additional_fireRate;
+        this.multiplicator_fireRate = multiplicator_fireRate;
+        this.upgrade_ProjectileType = upgrade_ProjectileType;
+        this.multiplicator_ShootProbability = multiplicator_ShootProbability;
+        this.additional_ShootProbability = additional_ShootProbability;
     }
 }

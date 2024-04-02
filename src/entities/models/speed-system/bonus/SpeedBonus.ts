@@ -6,4 +6,8 @@ export class SpeedBonus extends SystemBonus {
     constructor(effect: SpeedBonusEffect) {
         super(SystemBonusTypes.Speed, effect);
     }
+
+    getEffect(): SpeedBonusEffect {
+        return this.effect as SpeedBonusEffect;
+    }
 }

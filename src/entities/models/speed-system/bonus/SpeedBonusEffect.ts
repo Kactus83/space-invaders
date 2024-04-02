@@ -2,21 +2,21 @@ import { SystemBonusEffectType } from "../../bonus-system/system-bonus/SystemBon
 import { ISystemBonusEffect } from "../../bonus-system/system-bonus/ISystemBonusEffect";
 import { ISpeedCharacteristics } from "../ISpeedCharacteristics";
 
-export class SpeedBonusEffect implements ISystemBonusEffect, ISpeedCharacteristics { 
+export class SpeedBonusEffect implements ISystemBonusEffect { 
     name: string;
     duration: number;
-    effectType: SystemBonusEffectType;
-    moveSpeed: number;
+    multiplicator_MoveSpeed: number;
+    additional_MoveSpeed: number;
 
     constructor(
         name: string,
         duration: number,
-        effectType: SystemBonusEffectType,
-        moveSpeed: number,
+        multiplicator_MoveSpeed: number,
+        additional_MoveSpeed: number,
     ) {
         this.name = name;
         this.duration = duration;
-        this.effectType = effectType;
-        this.moveSpeed = moveSpeed;
+        this.multiplicator_MoveSpeed = multiplicator_MoveSpeed;
+        this.additional_MoveSpeed = additional_MoveSpeed;
     }
 }

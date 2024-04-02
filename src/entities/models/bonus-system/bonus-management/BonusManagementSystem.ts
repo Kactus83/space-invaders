@@ -1,5 +1,9 @@
 import { PlayerProfile } from "../../../../game-services/player-profile/PlayerProfile";
 import { Player } from "../../../player/Player";
+import { ExperienceBonus } from "../../experience-system/bonus/ExperienceBonus";
+import { HealthBonus } from "../../health-system/bonus/HealthBonus";
+import { SpeedBonus } from "../../speed-system/bonus/SpeedBonus";
+import { WeaponBonus } from "../../weapon-system/bonus/WeaponBonus";
 import { SystemBonus } from "../system-bonus/SystemBonus";
 import { SystemBonusTypes } from "../system-bonus/SystemBonusTypes";
 
@@ -24,28 +28,22 @@ export class BonusManagementSystem {
 
     // Activer et appliquer un bonus spécifique
     private activateAndApplyBonus(bonus: SystemBonus): void {
+        if (bonus instanceof SpeedBonus) {
+            this.player.speedSystem.depositBonus(bonus);
+        } else if (bonus instanceof HealthBonus) {
+            this.player.healthSystem.depositBonus(bonus);
+        } else if (bonus instanceof WeaponBonus) {
+            this.player.weaponSystem.depositBonus(bonus);
+        } else if (bonus instanceof ExperienceBonus) {
+            this.player.experienceSystem.depositBonus(bonus);
+        } else {
+            console.error("Unhandled bonus type:", bonus.getType());
+            return;
+        }
+        
         bonus.activate();
         this.activeBonuses.push(bonus);
         this.availableBonuses = this.availableBonuses.filter(b => b !== bonus);
-        
-        switch (bonus.getType()) {
-
-            case SystemBonusTypes.Speed:
-                this.player.speedSystem.depositBonus(bonus);
-                break;
-            case SystemBonusTypes.Health:
-                this.player.healthSystem.depositBonus(bonus);
-                break;
-            case SystemBonusTypes.Weapon:
-                this.player.weaponSystem.depositBonus(bonus);
-                break;
-            case SystemBonusTypes.Experience:
-                this.player.experienceSystem.depositBonus(bonus);
-                break;
-            default:
-                console.error("Unhandled bonus type:", bonus.getType());
-                break;
-        }
     }
 
     // Mise à jour régulière pour vérifier l'expiration des bonus

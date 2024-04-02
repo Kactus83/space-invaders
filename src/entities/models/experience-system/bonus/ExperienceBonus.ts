@@ -6,4 +6,8 @@ export class ExperienceBonus extends SystemBonus {
     constructor(effect: ExperienceBonusEffect) {
         super(SystemBonusTypes.Experience, effect);
     }
+
+    getEffect(): ExperienceBonusEffect {
+        return this.effect as ExperienceBonusEffect;
+    }
 }

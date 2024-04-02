@@ -6,4 +6,8 @@ export class WeaponBonus extends SystemBonus {
     constructor(effect: WeaponBonusEffect) {
         super(SystemBonusTypes.Weapon, effect);
     }
+
+    getEffect(): WeaponBonusEffect {
+        return this.effect as WeaponBonusEffect;
+    }
 }
