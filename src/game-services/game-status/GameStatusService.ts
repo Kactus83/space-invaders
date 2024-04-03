@@ -5,6 +5,7 @@ import { Invader } from "../../entities/invader/Invader";
 import { Player } from "../../entities/player/Player";
 import { GamePlayScene } from "../../scenes/game-play/GameplayScene";
 import { InvaderWaveService } from "../invader-wave/InvaderWaveService";
+import { PlayerProfile } from "../player-profile/PlayerProfile";
 
 export class GameStatusService {
     private player: Player;
@@ -26,10 +27,12 @@ export class GameStatusService {
     }
     
     private handleGameWin(): void {
+        this.recordGameSessionStats(true);
         SceneManager.getInstance().changeScene(SceneIds.Victory);
     }
 
     private handleGameLose(): void {
+        this.recordGameSessionStats(false);
         SceneManager.getInstance().changeScene(SceneIds.Defeat);
     }
 
@@ -46,5 +49,21 @@ export class GameStatusService {
         if (this.player.healthSystem.health <= 0 || this.groundLine.healthSystem.health <= 0) {
             this.handleGameLose();
         }
+    }
+
+    private recordGameSessionStats(isWinningSession: boolean): void {
+        const playerProfile = PlayerProfile.getInstance();
+        const gameSessionStats = this.player.experienceSystem.getGameSessionStats();
+        
+        // Ici, vous allez ajouter toutes les informations pertinentes à gameSessionStats
+        // Par exemple :
+        gameSessionStats.setWinningSessionBool(isWinningSession);
+        
+        // Vous devez adapter cette partie pour qu'elle corresponde à votre logique de jeu,
+        // par exemple, en parcourant les ennemis tués, en calculant le score, etc.
+        // gameSessionStats.addKill(invaderType, scoreValue); // Pour chaque type d'invader tué
+        
+        // Finalement, enregistrez ces stats dans le profil du joueur
+        playerProfile.getExperience().addGameSessionStats(gameSessionStats);
     }
 }

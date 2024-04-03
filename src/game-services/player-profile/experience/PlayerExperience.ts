@@ -1,10 +1,15 @@
+import { AppConfig } from "../../../core/config/AppConfig";
+import { GameSessionStats } from "./models/GameSessionStats";
+
 export class PlayerExperience {
     private bestScore: number;
     private experiencePoints: number;
+    private gameSessions: GameSessionStats[];
 
     constructor() {
         this.bestScore = 0;
         this.experiencePoints = 0;
+        this.gameSessions = [];
     }
 
     getBestScore(): number {
@@ -13,6 +18,15 @@ export class PlayerExperience {
 
     getExperiencePoints(): number {
         return this.experiencePoints;
+    }
+
+    addGameSessionStats(sessionStats: GameSessionStats): void {
+        this.gameSessions.push(sessionStats);
+        this.updateBestScore(sessionStats.totalScore);
+
+        // Ajoutez ici la logique de conversion du score de la session en points d'expérience
+        const experiencePointsFromSession = this.calculateExperiencePointsFromSession(sessionStats);
+        this.addExperiencePoints(experiencePointsFromSession);
     }
 
     updateBestScore(score: number): void {
@@ -25,5 +39,15 @@ export class PlayerExperience {
         this.experiencePoints += points;
     }
 
-    // Vous pouvez ajouter ici des méthodes pour gérer les compétences, les niveaux, etc.
+    private calculateExperiencePointsFromSession(sessionStats: GameSessionStats): number {
+        const config = AppConfig.getInstance();
+
+        let experiencePoints = sessionStats.totalScore * config.experience_PointPerScore;
+        
+        if (sessionStats.hasWon) {
+            experiencePoints *= config.experience_WinMultiplicator;
+        }
+
+        return experiencePoints;
+    }
 }

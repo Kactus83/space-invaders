@@ -168,7 +168,7 @@ export class Invader extends GameEntity implements IShooter {
             this.healthSystem.onCollision(entity.healthSystem);
             if(this.healthSystem.health <= 0) {
                 if(entity.origin instanceof Player) {
-                    entity.origin.increaseScore(this.score);
+                    entity.origin.experienceSystem.addInvaderKill(this.type, this.score);
                 }
                 this.state = EntityState.ToBeRemoved;
             }

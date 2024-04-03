@@ -7,6 +7,8 @@ export class AppConfig implements IGlobalConfig {
     public readonly canvasHeight: number = 600;
     public readonly player_InitialX: number = 380;
     public readonly player_InitialY: number = 500;
+    public readonly experience_PointPerScore: number = 0.1;
+    public readonly experience_WinMultiplicator: number = 2;
     public readonly wall_InitialY: number = 490;
     public readonly wall_MaxY: number = 400;
     public readonly wall_Size: number = 8;

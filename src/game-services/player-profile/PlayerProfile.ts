@@ -1,4 +1,5 @@
 import { PlayerExperience } from "./experience/PlayerExperience";
+import { GameSessionStats } from "./experience/models/GameSessionStats";
 import { PlayerInventory } from "./inventory/PlayerInventory";
 
 export class PlayerProfile {
@@ -26,16 +27,7 @@ export class PlayerProfile {
         return this.experience;
     }
 
-    // Cette méthode pourrait être appelée pour mettre à jour l'expérience après une partie
-    addEndGameScore(score: number): void {
-        this.experience.updateBestScore(score);
-        // Exemple de conversion de score en points d'expérience
-        const experienceToAdd = this.calculateExperiencePointsFromScore(score);
-        this.experience.addExperiencePoints(experienceToAdd);
-    }
-
-    private calculateExperiencePointsFromScore(score: number): number {
-        // Implémentez ici la logique de conversion du score en points d'expérience
-        return score; // Exemple simple
+    processGameSession(sessionStats: GameSessionStats): void {
+        this.experience.addGameSessionStats(sessionStats);
     }
 }
