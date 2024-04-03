@@ -66,7 +66,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         fireRate: 4,
         shootProbability: 0.0035,
         emitProbability: 0.008,
-        bonusTypes: [GameBonusType.Weapon_Increase_2_FireRate_60sec],
+        bonusTypes: [GameBonusType.Weapon_Increase_2_FireRate_60sec, GameBonusType.Experience_Increase_1_Level],
     },
     [InvaderType.Strong]: {
         type: InvaderType.Strong,
