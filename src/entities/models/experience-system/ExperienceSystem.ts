@@ -55,6 +55,7 @@ export class ExperienceSystem extends BonusReceiverTemplate<ExperienceBonus> {
             scoreValue *= effect.multiplicator_Score;
         }
         this.gameSessionStats.addKill(invaderType, scoreValue);
+        this.increaseScore(scoreValue);
         this.checkForLevelUp();
     }
 
