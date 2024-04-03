@@ -66,4 +66,13 @@ export class InvaderWaveService {
     get allWavesCompleted(): boolean {
         return this.allWavesLaunched && this.pendingInvaders.length === 0;
     }
+
+    public reset(): void {
+        this.isInit = false;
+        this.nextWaveTime = 0;
+        this.currentWaveIndex = 0;
+        this.pendingInvaders = [];
+        this.allWavesLaunched = false;
+    }
+    
 }

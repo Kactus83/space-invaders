@@ -190,5 +190,18 @@ export class CollisionService {
         }
         throw new Error("Unknown entity type");
     }
+     
+    /**
+     * Reset the collision service
+     */
+    public reset(): void {
+        this.players = [];
+        this.invaders = [];
+        this.walls = [];
+        this.projectiles = [];
+        this.groundLines = [];
+        this.gameBonus = [];
+    }
+    
 }
 

@@ -150,10 +150,42 @@ export class GamePlayScene implements IScene {
     }
 
     cleanup(): void {
+        // Désenregistrer toutes les entités du service de collision
+        this.collisionService.unregisterEntity(this.player);
+        this.walls.forEach(wall => this.collisionService.unregisterEntity(wall));
+        this.invaders.forEach(invader => this.collisionService.unregisterEntity(invader));
+        this.projectiles.forEach(projectile => this.collisionService.unregisterEntity(projectile));
+        this.gameBonus.forEach(bonus => this.collisionService.unregisterEntity(bonus));
+    
+        // Réinitialiser les listes et les états
+        this.invaders = [];
+        this.walls = [];
+        this.projectiles = [];
+        this.gameBonus = [];
+        this.allInvadersDead = false;
+
+        // clean up
         this.player.cleanup();
         this.hud.cleanup();
-        // Nettoyage de la scène si nécessaire
+        this.collisionService.reset();
+        this.invaderWaveService.reset();
+    
+        this.isSceneInit = false;
     }
+    
+    // Exemple de méthode pour réinitialiser le joueur
+    private initializePlayer(): void {
+        this.player = new Player();
+        this.player.init().then(() => {
+            this.collisionService.registerEntity(this.player);
+        });
+    }
+    
+    // Exemple de méthode pour réinitialiser les murs (si nécessaire)
+    private initializeWalls(): void {
+        // La logique pour réinitialiser ou recréer les murs
+    }
+    
 
     private cleanupEntities() {
         // Filtre les invaders qui doivent être supprimés et les désenregistre de la détection de collision
