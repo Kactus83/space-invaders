@@ -19,6 +19,11 @@ export class PlayerExperience {
     getExperiencePoints(): number {
         return this.experiencePoints;
     }
+    
+    getLastGameSessionStats(): GameSessionStats | null {
+        if (this.gameSessions.length === 0) return null;
+        return this.gameSessions[this.gameSessions.length - 1];
+    }
 
     addGameSessionStats(sessionStats: GameSessionStats): void {
         this.gameSessions.push(sessionStats);

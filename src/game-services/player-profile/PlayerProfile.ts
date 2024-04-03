@@ -30,4 +30,8 @@ export class PlayerProfile {
     processGameSession(sessionStats: GameSessionStats): void {
         this.experience.addGameSessionStats(sessionStats);
     }
+    
+    getLastGameSessionStats(): GameSessionStats | null {
+        return this.experience.getLastGameSessionStats();
+    }
 }
