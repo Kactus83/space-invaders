@@ -23,10 +23,16 @@ export class ExperienceSystem extends BonusReceiverTemplate<ExperienceBonus> {
     get level(): number {
         return this.characteristics.level;
     }
-
+    
     public increaseScore(amount: number): void {
-        console.log(`Score increased by ${amount}`);
+        if (this.currentBonus) {
+            const effect = this.currentBonus.getEffect();
+            // Applique d'abord les valeurs additionnelles puis les multiplicateurs
+            amount += effect.additional_Score;
+            amount *= effect.multiplicator_Score;
+        }
         this.score += amount;
+        console.log(`Score increased to ${this.score}`);
         this.checkForLevelUp();
     }
 

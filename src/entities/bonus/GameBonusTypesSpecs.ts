@@ -39,11 +39,11 @@ export const GameBonusSpecs: Record<GameBonusType, IGameBonusCharacteristics> = 
         moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
     },
     [GameBonusType.Experience_Increase_1_Level]: {
-        systemBonus: new ExperienceBonus(new ExperienceBonusEffect("Increase 1 Level", 0, SystemBonusEffectType.Additive, 0, 0, 1)),
+        systemBonus: new ExperienceBonus(new ExperienceBonusEffect("Increase 1 Level", 0, 1, 0, 0, 1)),
         moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
     },
     [GameBonusType.Experience_Double_Score_60sec]: {
-        systemBonus: new ExperienceBonus(new ExperienceBonusEffect("Double Score 60sec", 60, SystemBonusEffectType.Multiplicative, 1, 0, 0)),
+        systemBonus: new ExperienceBonus(new ExperienceBonusEffect("Double Score 60sec", 60, 0, 2, 0, 0)),
         moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
     },
 };
