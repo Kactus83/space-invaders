@@ -42,11 +42,11 @@ export class WeaponSystem extends BonusReceiverTemplate<WeaponBonus> {
             temp_Y = bounds.y + bounds.height / 2;
         }
         const y_Origin:number = temp_Y;
-        if (timeSinceLastShoot >= 1000 / this.fireRate) {
-            if (Math.random() <= this.shootProbability) {
+        if (timeSinceLastShoot >= 1000 / this.effectiveFireRate) {
+            if (Math.random() <= this.effectiveShootProbability) {
                 const projectile = new Projectile(
                     this.owner, 
-                    this.projectileType, 
+                    this.effectiveProjectileType, 
                     { x: x_Origin, y: y_Origin }
                 );
                 await projectile.init();
@@ -56,9 +56,45 @@ export class WeaponSystem extends BonusReceiverTemplate<WeaponBonus> {
         }
     }
 
+    public get effectiveFireRate(): number {
+        let rate = this.fireRate;
+        if (this.currentBonus) {
+            const effect = this.currentBonus.getEffect();
+            rate += effect.additional_fireRate;
+            rate *= effect.multiplicator_fireRate;
+        }
+        return rate;
+    }
+
+    public get effectiveShootProbability(): number {
+        let probability = this.shootProbability;
+        if (this.currentBonus) {
+            const effect = this.currentBonus.getEffect();
+            probability += effect.additional_ShootProbability;
+            probability *= effect.multiplicator_ShootProbability;
+        }
+        return probability;
+    }
+
+    
+    public get effectiveProjectileType(): ProjectileType {
+        if (this.currentBonus) {
+            const upgradeSteps = this.currentBonus.getEffect().upgrade_ProjectileType;
+            return this.upgradeProjectileType(this.projectileType, upgradeSteps);
+        }
+        return this.projectileType;
+    }
+
     public getNewProjectiles(): Projectile[] {
         const projectiles = [...this.newProjectiles];
         this.newProjectiles = [];
         return projectiles;
+    }
+
+    private  upgradeProjectileType(currentType: ProjectileType, upgradeSteps: number): ProjectileType {
+        const types = Object.values(ProjectileType);
+        let currentIndex = types.indexOf(currentType);
+        let newIndex = Math.min(types.length - 1, currentIndex + upgradeSteps);
+        return types[newIndex] as ProjectileType;
     }
 }

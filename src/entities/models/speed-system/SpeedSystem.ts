@@ -18,14 +18,18 @@ export class SpeedSystem extends BonusReceiverTemplate<SpeedBonus> {
     }
 
     public get moveSpeed(): number {
-        return this.characteristics.moveSpeed;
-    }
+        // Commencez par la vitesse de base
+        let effectiveMoveSpeed = this.characteristics.moveSpeed;
 
-    public applySpeedBonus(bonusValue: number): void {
-        this.characteristics.moveSpeed += bonusValue;
-    }
+        // Si un bonus est actif, appliquez son effet
+        if (this.currentBonus) {
+            const effect = this.currentBonus.getEffect();
+            // Appliquez d'abord les modifications additives
+            effectiveMoveSpeed += effect.additional_MoveSpeed;
+            // Ensuite, appliquez les multiplicateurs
+            effectiveMoveSpeed *= effect.multiplicator_MoveSpeed;
+        }
 
-    public applySpeedMalus(malusValue: number): void {
-        this.characteristics.moveSpeed = Math.max(0, this.characteristics.moveSpeed - malusValue);
+        return effectiveMoveSpeed;
     }
 }
