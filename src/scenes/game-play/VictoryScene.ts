@@ -8,23 +8,30 @@ import { GameSessionStatsDisplay } from "../../ui/game-session-stats-display/Gam
 export class VictoryScene implements IScene {
     private messageDisplay: MessageDisplay;
     private statsDisplay: GameSessionStatsDisplay;
+    private displayStats: boolean = false; // Contrôle l'affichage des stats
 
     async initialize(): Promise<void> {
         this.messageDisplay = new MessageDisplay("You won! Returning to main menu in 10 seconds...");
         this.statsDisplay = new GameSessionStatsDisplay();
+
         setTimeout(() => {
-            SceneManager.getInstance().changeScene(SceneIds.MainMenu);
+            this.displayStats = true; // Commencer à afficher les stats après 3 secondes
+        }, 3000);
+
+        setTimeout(() => {
+            SceneManager.getInstance().changeScene(SceneIds.MainMenu); // Retour au menu principal après 10 secondes
         }, 10000);
     }
 
     update(deltaTime: number): void {}
-    
+
     getDrawableObjects(): IRenderable[] {
-        return [
-            this.messageDisplay,
-            this.statsDisplay
-        ];
+        if (this.displayStats) {
+            return [this.statsDisplay];
+        } else {
+            return [this.messageDisplay];
+        }
     }
-    
+
     cleanup(): void {}
 }
