@@ -32,6 +32,16 @@ export class PlayerExperience {
         return null;
     }
 
+    getTotalGameSessions(): number {
+        return this.gameSessions.length;
+    }
+
+    getAverageScore(): number {
+        if (this.gameSessions.length === 0) return 0;
+        const totalScore = this.gameSessions.reduce((acc, session) => acc + session.totalScore, 0);
+        return totalScore / this.gameSessions.length;
+    }
+
     addGameSessionStats(sessionStats: GameSessionStats): void {
         this.gameSessions.push(sessionStats);
         this.updateBestScore(sessionStats.totalScore);
