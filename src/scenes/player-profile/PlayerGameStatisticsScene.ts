@@ -13,7 +13,7 @@ export class PlayerGameStatisticsScene implements IScene {
 
     async initialize(): Promise<void> {
         const profile = PlayerProfile.getInstance();
-        const lastSessionStats = profile.getLastGameSessionStats();
+        const lastSessionStats = profile.getExperience().getLastGameSessionStats();
         const buttonNames = ['Back to Profile'];
         const buttonActions = [() => this.onBackToProfile()];
         this.menu = new HorizontalMenu(buttonNames, buttonActions);

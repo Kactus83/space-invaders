@@ -22,7 +22,7 @@ export class BonusManagementSystem {
             this.availableBonuses.push(bonus);
         } else {
             // Si les slots actifs sont pleins, le bonus va dans l'inventaire
-            PlayerProfile.getInstance().getInventory().getBonusInventory().addBonus(bonus);
+            PlayerProfile.getInstance().getInventory().addBonusToInventory(bonus);
         }
     }
 

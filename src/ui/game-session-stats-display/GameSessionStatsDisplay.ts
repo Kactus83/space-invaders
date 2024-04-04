@@ -12,7 +12,7 @@ export class GameSessionStatsDisplay implements IRenderable {
         const config = AppConfig.getInstance();
         const profile = PlayerProfile.getInstance();
         const experience = profile.getExperience();
-        this.gameStats = sessionIndex !== undefined ? experience.getGameSessionByIndex(sessionIndex) : profile.getLastGameSessionStats();
+        this.gameStats = sessionIndex !== undefined ? experience.getGameSessionByIndex(sessionIndex) : experience.getLastGameSessionStats();
 
 
         if (!this.gameStats) {

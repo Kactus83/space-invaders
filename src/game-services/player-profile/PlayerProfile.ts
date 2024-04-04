@@ -7,12 +7,12 @@ export class PlayerProfile {
     private static instance: PlayerProfile;
     private inventory: PlayerInventory;
     private experience: PlayerExperience;
-    private dataService: PlayerDataService = PlayerDataService.getInstance();
+
+    private playerName: string = 'Player';
 
     private constructor() {
         this.inventory = new PlayerInventory();
         this.experience = new PlayerExperience();
-        this.loadProfileData(); // Chargez les données du profil lors de l'initialisation
     }
 
     public static getInstance(): PlayerProfile {
@@ -20,6 +20,10 @@ export class PlayerProfile {
             PlayerProfile.instance = new PlayerProfile();
         }
         return PlayerProfile.instance;
+    }
+
+    getPlayerName(): string {
+        return this.playerName;
     }
 
     getInventory(): PlayerInventory {
@@ -30,26 +34,4 @@ export class PlayerProfile {
         return this.experience;
     }
 
-    processGameSession(sessionStats: GameSessionStats): void {
-        this.experience.addGameSessionStats(sessionStats);
-        this.saveProfileData(); // Sauvegardez automatiquement les données après chaque modification
-    }
-    
-    getLastGameSessionStats(): GameSessionStats | null {
-        return this.experience.getLastGameSessionStats();
-    }
-
-    // Méthode privée pour charger les données de profil
-    public loadProfileData(): void {
-        const profileData = this.dataService.loadProfile();
-        if (profileData) {
-            this.experience.restoreFromData(profileData.experience);
-            this.inventory.restoreFromData(profileData.inventory);
-        }
-    }
-
-    // Méthode privée pour sauvegarder les données de profil
-    private saveProfileData(): void {
-        this.dataService.saveProfile(this);
-    }
 }

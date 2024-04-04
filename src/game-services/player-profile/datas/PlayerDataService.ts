@@ -13,30 +13,39 @@ export class PlayerDataService {
         return this.instance;
     }
 
-    saveProfile(profile: PlayerProfile): void {
+    /**
+     * Sauvegarde les données du profil du joueur actuel dans le localStorage.
+     */
+    saveCurrentProfile(): void {
+        const profile = PlayerProfile.getInstance();
+        const playerName = profile.getPlayerName(); 
         const profileData: PlayerProfileData = {
+            playerName,
             experience: {
                 bestScore: profile.getExperience().getBestScore(),
                 experiencePoints: profile.getExperience().getExperiencePoints(),
                 gameSessions: profile.getExperience().getAllGameSessions(),
             },
             inventory: {
-                bonusInventory: profile.getInventory().getBonusInventory().getBonuses(),
+                bonusInventory: profile.getInventory().getAllBonus(),
             },
         };
 
         const profileJson = JSON.stringify(profileData);
-        localStorage.setItem('playerProfile', profileJson);
+        localStorage.setItem(`playerProfile_${playerName}`, profileJson);
     }
 
-    loadProfile(): PlayerProfileData | null {
-        const profileJson = localStorage.getItem('playerProfile');
+    /**
+     * Charge les données du profil du joueur actuel depuis le localStorage.
+     * @returns {PlayerProfileData | null} - Les données du profil du joueur ou null si aucune donnée n'est trouvée.
+     */
+    loadCurrentProfile(): PlayerProfileData | null {
+        const profile = PlayerProfile.getInstance();
+        const playerName = profile.getPlayerName(); // Supposons que cette méthode existe.
+        const profileJson = localStorage.getItem(`playerProfile_${playerName}`);
         if (profileJson) {
             return JSON.parse(profileJson) as PlayerProfileData;
         }
         return null;
     }
-
-    // Ajouter ici les méthodes pour manipuler spécifiquement les données sauvegardées
-    // par exemple, charger les statistiques de jeu, l'inventaire, etc., séparément si nécessaire
 }

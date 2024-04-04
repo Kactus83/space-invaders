@@ -11,7 +11,7 @@ export class PlayerInventoryScene implements IScene {
     async initialize(): Promise<void> {
         const profile = PlayerProfile.getInstance();
         const inventory = profile.getInventory();
-        const bonusInventory = inventory.getBonusInventory().getBonuses();
+        const bonusInventory = inventory.getAllBonus();
 
         const buttonNames = bonusInventory.map(bonus => `${bonus.effect.name}`);
         buttonNames.push('Back to Profile');

@@ -2,6 +2,7 @@ import { PlayerExperienceData } from "../../experience/types/PlayerExperienceDat
 import { PlayerInventoryData } from "../../inventory/types/PlayerInventoryData";
 
 export interface PlayerProfileData {
+    playerName: string;
     experience: PlayerExperienceData;
     inventory: PlayerInventoryData;
 }
