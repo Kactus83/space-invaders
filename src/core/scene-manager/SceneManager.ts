@@ -8,6 +8,8 @@ import { GameSettingsScene } from "../../scenes/settings/GameSettingsScene";
 import { VictoryScene } from "../../scenes/game-play/VictoryScene";
 import { DefeatScene } from "../../scenes/game-play/DefeatScene";
 import { PlayerProfileScene } from "../../scenes/player-profile/PlayerProfileScene";
+import { PlayerInventoryScene } from "../../scenes/player-profile/PlayerInventoryScene";
+import { PlayerGameStatisticsScene } from "../../scenes/player-profile/PlayerGameStatisticsScene";
 
 export class SceneManager {
     private static instance: SceneManager;
@@ -35,8 +37,8 @@ export class SceneManager {
         this.scenes.set(SceneIds.Settings_Game, new GameSettingsScene());
         this.scenes.set(SceneIds.GamePlay, new GamePlayScene());
         this.scenes.set(SceneIds.PlayerProfile, new PlayerProfileScene());
-        this.scenes.set(SceneIds.Player_Inventory, new PlayerProfileScene());
-        this.scenes.set(SceneIds.Player_GameStatistics, new PlayerProfileScene());
+        this.scenes.set(SceneIds.Player_Inventory, new PlayerInventoryScene());
+        this.scenes.set(SceneIds.Player_GameStatistics, new PlayerGameStatisticsScene());
         // Enregistrer d'autres scènes de la même manière
     }
 
