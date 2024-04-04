@@ -8,8 +8,9 @@ export class MainMenuScene implements IScene {
     private menu: Menu;
 
     async initialize(): Promise<void> {
-        const buttonNames = ['Start Game', 'Settings'];
-        const buttonActions = [this.onStartGame, this.onSettings];
+        const buttonNames = ['Start Game', 'Player Profile', 'Settings'];
+        const buttonActions = [this.onStartGame,
+            this.onPlayerProfile, this.onSettings];
 
         this.menu = new Menu(buttonNames, buttonActions);
     }
@@ -35,4 +36,9 @@ export class MainMenuScene implements IScene {
         console.log('Settings');
         SceneManager.getInstance().changeScene(SceneIds.Settings); // Changer vers la scène de paramètres
     }
+
+    private onPlayerProfile(): void {
+        SceneManager.getInstance().changeScene(SceneIds.PlayerProfile); 
+    }
+    
 }
