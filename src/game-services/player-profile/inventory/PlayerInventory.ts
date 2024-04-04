@@ -7,6 +7,10 @@ export class PlayerInventory {
         this.bonusInventory = new BonusSystemInventory();
     }
 
+    restoreFromData(data: { bonusInventory: any[] }): void {
+        // Assurez-vous d'adapter le type de `bonusInventory` selon vos besoins
+    }
+
     getBonusInventory(): BonusSystemInventory {
         return this.bonusInventory;
     }

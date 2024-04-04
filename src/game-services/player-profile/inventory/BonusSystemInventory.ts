@@ -3,6 +3,7 @@ import { SystemBonus } from "../../../entities/models/bonus-system/system-bonus/
 export class BonusSystemInventory {
     private bonuses: SystemBonus[] = [];
 
+
     addBonus(bonus: SystemBonus) {
         this.bonuses.push(bonus);
     }

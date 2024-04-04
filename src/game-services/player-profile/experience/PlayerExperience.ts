@@ -12,6 +12,12 @@ export class PlayerExperience {
         this.gameSessions = [];
     }
 
+    restoreFromData(data: { bestScore: number; experiencePoints: number; gameSessions: GameSessionStats[] }): void {
+        this.bestScore = data.bestScore;
+        this.experiencePoints = data.experiencePoints;
+        this.gameSessions = data.gameSessions;
+    }
+
     getBestScore(): number {
         return this.bestScore;
     }
@@ -34,6 +40,10 @@ export class PlayerExperience {
 
     getTotalGameSessions(): number {
         return this.gameSessions.length;
+    }
+
+    getAllGameSessions(): GameSessionStats[] {
+        return this.gameSessions;
     }
 
     getAverageScore(): number {
