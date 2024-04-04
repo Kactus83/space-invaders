@@ -24,6 +24,13 @@ export class PlayerExperience {
         if (this.gameSessions.length === 0) return null;
         return this.gameSessions[this.gameSessions.length - 1];
     }
+    
+    getGameSessionByIndex(index: number): GameSessionStats | null {
+        if (index >= 0 && index < this.gameSessions.length) {
+            return this.gameSessions[index];
+        }
+        return null;
+    }
 
     addGameSessionStats(sessionStats: GameSessionStats): void {
         this.gameSessions.push(sessionStats);
