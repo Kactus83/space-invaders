@@ -31,7 +31,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         this.speedSystem = new SpeedSystem(this, levelCharacteristics);
         this.healthSystem = new HealthSystem(this, levelCharacteristics);
         this.weaponSystem = new WeaponSystem(this, levelCharacteristics);
-        this.experienceSystem = new ExperienceSystem(this, 1);
+        this.experienceSystem = new ExperienceSystem(this, PlayerLevels);
         this.bonusManagementSystem = new BonusManagementSystem(this);
     }
     

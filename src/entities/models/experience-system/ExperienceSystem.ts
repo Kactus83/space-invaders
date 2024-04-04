@@ -3,20 +3,28 @@ import { InvaderType } from "../../invader/InvaderType";
 import { Player } from "../../player/Player";
 import { PlayerLevels } from "../../player/PlayerLevels";
 import { BonusReceiverTemplate } from "../bonus-system/bonus-receiver/BonusReceiverTemplate";
-import { IExperienceSystemCharacteristics } from "./IExperienceSystemCharacteristics";
+import { IExperienceSystemCharacteristics } from "./types/IExperienceSystemCharacteristics";
 import { ExperienceBonus } from "./bonus/ExperienceBonus";
+import { ExperienceSystemLevelSet } from "./types/ExperienceSystemLevelSet";
+import { ISystemsCaracteristicsSet } from "./types/ISystemsCaracteristicsSet";
 
 export class ExperienceSystem extends BonusReceiverTemplate<ExperienceBonus> {
-    private characteristics: IExperienceSystemCharacteristics;
+    private levelSet: ExperienceSystemLevelSet;
+    private characteristics: ISystemsCaracteristicsSet;
     private gameSessionStats: GameSessionStats = new GameSessionStats();
     private score: number = 0;
     private owner: Player;
 
-    constructor(owner: Player, initialLevel: number) {
+    constructor(owner: Player, levelSet: ExperienceSystemLevelSet) {
         super();
         this.owner = owner;
-        this.characteristics = PlayerLevels[initialLevel];
+        this.levelSet = levelSet;
+        this.characteristics = levelSet[1];
         this.updateSystems();
+    }
+
+    getCharacteristics(): IExperienceSystemCharacteristics {
+        return this.characteristics;
     }
 
     get currentScore(): number {
@@ -61,7 +69,7 @@ export class ExperienceSystem extends BonusReceiverTemplate<ExperienceBonus> {
 
     private checkForLevelUp(): void {
         const nextLevel = this.characteristics.level + 1;
-        const nextLevelCharacteristics = PlayerLevels[nextLevel];
+        const nextLevelCharacteristics = this.levelSet[nextLevel];
         if (nextLevelCharacteristics && this.score >= nextLevelCharacteristics.scoreThreshold) {
             this.characteristics = nextLevelCharacteristics;
             this.updateSystems();

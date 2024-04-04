@@ -1,7 +1,7 @@
+import { ExperienceSystemLevelSet } from "../models/experience-system/types/ExperienceSystemLevelSet";
 import { ProjectileType } from "../projectile/ProjectileType";
-import { IPlayerLevelCharacteristics } from "./IPlayerLevelCharacteristics";
 
-const PlayerLevels: Record<number, IPlayerLevelCharacteristics> = {
+const PlayerLevels: ExperienceSystemLevelSet = {
     1: {
         level: 1,
         scoreThreshold: 0,
