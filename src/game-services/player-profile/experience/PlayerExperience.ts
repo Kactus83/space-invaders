@@ -1,20 +1,24 @@
 import { AppConfig } from "../../../core/config/AppConfig";
+import { PlayerProfile } from "../PlayerProfile";
 import { PlayerDataService } from "../datas/PlayerDataService";
 import { GameSessionStats } from "./models/GameSessionStats";
 
 export class PlayerExperience {
+    private playerProfile: PlayerProfile;
     private bestScore: number;
     private experiencePoints: number;
     private gameSessions: GameSessionStats[];
 
-    constructor() {
+    constructor(playerProfile: PlayerProfile) {
+        this.playerProfile = playerProfile;
         this.bestScore = 0;
         this.experiencePoints = 0;
         this.gameSessions = [];
+        this.restoreFromData();
     }
 
     restoreFromData(): void {
-        const experienceData = PlayerDataService.getInstance().loadCurrentProfile()?.experience;
+        const experienceData = PlayerDataService.getInstance().loadCurrentProfile(this.playerProfile.getPlayerName())?.experience;
         this.bestScore = experienceData.bestScore;
         this.experiencePoints = experienceData.experiencePoints;
         this.gameSessions = experienceData.gameSessions;
@@ -61,7 +65,7 @@ export class PlayerExperience {
         // Ajoutez ici la logique de conversion du score de la session en points d'expérience
         const experiencePointsFromSession = this.calculateExperiencePointsFromSession(sessionStats);
         this.addExperiencePoints(experiencePointsFromSession);
-        PlayerDataService.getInstance().saveCurrentProfile();
+        PlayerDataService.getInstance().saveCurrentProfile(this.playerProfile);
     }
 
     updateBestScore(score: number): void {

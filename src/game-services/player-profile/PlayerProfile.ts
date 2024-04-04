@@ -11,8 +11,8 @@ export class PlayerProfile {
     private playerName: string = 'Player';
 
     private constructor() {
-        this.inventory = new PlayerInventory();
-        this.experience = new PlayerExperience();
+        this.inventory = new PlayerInventory(this);
+        this.experience = new PlayerExperience(this);
     }
 
     public static getInstance(): PlayerProfile {

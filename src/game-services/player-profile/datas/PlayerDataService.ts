@@ -16,8 +16,7 @@ export class PlayerDataService {
     /**
      * Sauvegarde les données du profil du joueur actuel dans le localStorage.
      */
-    saveCurrentProfile(): void {
-        const profile = PlayerProfile.getInstance();
+    saveCurrentProfile(profile: PlayerProfile): void {
         const playerName = profile.getPlayerName(); 
         const profileData: PlayerProfileData = {
             playerName,
@@ -39,9 +38,7 @@ export class PlayerDataService {
      * Charge les données du profil du joueur actuel depuis le localStorage.
      * @returns {PlayerProfileData | null} - Les données du profil du joueur ou null si aucune donnée n'est trouvée.
      */
-    loadCurrentProfile(): PlayerProfileData | null {
-        const profile = PlayerProfile.getInstance();
-        const playerName = profile.getPlayerName(); // Supposons que cette méthode existe.
+    loadCurrentProfile(playerName: string): PlayerProfileData | null {
         const profileJson = localStorage.getItem(`playerProfile_${playerName}`);
         if (profileJson) {
             return JSON.parse(profileJson) as PlayerProfileData;
