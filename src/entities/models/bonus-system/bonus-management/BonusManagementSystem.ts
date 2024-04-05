@@ -22,8 +22,13 @@ export class BonusManagementSystem {
         if (this.availableBonuses.length < 3) {
             this.availableBonuses.push(bonus);
         } else {
-            // Si les slots actifs sont pleins, le bonus va dans l'inventaire
-            PlayerProfile.getInstance().getInventory().addBonusToInventory(bonus);
+            // Retirer le premier bonus de l'array et le stocker dans l'inventaire
+            const bonusToStore = this.availableBonuses.shift();
+            if (bonusToStore) {
+                PlayerProfile.getInstance().getInventory().addBonusToInventory(bonusToStore);
+            }
+            // Ajouter le nouveau bonus à l'array des bonus disponibles
+            this.availableBonuses.push(bonus);
         }
     }
 
