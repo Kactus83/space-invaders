@@ -38,7 +38,7 @@ export class SkillSystem extends BonusReceiverTemplate<SkillBonus>{
     addSkill(skill: Skill): void {
         this.skills.push(skill);
         if (skill.isPermanent) {
-            skill.activate(); // Activer immédiatement les compétences permanentes
+            skill.activate(); // Activate permanent skills immediately
         }
     }
 
@@ -46,6 +46,15 @@ export class SkillSystem extends BonusReceiverTemplate<SkillBonus>{
         const skill = this.skills.find(s => s.id === skillId);
         if (skill && skill.isReady()) {
             skill.activate();
+        }
+    }
+
+    activateSkillByIndex(index: number): void {
+        if (index >= 0 && index < this.skills.length) {
+            const skill = this.skills[index];
+            skill.activate();
+        } else {
+            throw new Error("Invalid skill index");
         }
     }
 
