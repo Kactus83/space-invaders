@@ -21,5 +21,9 @@ export class SkillLibrary {
         }
         return null;
     }
+
+    static getAllSkills(): Skill[] {
+        return Object.values(this.skills).map(creator => creator());
+    }
 }
 

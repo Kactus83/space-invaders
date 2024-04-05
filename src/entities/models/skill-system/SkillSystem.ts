@@ -51,7 +51,7 @@ export class SkillSystem extends BonusReceiverTemplate<SkillBonus>{
 
     isSkillActive(skillId: string): boolean {
         const skill = this.skills.find(s => s.id === skillId);
-        return skill ? skill.isActive() : false;
+        return !!skill && skill.isActive;
     }
 
     deactivateSkill(skillId: string): void {
