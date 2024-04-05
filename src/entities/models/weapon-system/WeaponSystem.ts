@@ -71,7 +71,7 @@ export class WeaponSystem extends BonusReceiverTemplate<WeaponBonus> {
         if (this.currentBonus) {
             const effect = this.currentBonus.getEffect();
             probability += effect.additional_ShootProbability;
-            probability *= effect.multiplicator_ShootProbability;
+            probability /= effect.multiplicator_ShootProbability;
         }
         return probability;
     }
