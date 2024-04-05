@@ -1,4 +1,5 @@
 export enum SceneIds {
+    PlayerNameEntry = 'PlayerNameEntry',
     MainMenu = 'MainMenu',
     Settings = 'Settings',
     Settings_Game = 'Settings_Game',

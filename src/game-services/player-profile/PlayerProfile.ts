@@ -28,6 +28,10 @@ export class PlayerProfile {
     getPlayerName(): string {
         return this.playerName;
     }
+    
+    setPlayerName(name: string): void {
+        this.playerName = name;
+    }
 
     getInventory(): PlayerInventory {
         return this.inventory;
