@@ -9,6 +9,8 @@ import { HealthSystem } from "../models/health-system/HealthSystem";
 import { IProjectileCharacteristics } from "./IProjectileCharacteristics";
 import { GroundLine } from "../ground-line/GroundLine";
 import { SpeedSystem } from "../models/speed-system/SpeedSystem";
+import { GameBonus } from "../bonus/GameBonus";
+import { SkillsIds } from "../models/skill-system/types/SkillsIds";
 
 export class Projectile extends GameEntity {
     private x_Position: number;
@@ -77,6 +79,11 @@ export class Projectile extends GameEntity {
 
         } else if (entity instanceof Wall) {
             this.state = EntityState.ToBeRemoved;
+
+        } else if (entity instanceof GameBonus) {
+            if(this.origin instanceof Player && this.origin.skillSystem.isSkillActive(SkillsIds.PickupBonus)) {
+                this.state = EntityState.ToBeRemoved;
+            }
 
         } else if (entity instanceof Projectile) {
             this.healthSystem.onCollision(entity.healthSystem);
