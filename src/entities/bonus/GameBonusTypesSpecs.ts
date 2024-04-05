@@ -8,7 +8,6 @@ import { SpeedBonus } from "../models/speed-system/bonus/SpeedBonus";
 import { SpeedBonusEffect } from "../models/speed-system/bonus/SpeedBonusEffect";
 import { WeaponBonus } from "../models/weapon-system/bonus/WeaponBonus";
 import { WeaponBonusEffect } from "../models/weapon-system/bonus/WeaponBonusEffect";
-import { ProjectileType } from "../projectile/ProjectileType";
 import { GameBonusType } from "./GameBonusTypes";
 import { IGameBonusCharacteristics } from "./IGameBonusCharacteristics";
 
@@ -16,6 +15,14 @@ import { IGameBonusCharacteristics } from "./IGameBonusCharacteristics";
 export const GameBonusSpecs: Record<GameBonusType, IGameBonusCharacteristics> = {
     [GameBonusType.Health_Double_Shield_30sec]: {
         systemBonus: new HealthBonus(new HealthBonusEffect("Double Shield 30sec", 30, 1, 0, 2, 0, 1, 0, 1, 0)),
+        moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
+    },
+    [GameBonusType.Health_Increase_1_Shield_60sec]: {
+        systemBonus: new HealthBonus(new HealthBonusEffect("+1 Shield 60sec", 60, 1, 0, 1, 1, 1, 0, 1, 0)),
+        moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
+    },
+    [GameBonusType.Health_Increase_2_Shield_60sec]: {
+        systemBonus: new HealthBonus(new HealthBonusEffect("+2 Shield 60sec", 60, 1, 0, 1, 2, 1, 0, 1, 0)),
         moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
     },
     [GameBonusType.Health_Increase_5_Shield_60sec]: {
