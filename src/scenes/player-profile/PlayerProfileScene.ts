@@ -17,6 +17,7 @@ export class PlayerProfileScene implements IScene {
             `Experience Points: ${experience.getExperiencePoints()}`,
             'Game Statistics',
             'Inventory',
+            'Skills',
             'Back to Main Menu'
         ];
         const buttonActions = [
@@ -24,6 +25,7 @@ export class PlayerProfileScene implements IScene {
             null, // Mais vous pourriez les rendre interactifs si vous le souhaitez
             () => this.onGameStatistics(),
             () => this.onInventory(),
+            () => this.onSkills(),
             () => this.onBackToMainMenu()
         ];
 
@@ -48,6 +50,10 @@ export class PlayerProfileScene implements IScene {
 
     private onInventory(): void {
         SceneManager.getInstance().changeScene(SceneIds.Player_Inventory); 
+    }
+
+    private onSkills(): void {
+        SceneManager.getInstance().changeScene(SceneIds.Player_Skills); 
     }
 
     private onBackToMainMenu(): void {
