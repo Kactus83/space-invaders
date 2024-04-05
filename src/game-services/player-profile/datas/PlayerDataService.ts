@@ -41,4 +41,8 @@ export class PlayerDataService {
         }
         return null;
     }
+    
+    public deleteProfile(playerName: string): void {
+        localStorage.removeItem(`playerProfile_${playerName}`);
+    }
 }

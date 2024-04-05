@@ -4,6 +4,7 @@ import { SceneManager } from "../../core/scene-manager/SceneManager";
 import { SceneIds } from "../../core/scene-manager/types/SceneIds";
 import { Menu } from "../../ui/menu/Menu";
 import { PlayerProfile } from "../../game-services/player-profile/PlayerProfile";
+import { PlayerDataService } from "../../game-services/player-profile/datas/PlayerDataService";
 
 export class PlayerProfileScene implements IScene {
     private menu: Menu;
@@ -18,6 +19,7 @@ export class PlayerProfileScene implements IScene {
             'Game Statistics',
             'Inventory',
             'Skills',
+            'Reset Data',
             'Back to Main Menu'
         ];
         const buttonActions = [
@@ -26,6 +28,7 @@ export class PlayerProfileScene implements IScene {
             () => this.onGameStatistics(),
             () => this.onInventory(),
             () => this.onSkills(),
+            () => this.onResetData(), 
             () => this.onBackToMainMenu()
         ];
 
@@ -57,6 +60,18 @@ export class PlayerProfileScene implements IScene {
     }
 
     private onBackToMainMenu(): void {
+        SceneManager.getInstance().changeScene(SceneIds.MainMenu);
+    }
+
+    private onResetData(): void {
+        const profile = PlayerProfile.getInstance();
+        const playerName = profile.getPlayerName();
+        // Supprimer les données de profil
+        PlayerDataService.getInstance().deleteProfile(playerName);
+        // Vous pouvez également réinitialiser l'état du profil ici, si nécessaire
+        // Par exemple, réinitialiser les scores, l'expérience, l'inventaire, etc.
+        alert('Data reset successfully');
+        // Optionnellement, rediriger l'utilisateur vers le menu principal ou une autre scène après la réinitialisation
         SceneManager.getInstance().changeScene(SceneIds.MainMenu);
     }
 }
