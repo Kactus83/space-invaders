@@ -1,7 +1,7 @@
 export enum SystemBonusTypes {
-    Health,
-    Speed,
-    Weapon,
-    Level, 
-    Experience
+    Health = "Health",
+    Speed = "Speed",
+    Weapon = "Weapon",
+    Level = "Level", 
+    Experience = "Experience"
 }

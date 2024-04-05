@@ -13,6 +13,12 @@ export class BonusSystemInventory {
 
 
     restoreBonuses(data: any[]): void {
+        
+        if (!data) {
+            console.error("No bonus data available to restore.");
+            return;
+        }
+
         this.bonuses = data.map(item => {
             switch (item.type) {
                 case 'Health':

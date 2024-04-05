@@ -19,6 +19,12 @@ export class PlayerExperience {
 
     restoreFromData(): void {
         const experienceData = PlayerDataService.getInstance().loadCurrentProfile(this.playerProfile.getPlayerName())?.experience;
+        
+        if (!experienceData) {
+            console.error("No bonus data available to restore.");
+            return;
+        }
+        
         this.bestScore = experienceData.bestScore;
         this.experiencePoints = experienceData.experiencePoints;
         this.gameSessions = experienceData.gameSessions;
