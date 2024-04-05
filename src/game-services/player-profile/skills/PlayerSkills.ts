@@ -10,6 +10,7 @@ export class PlayerSkills {
     constructor(playerProfile: PlayerProfile) {
         this.playerProfile = playerProfile;
         this.skills = new Set();
+        this.restoreFromData();
     }
 
     addSkill(skillId: SkillsIds): void {

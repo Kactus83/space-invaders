@@ -71,7 +71,6 @@ export class PlayerExperience {
         // Ajoutez ici la logique de conversion du score de la session en points d'expérience
         const experiencePointsFromSession = this.calculateExperiencePointsFromSession(sessionStats);
         this.addExperiencePoints(experiencePointsFromSession);
-        PlayerDataService.getInstance().saveCurrentProfile(this.playerProfile);
     }
 
     updateBestScore(score: number): void {
@@ -82,6 +81,12 @@ export class PlayerExperience {
 
     addExperiencePoints(points: number): void {
         this.experiencePoints += points;
+        PlayerDataService.getInstance().saveCurrentProfile(this.playerProfile);
+    }
+
+    subtractExperiencePoints(points: number): void {
+        this.experiencePoints -= points;
+        PlayerDataService.getInstance().saveCurrentProfile(this.playerProfile);
     }
 
     private calculateExperiencePointsFromSession(sessionStats: GameSessionStats): number {
