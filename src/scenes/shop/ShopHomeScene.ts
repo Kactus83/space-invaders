@@ -18,6 +18,7 @@ export class ShopHomeScene implements IScene {
         ];
 
         this.menu = new Menu(buttonNames, buttonActions);
+        
     }
 
     update(deltaTime: number): void {}

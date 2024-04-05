@@ -4,10 +4,16 @@ import { SceneManager } from "../../core/scene-manager/SceneManager";
 import { SceneIds } from "../../core/scene-manager/types/SceneIds";
 import { Menu } from "../../ui/menu/Menu";
 import { SkillLibrary } from "../../entities/models/skill-system/library/SkillLibrary";
+import { PlayerProfile } from "../../game-services/player-profile/PlayerProfile";
+import { fabric } from "fabric";
 import { ShopService } from "../../game-services/shop/Shopservice";
+import { ExperienceDisplayComponent } from "../../ui/experience-display/ExperienceDisplayComponent";
+import { SkillsIds } from "../../entities/models/skill-system/types/SkillsIds";
+
 
 export class ShopSkillsScene implements IScene {
     private menu: Menu;
+    private experienceDisplay: ExperienceDisplayComponent;
 
     async initialize(): Promise<void> {
         const skills = SkillLibrary.getAllSkills();
@@ -15,26 +21,32 @@ export class ShopSkillsScene implements IScene {
         const buttonNames = skills.map(skill => `${skill.name}: ${skill.experiencePointsCost} XP`);
         buttonNames.push('Back to Shop Home');
 
-        const buttonActions = skills.map(skill => () => {
-            const purchased = ShopService.getInstance().buySkill(skill.id);
-            if (purchased) {
-                alert(`Skill "${skill.name}" acquired!`);
-            } else {
-                alert("Not enough experience points or skill does not exist.");
-            }
-        });
+        const buttonActions = skills.map(skill => () => this.onSkillPurchased(skill.id));
         buttonActions.push(() => SceneManager.getInstance().changeScene(SceneIds.Shop));
 
         this.menu = new Menu(buttonNames, buttonActions);
+        this.experienceDisplay = new ExperienceDisplayComponent();
     }
 
-    update(deltaTime: number): void {}
+    update(deltaTime: number): void {
+    }
 
     getDrawableObjects(): IRenderable[] {
-        return [this.menu];
+        return [this.menu, this.experienceDisplay];
     }
 
     cleanup(): void {
         this.menu.cleanup();
+    }
+
+    private onSkillPurchased(skillId: SkillsIds): void {
+        const purchased = ShopService.getInstance().buySkill(skillId);
+        if (purchased) {
+            alert(`Skill "${skillId}" acquired!`);
+            // Mettre à jour l'affichage des XP après chaque achat réussi
+            const experiencePoints = PlayerProfile.getInstance().getExperience().getExperiencePoints();
+        } else {
+            alert("Not enough experience points or skill does not exist.");
+        }
     }
 }
