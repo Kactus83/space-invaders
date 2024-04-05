@@ -26,7 +26,7 @@ export class PlayerDataService {
                 bonusInventory: profile.getInventory().getAllBonus(),
             },
             skills: {
-                skillIds: profile.getSkills().getSkillIds(),
+                skillIds: profile.getSkills().getSkillsIds(),
             },
         };
 
