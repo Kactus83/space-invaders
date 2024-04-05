@@ -13,6 +13,8 @@ import { GroundLine } from "../ground-line/GroundLine";
 import { SpeedSystem } from "../models/speed-system/SpeedSystem";
 import { BonusEmitterSystem } from "../models/bonus-system/bonus-emitter/BonusEmitterSystem";
 import { GameBonus } from "../bonus/GameBonus";
+import { HealthState } from "../types/HealthState";
+import { fabric } from "fabric";
 
 export class Invader extends GameEntity implements IShooter {
     private initialPosition: { x: number, y: number };
@@ -26,6 +28,7 @@ export class Invader extends GameEntity implements IShooter {
     private bonusEmitterSystem: BonusEmitterSystem;
     private score: number;
     private type: InvaderType;
+    private designsByHealthState: Record<HealthState, fabric.Object> = {};
 
     constructor(type: InvaderType, initialPosition: { x: number, y: number }) {
         super();
@@ -44,23 +47,30 @@ export class Invader extends GameEntity implements IShooter {
     }
     
     protected async loadDesign(): Promise<void> {
-        const design = this.themeManager.getTheme().getInvaderDesign(this.type, this.healthSystem.healthState);
-    
-        let x_position: number;
-        let y_position: number;
-    
-        // Vérifiez si l'objet existe déjà et utilisez ses coordonnées
-        if (this.fabricObject && this.fabricObject.left && this.fabricObject.top) {
+        // Vérifie si les designs ont déjà été chargés
+        if (Object.keys(this.designsByHealthState).length === 0) {
+            // Charger tous les designs pour chaque état de santé et les stocker
+            for (const state of Object.values(HealthState)) {
+                const design = this.themeManager.getTheme().getInvaderDesign(this.type, state);
+                const fabricObject = await this.createFabricObject(design, { x: 0, y: 0 }); // Utiliser des coordonnées temporaires
+                this.designsByHealthState[state] = fabricObject;
+            }
+        }
+
+        // Utiliser l'état de santé actuel pour déterminer quel design afficher
+        const currentState = this.healthSystem.healthState;
+        this.fabricObject = this.designsByHealthState[currentState];
+
+        // Ajuster la position du fabricObject
+        let x_position = this.initialPosition.x;
+        let y_position = this.initialPosition.y;
+
+        if (this.fabricObject.left && this.fabricObject.top) {
             x_position = this.fabricObject.left;
             y_position = this.fabricObject.top;
-        } else {
-            // Sinon, utilisez les coordonnées d'apparition initiales
-            x_position = this.initialPosition.x;
-            y_position = this.initialPosition.y;
         }
-    
-        this.fabricObject = await this.createFabricObject(design, { x: x_position, y: y_position });
-        // Indiquez que le design ne doit plus être mis à jour jusqu'à nouvelle instruction
+
+        this.fabricObject.set({ left: x_position, top: y_position });
         this.shouldUpdateDesign = false;
     }    
 
