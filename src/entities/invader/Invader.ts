@@ -28,7 +28,11 @@ export class Invader extends GameEntity implements IShooter {
     private bonusEmitterSystem: BonusEmitterSystem;
     private score: number;
     private type: InvaderType;
-    private designsByHealthState: Record<HealthState, fabric.Object> = {};
+    private designsByHealthState: Record<HealthState, fabric.Object> = {
+        [HealthState.New]: {} as fabric.Object,
+        [HealthState.Damaged]: {} as fabric.Object,
+        [HealthState.Critical]: {} as fabric.Object,
+    };
 
     constructor(type: InvaderType, initialPosition: { x: number, y: number }) {
         super();
