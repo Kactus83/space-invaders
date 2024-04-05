@@ -3,5 +3,6 @@ export enum SystemBonusTypes {
     Speed = "Speed",
     Weapon = "Weapon",
     Level = "Level", 
-    Experience = "Experience"
+    Experience = "Experience",
+    Skill = "Skill"
 }

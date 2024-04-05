@@ -14,6 +14,7 @@ import { Projectile } from "../projectile/Projectile";
 import { IShooter } from "../types/IShooter";
 import { Wall } from "../wall/Wall";
 import { PlayerLevels, MaxLevel } from "./PlayerLevels";
+import { SkillSystem } from "../models/skill-system/SkillSystem";
 
 export class Player extends GameEntity implements IInteractive, IShooter {
     private subscriptionId: number;
@@ -23,6 +24,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
     public weaponSystem: WeaponSystem;
     public experienceSystem: ExperienceSystem;
     public bonusManagementSystem: BonusManagementSystem;
+    public skillSystem: SkillSystem;
 
     constructor() {
         super();
@@ -33,6 +35,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         this.weaponSystem = new WeaponSystem(this, levelCharacteristics);
         this.experienceSystem = new ExperienceSystem(this, PlayerLevels);
         this.bonusManagementSystem = new BonusManagementSystem(this);
+        this.skillSystem = new SkillSystem(this, levelCharacteristics);
     }
     
     public async loadDesign(): Promise<void> {
