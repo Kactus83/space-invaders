@@ -140,6 +140,14 @@ export class CollisionService {
                     player.onCollisionWith(bonus);
                 }
             });
+
+            // Collision Bonus avec Projectiles
+            this.projectiles.forEach(projectile => {
+                if (this.areColliding(bonus, projectile)) {
+                    bonus.onCollisionWith(projectile);
+                    projectile.onCollisionWith(bonus);
+                }
+            });
     
             // Collision Bonus avec GroundLine
             if (bonus.isInCollisionZone()) {
