@@ -34,6 +34,7 @@ export abstract class SystemBonus {
 
     // Getter pour l'état du bonus
     getState(): 'available' | 'active' | 'expired' {
+        this.checkExpiration();
         return this.state;
     }
 
