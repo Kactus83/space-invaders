@@ -2,8 +2,8 @@ export interface ISkill {
     id: string;
     name: string;
     description: string;
-    execute(): void;
+    isPermanent: boolean;
+    isActive(): boolean;
+    activate(): void;
     update(deltaTime: number): void;
-    isReady(): boolean;
-    resetCooldown(): void;
 }

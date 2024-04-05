@@ -5,27 +5,37 @@ export abstract class Skill implements ISkill {
     name: string;
     description: string;
     protected cooldown: number;
+    protected duration: number;
     protected lastActivationTime: number | null = null;
+    isPermanent: boolean;
 
-    constructor(id: string, name: string, description: string, cooldown: number) {
+    constructor(id: string, name: string, description: string, cooldown: number, duration: number, isPermanent: boolean) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.cooldown = cooldown;
+        this.duration = duration;
+        this.isPermanent = isPermanent;
     }
 
-    abstract execute(): void;
-
-    update(deltaTime: number): void {
-        // Cette méthode peut être utilisée pour mettre à jour l'état interne des compétences au fil du temps.
+    activate(): void {
+        if (!this.isReady()) return;
+        this.lastActivationTime = Date.now();
     }
 
     isReady(): boolean {
+        if (this.isPermanent) return true;
         if (!this.lastActivationTime) return true;
-        return (Date.now() - this.lastActivationTime) >= this.cooldown;
+        const timePassed = Date.now() - this.lastActivationTime;
+        return timePassed > this.cooldown;
     }
 
-    resetCooldown(): void {
-        this.lastActivationTime = Date.now();
+    isActive(): boolean {
+        if (this.isPermanent) return true;
+        if (!this.lastActivationTime) return false;
+        const timeActive = Date.now() - this.lastActivationTime;
+        return timeActive <= this.duration;
     }
+
+    update(deltaTime: number): void {}
 }

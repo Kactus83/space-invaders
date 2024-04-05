@@ -1,44 +1,37 @@
-import { GameEntity } from "../../GameEntity";
-import { BonusReceiverTemplate } from "../bonus-system/bonus-receiver/BonusReceiverTemplate";
-import { ISkillCharacteristics } from "./ISkillCharacteristics";
-import { SkillBonus } from "./bonus/SkillBonus";
-import { ISkill } from "./skill/ISkill";
+import { Skill } from "./Skill";
 
-export class SkillSystem  extends BonusReceiverTemplate<SkillBonus> {
-    private characteristics: ISkillCharacteristics;
-    private owner: GameEntity;
-    private skills: Map<string, ISkill> = new Map();
-    private activeSkills: Map<string, ISkill> = new Map();
-    
+export class SkillSystem {
+    private skills: Skill[] = [];
+    private activeSkills: string[] = [];
 
-    constructor(owner: GameEntity, characteristics: ISkillCharacteristics) {
-        super();
-        this.owner = owner;
-        this.characteristics = characteristics;
+    constructor() {
+        this.initializeSkills();
     }
-    addSkill(skill: ISkill): void {
-        this.skills.set(skill.id, skill);
+
+    initializeSkills(): void {
+        // Ajouter les compétences initiales ici
+    }
+
+    addSkill(skill: Skill): void {
+        this.skills.push(skill);
+        if (skill.isPermanent) {
+            skill.activate(); // Activer immédiatement les compétences permanentes
+        }
     }
 
     useSkill(skillId: string): void {
-        const skill = this.skills.get(skillId);
+        const skill = this.skills.find(s => s.id === skillId);
         if (skill && skill.isReady()) {
-            skill.execute();
-            skill.resetCooldown();
-            this.activeSkills.set(skillId, skill);
+            skill.activate();
         }
     }
 
     update(deltaTime: number): void {
-        this.activeSkills.forEach((skill, id) => {
-            if (!skill.isReady()) {
-                this.activeSkills.delete(id);
-            }
-            skill.update(deltaTime);
-        });
+        this.skills.forEach(skill => skill.update(deltaTime));
     }
 
     isSkillActive(skillId: string): boolean {
-        return this.activeSkills.has(skillId);
+        const skill = this.skills.find(s => s.id === skillId);
+        return skill ? skill.isActive() : false;
     }
 }
