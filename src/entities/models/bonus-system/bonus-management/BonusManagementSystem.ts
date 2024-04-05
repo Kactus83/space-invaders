@@ -91,4 +91,11 @@ export class BonusManagementSystem {
             this.activateAndApplyBonus(this.availableBonuses[0]);
         }
     }
+
+    public cleanAndStoreAvailableBonuses(): void {
+        this.availableBonuses.forEach(bonus => {
+            PlayerProfile.getInstance().getInventory().addBonusToInventory(bonus);
+        });
+        this.availableBonuses = [];
+    }
 }

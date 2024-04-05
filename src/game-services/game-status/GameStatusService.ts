@@ -27,11 +27,13 @@ export class GameStatusService {
     }
     
     private handleGameWin(): void {
+        this.player.bonusManagementSystem.cleanAndStoreAvailableBonuses();
         this.recordGameSessionStats(true);
         SceneManager.getInstance().changeScene(SceneIds.Victory);
     }
 
     private handleGameLose(): void {
+        this.player.bonusManagementSystem.cleanAndStoreAvailableBonuses();
         this.recordGameSessionStats(false);
         SceneManager.getInstance().changeScene(SceneIds.Defeat);
     }
