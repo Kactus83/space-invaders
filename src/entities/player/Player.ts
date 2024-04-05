@@ -137,10 +137,10 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         const inputManager = InputManager.getInstance();
 
         if (inputManager.isKeyPressed(UserInputType.Left)) {
-            this.move(-this.speedSystem.moveSpeed * deltaTime);
+            this.move(-this.speedSystem.moveSpeed * deltaTime / 1000);
         }
         if (inputManager.isKeyPressed(UserInputType.Right)) {
-            this.move(this.speedSystem.moveSpeed * deltaTime);
+            this.move(this.speedSystem.moveSpeed * deltaTime / 1000);
         }
         if (inputManager.isKeyPressed(UserInputType.Shoot)) {
             this.shoot();
