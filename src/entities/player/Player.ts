@@ -85,23 +85,30 @@ export class Player extends GameEntity implements IInteractive, IShooter {
 
     handleInput(inputType: UserInputType): void {
         switch (inputType) {
-            case UserInputType.Left:
-                this.moveLeft();
-                break;
-            case UserInputType.Right:
-                this.moveRight();
-                break;
             case UserInputType.Shoot:
                 this.shoot();
                 break;
             case UserInputType.Enter:
-                if(AppConfig.getInstance().god_Mode) {
+                if (AppConfig.getInstance().god_Mode) {
                     this.increaseScore(200);
                 }
+                break;
             case UserInputType.Up:
                 this.bonusManagementSystem.activateFirstActiveBonus();
                 break;
-            // Implémentez d'autres cas si nécessaire
+            case UserInputType.Num1:
+                this.skillSystem.activateSkillByIndex(1);
+                break;
+            case UserInputType.Num2:
+                this.skillSystem.activateSkillByIndex(2);
+                break;
+            case UserInputType.Num3:
+                this.skillSystem.activateSkillByIndex(3);
+                break;
+            case UserInputType.Num4:
+                this.skillSystem.activateSkillByIndex(4);
+                break;
+            // Implement other cases if necessary
         }
     }
 
