@@ -213,7 +213,4 @@ export class Invader extends GameEntity implements IShooter {
     private async shoot(): Promise<void> {
         await this.weaponSystem.shoot();
     }
-    
-
-    // Méthodes spécifiques aux invaders...
 }

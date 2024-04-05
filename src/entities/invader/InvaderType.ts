@@ -1,3 +1,6 @@
+/**
+ * Enum for invader types.
+ */
 export enum InvaderType {
     None = "None",
     Light = "Light",

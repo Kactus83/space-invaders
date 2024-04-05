@@ -4,6 +4,9 @@ import { ISpeedCharacteristics } from "../models/speed-system/ISpeedCharacterist
 import { IWeaponCharacteristics } from "../models/weapon-system/IWeaponCharacteristics";
 import { InvaderType } from "./InvaderType";
 
+/**
+ * Invader characteristics for each invader type.
+ */
 export interface IInvaderCharacteristics extends IHealthCharacteristics, IWeaponCharacteristics, ISpeedCharacteristics, IBonusEmitterCharacteristics {
     type: InvaderType;
     width: number; 

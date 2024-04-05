@@ -3,6 +3,9 @@ import { ProjectileType } from "../projectile/ProjectileType";
 import { IInvaderCharacteristics } from "./IInvaderCharacteristics";
 import { InvaderType } from "./InvaderType";
 
+/**
+ * Invader characteristics for each invader type.
+ */
 export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
     [InvaderType.None]: {
         type: InvaderType.None,
