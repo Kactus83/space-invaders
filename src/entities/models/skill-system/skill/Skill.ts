@@ -1,21 +1,24 @@
+import { SkillsIds } from "../types/SkillsIds";
 import { ISkill } from "./ISkill";
 
 export abstract class Skill implements ISkill {
-    id: string;
+    id: SkillsIds;
     name: string;
     description: string;
+    experiencePointsCost: number;
     protected cooldown: number;
     protected duration: number;
     protected lastActivationTime: number | null = null;
     isPermanent: boolean;
 
-    constructor(id: string, name: string, description: string, cooldown: number, duration: number, isPermanent: boolean) {
+    constructor(id: SkillsIds, name: string, description: string, cooldown: number, duration: number, experiencePointsCost: number) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.cooldown = cooldown;
         this.duration = duration;
-        this.isPermanent = isPermanent;
+        this.isPermanent = duration === 0;
+        this.experiencePointsCost = experiencePointsCost;
     }
 
     activate(): void {
