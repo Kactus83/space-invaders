@@ -18,7 +18,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
     },
     2: {
         level: 2,
-        scoreThreshold: 50,
+        scoreThreshold: 250,
         projectileType: ProjectileType.Light,
         fireRate: 2,
         shootProbability: 1,
@@ -32,7 +32,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
     },
     3: {
         level: 3,
-        scoreThreshold: 250,
+        scoreThreshold: 500,
         projectileType: ProjectileType.Basic,
         fireRate: 1.5,
         shootProbability: 1,
@@ -46,7 +46,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
     },
     4: {
         level: 4,
-        scoreThreshold: 500,
+        scoreThreshold: 1000,
         projectileType: ProjectileType.Basic,
         fireRate: 2.5,
         shootProbability: 1,
@@ -60,7 +60,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
     },
     5: {
         level: 5,
-        scoreThreshold: 1000,
+        scoreThreshold: 2500,
         projectileType: ProjectileType.Medium,
         fireRate: 2,
         shootProbability: 1,
@@ -74,7 +74,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
     },
     6: {
         level: 6,
-        scoreThreshold: 2500,
+        scoreThreshold: 5000,
         projectileType: ProjectileType.Medium,
         fireRate: 3,
         shootProbability: 1,
@@ -88,7 +88,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
     },
     7: {
         level: 7,
-        scoreThreshold: 4000,
+        scoreThreshold: 10000,
         projectileType: ProjectileType.Advanced,
         fireRate: 2,
         shootProbability: 1,
@@ -102,7 +102,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
     },
     8: {
         level: 8,
-        scoreThreshold: 5000,
+        scoreThreshold: 15000,
         projectileType: ProjectileType.Advanced,
         fireRate: 3,
         shootProbability: 1,
@@ -116,7 +116,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
     },
     9: {
         level: 9,
-        scoreThreshold: 10000,
+        scoreThreshold: 25000,
         projectileType: ProjectileType.Heavy,
         fireRate: 2.5,
         shootProbability: 1,
@@ -130,7 +130,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
     },
     10: {
         level: 10,
-        scoreThreshold: 15000,
+        scoreThreshold: 50000,
         projectileType: ProjectileType.Ultimate,
         fireRate: 2,
         shootProbability: 1,
