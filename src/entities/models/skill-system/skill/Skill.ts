@@ -4,8 +4,8 @@ export abstract class Skill implements ISkill {
     id: string;
     name: string;
     description: string;
-    cooldown: number;
-    lastUsed: number | null = null;
+    protected cooldown: number;
+    protected lastActivationTime: number | null = null;
 
     constructor(id: string, name: string, description: string, cooldown: number) {
         this.id = id;
@@ -14,18 +14,18 @@ export abstract class Skill implements ISkill {
         this.cooldown = cooldown;
     }
 
-    // Vérifie si la compétence est prête à être utilisée
-    isReady(): boolean {
-        if (!this.lastUsed) return true;
-        return (Date.now() - this.lastUsed) >= this.cooldown;
-    }
-
-    // Marque la compétence comme utilisée
-    use(): void {
-        this.lastUsed = Date.now();
-        this.execute();
-    }
-
-    // Méthode à implémenter pour exécuter l'effet de la compétence
     abstract execute(): void;
+
+    update(deltaTime: number): void {
+        // Cette méthode peut être utilisée pour mettre à jour l'état interne des compétences au fil du temps.
+    }
+
+    isReady(): boolean {
+        if (!this.lastActivationTime) return true;
+        return (Date.now() - this.lastActivationTime) >= this.cooldown;
+    }
+
+    resetCooldown(): void {
+        this.lastActivationTime = Date.now();
+    }
 }

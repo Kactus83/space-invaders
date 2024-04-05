@@ -2,6 +2,8 @@ export interface ISkill {
     id: string;
     name: string;
     description: string;
-    cooldown: number;
     execute(): void;
+    update(deltaTime: number): void;
+    isReady(): boolean;
+    resetCooldown(): void;
 }

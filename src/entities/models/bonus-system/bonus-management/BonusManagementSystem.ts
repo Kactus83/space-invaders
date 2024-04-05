@@ -2,6 +2,7 @@ import { PlayerProfile } from "../../../../game-services/player-profile/PlayerPr
 import { Player } from "../../../player/Player";
 import { ExperienceBonus } from "../../experience-system/bonus/ExperienceBonus";
 import { HealthBonus } from "../../health-system/bonus/HealthBonus";
+import { SkillBonus } from "../../skill-system/bonus/SkillBonus";
 import { SpeedBonus } from "../../speed-system/bonus/SpeedBonus";
 import { WeaponBonus } from "../../weapon-system/bonus/WeaponBonus";
 import { SystemBonus } from "../system-bonus/SystemBonus";
@@ -36,6 +37,8 @@ export class BonusManagementSystem {
             this.player.weaponSystem.depositBonus(bonus);
         } else if (bonus instanceof ExperienceBonus) {
             this.player.experienceSystem.depositBonus(bonus);
+        }  else if (bonus instanceof SkillBonus) {
+            this.player.skillSystem.depositBonus(bonus);        
         } else {
             console.error("Unhandled bonus type:", bonus.getType());
             return;
@@ -78,6 +81,11 @@ export class BonusManagementSystem {
             case SystemBonusTypes.Experience:
                 if(this.player.experienceSystem.getActiveBonus() === bonus) {
                     this.player.experienceSystem.withdrawBonus();
+                }
+                break;
+            case SystemBonusTypes.Skill:
+                if(this.player.skillSystem.getActiveBonus() === bonus) {
+                    this.player.skillSystem.withdrawBonus();
                 }
                 break;
             default:
