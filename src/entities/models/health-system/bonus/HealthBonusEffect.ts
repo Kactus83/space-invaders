@@ -1,9 +1,10 @@
 import { SystemBonusEffectType } from "../../bonus-system/system-bonus/SystemBonusEffectType";
 import { ISystemBonusEffect } from "../../bonus-system/system-bonus/ISystemBonusEffect";
 import { IHealthCharacteristics } from "../IHealthCharasteristics";
+import { GameBonusType } from "../../../bonus/GameBonusTypes";
 
 export class HealthBonusEffect implements ISystemBonusEffect {
-    name: string;
+    name: GameBonusType;
     duration: number; 
     multiplicator_Hp: number;
     additional_Hp: number;
@@ -15,7 +16,7 @@ export class HealthBonusEffect implements ISystemBonusEffect {
     additional_RegenerationRate: number;
 
     constructor(
-        name: string,
+        name: GameBonusType,
         duration: number,
         multiplicator_Hp: number,
         additional_Hp: number,

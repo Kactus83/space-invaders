@@ -1,3 +1,4 @@
+import { GameBonusType } from "../../../entities/bonus/GameBonusTypes";
 import { SystemBonus } from "../../../entities/models/bonus-system/system-bonus/SystemBonus";
 import { ExperienceBonus } from "../../../entities/models/experience-system/bonus/ExperienceBonus";
 import { ExperienceBonusEffect } from "../../../entities/models/experience-system/bonus/ExperienceBonusEffect";
@@ -50,5 +51,13 @@ export class BonusSystemInventory {
 
     getBonuses(): SystemBonus[] {
         return this.bonuses;
+    }
+
+    removeBonusAt(index: number): boolean {
+        if (index >= 0 && index < this.bonuses.length) {
+            this.bonuses.splice(index, 1);
+            return true;
+        }
+        return false;
     }
 }

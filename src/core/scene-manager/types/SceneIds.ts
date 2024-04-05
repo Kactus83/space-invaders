@@ -6,6 +6,7 @@ export enum SceneIds {
     Player_Inventory = 'PlayerInventory',
     Player_GameStatistics = 'PlayerGameStatistics',
     Player_Skills = 'Player_Skills',
+    Player_BonusCrafting = 'Player_BonusCrafting',
     Shop = 'Shop',
     Shop_Skills = 'Shop_Skills',
     GamePlay = 'GamePlay',

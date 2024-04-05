@@ -1,7 +1,8 @@
+import { GameBonusType } from "../../../bonus/GameBonusTypes";
 import { ProjectileType } from "../../../projectile/ProjectileType";
 import { ISystemBonusEffect } from "../../bonus-system/system-bonus/ISystemBonusEffect";
 export class WeaponBonusEffect implements ISystemBonusEffect {
-    name: string;
+    name: GameBonusType;
     duration: number;
     upgrade_ProjectileType: number;
     multiplicator_fireRate: number;
@@ -10,7 +11,7 @@ export class WeaponBonusEffect implements ISystemBonusEffect {
     additional_ShootProbability: number;
     
     constructor(
-        name: string,
+        name: GameBonusType,
         duration: number,
         additional_fireRate: number,
         multiplicator_fireRate: number,
