@@ -13,9 +13,6 @@ export class PlayerDataService {
         return this.instance;
     }
 
-    /**
-     * Sauvegarde les données du profil du joueur actuel dans le localStorage.
-     */
     saveCurrentProfile(profile: PlayerProfile): void {
         const playerName = profile.getPlayerName(); 
         const profileData: PlayerProfileData = {
@@ -28,16 +25,15 @@ export class PlayerDataService {
             inventory: {
                 bonusInventory: profile.getInventory().getAllBonus(),
             },
+            skills: {
+                skillIds: profile.getSkills().getSkillIds(),
+            },
         };
 
         const profileJson = JSON.stringify(profileData);
         localStorage.setItem(`playerProfile_${playerName}`, profileJson);
     }
 
-    /**
-     * Charge les données du profil du joueur actuel depuis le localStorage.
-     * @returns {PlayerProfileData | null} - Les données du profil du joueur ou null si aucune donnée n'est trouvée.
-     */
     loadCurrentProfile(playerName: string): PlayerProfileData | null {
         const profileJson = localStorage.getItem(`playerProfile_${playerName}`);
         if (profileJson) {
