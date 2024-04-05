@@ -4,7 +4,7 @@ export interface ISkill {
     description: string;
     isPermanent: boolean;
     experiencePointsCost: number;
-    isActive(): boolean;
+    isActive: boolean;
     activate(): void;
     update(deltaTime: number): void;
 }

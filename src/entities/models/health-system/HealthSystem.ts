@@ -5,8 +5,10 @@ import { BonusReceiverTemplate } from "../bonus-system/bonus-receiver/BonusRecei
 import { HealthBonus } from "./bonus/HealthBonus";
 import { HealthBonusEffect } from "./bonus/HealthBonusEffect";
 import { IHealthCharacteristics } from "./IHealthCharasteristics";
+import { Player } from "../../player/Player";
+import { SkillsIds } from "../skill-system/types/SkillsIds";
 
-export class HealthSystem  extends BonusReceiverTemplate<HealthBonus> {
+export class HealthSystem extends BonusReceiverTemplate<HealthBonus> {
     healthState: HealthState = HealthState.New;
     private characteristics: IHealthCharacteristics;
     private maxHP: number;
@@ -22,6 +24,28 @@ export class HealthSystem  extends BonusReceiverTemplate<HealthBonus> {
     public updateCharacteristics(newCharacteristics: IHealthCharacteristics): void {
         this.characteristics = JSON.parse(JSON.stringify(newCharacteristics));
         this.maxHP = newCharacteristics.hp;
+    }    
+    
+    update(deltaTime: number): void {
+        // Vérifier si le skill de soin est actif et appliquer le soin
+        if (this.owner instanceof Player && this.owner.skillSystem.isSkillActive(SkillsIds.Heal)) {
+            this.applyHealEffect(SkillsIds.Heal);
+            // Désactiver le skill de soin après l'application
+            this.owner.skillSystem.deactivateSkill(SkillsIds.Heal);
+        }
+    }
+
+    private applyHealEffect(skillId: SkillsIds): void {
+        switch (skillId) {
+            case SkillsIds.Heal:
+                // Applique un soin de 50% des HP max
+                const healAmount = this.maxHP * 0.5;
+                this.heal(healAmount);
+                break;
+            // Ajoutez des cas supplémentaires ici pour d'autres types de soins
+            default:
+                console.error(`Unknown heal skill ID: ${skillId}`);
+        }
     }
 
     public takeDamage(amount: number): void {
@@ -40,8 +64,14 @@ export class HealthSystem  extends BonusReceiverTemplate<HealthBonus> {
     }
 
     public heal(amount: number): void {
-        this.characteristics.hp += amount;
-        // Ensure HP does not exceed some maximum value, if applicable
+        // Calcul du nouveau total de HP après le soin
+        let newHp = this.characteristics.hp + amount;
+        // Assurer que les HP ne dépassent pas le maximum autorisé
+        if (newHp > this.maxHP) {
+            newHp = this.maxHP;
+        }
+        // Appliquer le nouveau total de HP
+        this.characteristics.hp = newHp;
     }
 
     public onCollision(other: HealthSystem): void {

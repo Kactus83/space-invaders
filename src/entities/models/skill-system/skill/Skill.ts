@@ -10,6 +10,7 @@ export abstract class Skill implements ISkill {
     protected duration: number;
     protected lastActivationTime: number | null = null;
     isPermanent: boolean;
+    isActive: boolean;
 
     constructor(id: SkillsIds, name: string, description: string, cooldown: number, duration: number, experiencePointsCost: number) {
         this.id = id;
@@ -19,26 +20,34 @@ export abstract class Skill implements ISkill {
         this.duration = duration;
         this.isPermanent = duration === 0;
         this.experiencePointsCost = experiencePointsCost;
+        this.isActive = this.isPermanent; // Si permanent, alors toujours actif, sinon inactif au départ
     }
 
     activate(): void {
         if (!this.isReady()) return;
+        this.isActive = true;
+        this.lastActivationTime = Date.now();
+    }
+
+    deactivate(): void {
+        this.isActive = false;
+        // Réinitialiser lastActivationTime pour démarrer le cooldown
         this.lastActivationTime = Date.now();
     }
 
     isReady(): boolean {
-        if (this.isPermanent) return true;
+        if (this.isPermanent) return true; // Les compétences permanentes sont toujours "prêtes"
         if (!this.lastActivationTime) return true;
         const timePassed = Date.now() - this.lastActivationTime;
-        return timePassed > this.cooldown;
+        return timePassed >= this.cooldown;
     }
 
-    isActive(): boolean {
-        if (this.isPermanent) return true;
-        if (!this.lastActivationTime) return false;
-        const timeActive = Date.now() - this.lastActivationTime;
-        return timeActive <= this.duration;
+    update(deltaTime: number): void {
+        if (!this.isPermanent && this.lastActivationTime) {
+            const timeActive = Date.now() - this.lastActivationTime;
+            if (this.isActive && timeActive >= this.duration) {
+                this.deactivate(); // Désactiver automatiquement après la durée
+            }
+        }
     }
-
-    update(deltaTime: number): void {}
 }

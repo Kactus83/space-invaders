@@ -1,5 +1,7 @@
 import { GameEntity } from "../../GameEntity";
+import { Player } from "../../player/Player";
 import { BonusReceiverTemplate } from "../bonus-system/bonus-receiver/BonusReceiverTemplate";
+import { SkillsIds } from "../skill-system/types/SkillsIds";
 import { ISpeedCharacteristics } from "./ISpeedCharacteristics";
 import { SpeedBonus } from "./bonus/SpeedBonus";
 
@@ -28,6 +30,10 @@ export class SpeedSystem extends BonusReceiverTemplate<SpeedBonus> {
             effectiveMoveSpeed += effect.additional_MoveSpeed;
             // Ensuite, appliquez les multiplicateurs
             effectiveMoveSpeed *= effect.multiplicator_MoveSpeed;
+        }
+
+        if (this.owner instanceof Player && this.owner.skillSystem.isSkillActive(SkillsIds.SpeedBoost)) {
+            effectiveMoveSpeed *= 2;
         }
 
         return effectiveMoveSpeed;

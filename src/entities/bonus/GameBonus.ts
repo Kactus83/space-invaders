@@ -3,8 +3,10 @@ import { ThemeManager } from "../../themes/services/ThemeManager";
 import { GameEntity } from "../GameEntity";
 import { GroundLine } from "../ground-line/GroundLine";
 import { SystemBonusType } from "../models/bonus-system/system-bonus/SystemBonusType";
+import { SkillsIds } from "../models/skill-system/types/SkillsIds";
 import { SpeedSystem } from "../models/speed-system/SpeedSystem";
 import { Player } from "../player/Player";
+import { Projectile } from "../projectile/Projectile";
 import { EntityState } from "../types/EntityState";
 import { GameBonusType } from "./GameBonusTypes";
 import { GameBonusSpecs } from "./GameBonusTypesSpecs";
@@ -72,6 +74,12 @@ export class GameBonus extends GameEntity {
         }
         if (entity instanceof GroundLine) {
             this.state = EntityState.ToBeRemoved;
+        }
+        if (entity instanceof Projectile) {
+            if (entity.origin instanceof Player && entity.origin.skillSystem.isSkillActive(SkillsIds.PickupBonus)) {
+                entity.origin.bonusManagementSystem.addBonus(this.systemBonus);
+                this.state = EntityState.ToBeRemoved;
+            }
         }
     }
 
