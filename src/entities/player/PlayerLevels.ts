@@ -12,7 +12,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
         shield: 0,
         damage: 1,
         regenerationRate: 0,
-        moveSpeed: 5,
+        moveSpeed: 30,
         lifeBonus: 5,
         cooldownRatio: 1
     },
@@ -26,7 +26,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
         shield: 0,
         damage: 1,
         regenerationRate: 0,
-        moveSpeed: 6,
+        moveSpeed: 35,
         lifeBonus: 1,
         cooldownRatio: 1
     },
@@ -40,7 +40,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
         shield: 1,
         damage: 2,
         regenerationRate: 0.1,
-        moveSpeed: 7,
+        moveSpeed: 45,
         lifeBonus: 2,
         cooldownRatio: 1
     },
@@ -54,7 +54,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
         shield: 1,
         damage: 2,
         regenerationRate: 0.1,
-        moveSpeed: 8,
+        moveSpeed: 50,
         lifeBonus: 4,
         cooldownRatio: 1
     },
@@ -68,7 +68,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
         shield: 2,
         damage: 2,
         regenerationRate: 0.1,
-        moveSpeed: 8,
+        moveSpeed: 60,
         lifeBonus: 5,
         cooldownRatio: 1
     },
@@ -82,7 +82,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
         shield: 2,
         damage: 2,
         regenerationRate: 0.1,
-        moveSpeed: 8,
+        moveSpeed: 70,
         lifeBonus: 5,
         cooldownRatio: 1
     },
@@ -96,7 +96,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
         shield: 3,
         damage: 3,
         regenerationRate: 0.1,
-        moveSpeed: 10,
+        moveSpeed: 80,
         lifeBonus: 5,
         cooldownRatio: 1
     },
@@ -111,7 +111,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
         damage: 4,
         regenerationRate: 0.1,
         moveSpeed: 11,
-        lifeBonus: 5,
+        lifeBonus: 100,
         cooldownRatio: 1
     },
     9: {
@@ -124,7 +124,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
         shield: 4,
         damage: 5,
         regenerationRate: 0.1,
-        moveSpeed: 12,
+        moveSpeed: 150,
         lifeBonus: 5,
         cooldownRatio: 1
     },
@@ -138,7 +138,7 @@ const PlayerLevels: ExperienceSystemLevelSet = {
         shield: 5,
         damage: 10,
         regenerationRate: 0.5,
-        moveSpeed: 15,
+        moveSpeed: 200,
         lifeBonus: 10,
         cooldownRatio: 1
     },
