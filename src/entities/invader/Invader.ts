@@ -28,6 +28,7 @@ export class Invader extends GameEntity implements IShooter {
     private bonusEmitterSystem: BonusEmitterSystem;
     private score: number;
     private type: InvaderType;
+    private designsLoaded: boolean = false;
     private designsByHealthState: Record<HealthState, fabric.Object> = {
         [HealthState.New]: {} as fabric.Object,
         [HealthState.Damaged]: {} as fabric.Object,
@@ -51,32 +52,46 @@ export class Invader extends GameEntity implements IShooter {
     }
     
     protected async loadDesign(): Promise<void> {
-        // Vérifie si les designs ont déjà été chargés
-        if (Object.keys(this.designsByHealthState).length === 0) {
-            // Charger tous les designs pour chaque état de santé et les stocker
-            for (const state of Object.values(HealthState)) {
-                const design = this.themeManager.getTheme().getInvaderDesign(this.type, state);
-                const fabricObject = await this.createFabricObject(design, { x: 0, y: 0 }); // Utiliser des coordonnées temporaires
-                this.designsByHealthState[state] = fabricObject;
-            }
+        // Assurez-vous que les designs pour chaque état de santé sont chargés une seule fois
+        if (!this.designsLoaded) {
+            await this.preloadDesigns();
+            this.designsLoaded = true; // Marqueur pour indiquer que les designs sont chargés
         }
-
-        // Utiliser l'état de santé actuel pour déterminer quel design afficher
-        const currentState = this.healthSystem.healthState;
-        this.fabricObject = this.designsByHealthState[currentState];
-
-        // Ajuster la position du fabricObject
-        let x_position = this.initialPosition.x;
-        let y_position = this.initialPosition.y;
-
-        if (this.fabricObject.left && this.fabricObject.top) {
-            x_position = this.fabricObject.left;
-            y_position = this.fabricObject.top;
-        }
-
-        this.fabricObject.set({ left: x_position, top: y_position });
-        this.shouldUpdateDesign = false;
+    
+        // Sélectionne le design basé sur l'état de santé actuel
+        this.updateDesignByHealthState();
     }    
+    
+    private async preloadDesigns(): Promise<void> {
+        // Charger tous les designs pour chaque état de santé et les stocker
+        for (const state of Object.values(HealthState)) {
+            const design = await this.themeManager.getTheme().getInvaderDesign(this.type, state);
+            const fabricObject = await this.createFabricObject(design, { x: 0, y: 0 }); // Utiliser des coordonnées temporaires
+            this.designsByHealthState[state] = fabricObject;
+        }
+    }
+    
+    private updateDesignByHealthState(): void {
+        const currentState = this.healthSystem.healthState;
+        const currentDesign = this.designsByHealthState[currentState];
+    
+        if (currentDesign) {
+            let { x, y } = this.getCurrentPosition();
+            currentDesign.set({ left: x, top: y });
+            this.fabricObject = currentDesign;
+            this.shouldUpdateDesign = false; // Indique que le design est à jour
+        }
+    }
+    
+    private getCurrentPosition(): { x: number, y: number } {
+        // Récupère la position actuelle ou utilise la position initiale si non disponible
+        if (this.fabricObject && this.fabricObject.left && this.fabricObject.top) {
+            return { x: this.fabricObject.left, y: this.fabricObject.top };
+        } else {
+            return this.initialPosition;
+        }
+    }
+     
 
     async update(deltaTime: number): Promise<void> {
         const config = AppConfig.getInstance();
