@@ -133,6 +133,26 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         this.bonusManagementSystem.update();
         this.skillSystem.update(deltaTime);
         this.healthSystem.update(deltaTime);
+        
+        const inputManager = InputManager.getInstance();
+
+        if (inputManager.isKeyPressed(UserInputType.Left)) {
+            this.move(-this.speedSystem.moveSpeed * deltaTime);
+        }
+        if (inputManager.isKeyPressed(UserInputType.Right)) {
+            this.move(this.speedSystem.moveSpeed * deltaTime);
+        }
+        if (inputManager.isKeyPressed(UserInputType.Shoot)) {
+            this.shoot();
+        }
+    }
+    
+
+    private move(deltaX: number): void {
+        if (this.fabricObject) {
+            this.fabricObject.left += deltaX;
+            // Ajouter des contrôles pour empêcher le joueur de sortir de l'écran...
+        }
     }
     
     public increaseScore(amount: number): void {
