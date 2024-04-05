@@ -7,6 +7,7 @@ import { Player } from "../../entities/player/Player";
 import { GroundLine } from "../../entities/ground-line/GroundLine";
 import { AppConfig } from "../../core/config/AppConfig";
 import { BonusDisplayComponent } from "../bonus-display/BonusDisplayComponent";
+import { SkillDisplayComponent } from "../skill-display/SkillDisplayComponent";
 
 export class HUD implements IRenderable, IInteractive {
     private visible: boolean = true;
@@ -22,6 +23,7 @@ export class HUD implements IRenderable, IInteractive {
         const inputManager = InputManager.getInstance();
         this.subscriptionId = inputManager.subscribe(this);
         this.bonusDisplayComponent = new BonusDisplayComponent(player.bonusManagementSystem.availableBonuses, player.bonusManagementSystem.activeBonuses);
+        this.skillDisplayComponent = new SkillDisplayComponent(player.skillSystem.getSkills());
         this.updateHUD();
     }
 

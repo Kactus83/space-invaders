@@ -37,9 +37,18 @@ export class PlayerSkills {
     }
 
     restoreFromData(): void {
-        const skillsIds: SkillsIds[] = PlayerDataService.getInstance().loadCurrentProfile(this.playerProfile.getPlayerName())?.skills.skillIds;
-        if (skillsIds) {
+        // Tentez de charger les données de profil du joueur
+        const profileData = PlayerDataService.getInstance().loadCurrentProfile(this.playerProfile.getPlayerName());
+        
+        // Vérifiez si les données de profil et les skillIds existent
+        if (profileData && profileData.skills && Array.isArray(profileData.skills.skillIds)) {
+            const skillsIds: SkillsIds[] = profileData.skills.skillIds;
+            // Créer un nouveau Set avec les identifiants de compétences chargés
             this.skills = new Set(skillsIds);
+        } else {
+            // Si les données n'existent pas, initialisez simplement le Set sans identifiants
+            this.skills = new Set();
+            console.log("No skills data available to restore, or the data format is outdated.");
         }
     }
 }
