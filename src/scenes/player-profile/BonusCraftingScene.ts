@@ -1,5 +1,9 @@
 import { IRenderable } from "../../core/renderer/Irenderable";
+import { SceneManager } from "../../core/scene-manager/SceneManager";
 import { IScene } from "../../core/scene-manager/types/IScene";
+import { SceneIds } from "../../core/scene-manager/types/SceneIds";
+import { craftRecipes } from "../../game-services/bonus-craft/library/CraftRecipes";
+import { CraftingRecipeDisplay } from "../../ui/crafting-recipe-display/CraftingRecipeDisplay";
 import { HorizontalMenu } from "../../ui/menu/HorizontalMenu";
 
 export class BonusCraftingScene implements IScene {
@@ -11,7 +15,7 @@ export class BonusCraftingScene implements IScene {
         this.craftingDisplay = new CraftingRecipeDisplay(recipes);
 
         // Initialisation du menu horizontal pour la navigation
-        this.menu = new HorizontalMenu(["Retour"], [() => SceneManager.getInstance().changeScene(SceneIds.PlayerInventory)]);
+        this.menu = new HorizontalMenu(["Retour"], [() => SceneManager.getInstance().changeScene(SceneIds.Player_Inventory)]);
     }
 
     update(deltaTime: number): void {
@@ -24,6 +28,6 @@ export class BonusCraftingScene implements IScene {
     }
 
     cleanup(): void {
-        // Nettoyage si nécessaire
+        this.menu.cleanup();
     }
 }

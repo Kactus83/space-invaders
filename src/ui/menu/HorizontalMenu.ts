@@ -48,11 +48,6 @@ export class HorizontalMenu implements IRenderable {
             });
             this.buttons.push(button);
         });
-
-        // Subscribe to input manager for navigation
-        this.inputManager.subscribe({
-            handleInput: (inputType: UserInputType) => this.handleInput(inputType),
-        });
     }
 
     async getDrawableObjects(): Promise<fabric.Object[]> {
