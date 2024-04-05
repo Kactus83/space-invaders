@@ -19,6 +19,10 @@ export class SkillSystem extends BonusReceiverTemplate<SkillBonus>{
         this.loadSkillsFromProfile();
     }
 
+    getSkills(): Skill[] {
+        return this.skills;
+    }
+
     loadSkillsFromProfile(): void {
         const playerProfile = PlayerProfile.getInstance();
         const playerSkills = playerProfile.getSkills().getSkillsIds();

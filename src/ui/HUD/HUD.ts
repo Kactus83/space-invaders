@@ -14,6 +14,7 @@ export class HUD implements IRenderable, IInteractive {
     private player: Player;
     private groundLine: GroundLine;
     private bonusDisplayComponent: BonusDisplayComponent;
+    private skillDisplayComponent: SkillDisplayComponent;
     private fabricObjects: fabric.Object[] = [];
     private subscriptionId: number;
 
@@ -75,6 +76,12 @@ export class HUD implements IRenderable, IInteractive {
         // Bonus
         this.bonusDisplayComponent.setBonuses(this.player.bonusManagementSystem.availableBonuses, this.player.bonusManagementSystem.activeBonuses);
         this.fabricObjects.push(...this.bonusDisplayComponent.getDrawableObjects());
+        
+        // Mettre à jour le SkillDisplayComponent avec les compétences actuelles
+        this.skillDisplayComponent.setSkills(this.player.skillSystem.getSkills());
+
+        // Ajouter les objets de SkillDisplayComponent aux objets à dessiner
+        this.fabricObjects.push(...this.skillDisplayComponent.getDrawableObjects());
     }
 
     async getDrawableObjects(): Promise<fabric.Object[]> {
