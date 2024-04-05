@@ -29,8 +29,8 @@ export const GameBonusSpecs: Record<GameBonusType, IGameBonusCharacteristics> = 
         systemBonus: new HealthBonus(new HealthBonusEffect(GameBonusType.Health_Increase_5_Shield_60sec, 60, 1, 0, 1, 5, 1, 0, 1, 0)),
         moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
     },
-    [GameBonusType.Weapon_Double_FireRate_30sec]: {
-        systemBonus: new WeaponBonus(new WeaponBonusEffect(GameBonusType.Weapon_Double_FireRate_30sec, 30, 0, 2, 0, 0, 0)),
+    [GameBonusType.Weapon_Double_FireRate_5sec]: {
+        systemBonus: new WeaponBonus(new WeaponBonusEffect(GameBonusType.Weapon_Double_FireRate_5sec, 30, 0, 2, 0, 0, 0)),
         moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
     },
     [GameBonusType.Weapon_Increase_2_FireRate_60sec]: {
