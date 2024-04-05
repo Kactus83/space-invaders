@@ -4,8 +4,6 @@ import { SceneManager } from "../../core/scene-manager/SceneManager";
 import { SceneIds } from "../../core/scene-manager/types/SceneIds";
 import { Menu } from "../../ui/menu/Menu";
 import { SkillLibrary } from "../../entities/models/skill-system/library/SkillLibrary";
-import { PlayerProfile } from "../../game-services/player-profile/PlayerProfile";
-import { fabric } from "fabric";
 import { ShopService } from "../../game-services/shop/Shopservice";
 import { ExperienceDisplayComponent } from "../../ui/experience-display/ExperienceDisplayComponent";
 import { SkillsIds } from "../../entities/models/skill-system/types/SkillsIds";
@@ -43,8 +41,6 @@ export class ShopSkillsScene implements IScene {
         const purchased = ShopService.getInstance().buySkill(skillId);
         if (purchased) {
             alert(`Skill "${skillId}" acquired!`);
-            // Mettre à jour l'affichage des XP après chaque achat réussi
-            const experiencePoints = PlayerProfile.getInstance().getExperience().getExperiencePoints();
         } else {
             alert("Not enough experience points or skill does not exist.");
         }
