@@ -15,7 +15,6 @@ import { IShooter } from "../types/IShooter";
 import { Wall } from "../wall/Wall";
 import { PlayerLevels, MaxLevel } from "./PlayerLevels";
 import { SkillSystem } from "../models/skill-system/SkillSystem";
-import { SkillsIds } from "../models/skill-system/types/SkillsIds";
 
 export class Player extends GameEntity implements IInteractive, IShooter {
     private subscriptionId: number;
@@ -42,23 +41,34 @@ export class Player extends GameEntity implements IInteractive, IShooter {
     public async loadDesign(): Promise<void> {
         const design = this.themeManager.getTheme().getPlayerDesign(this.experienceSystem.level);
         const config = AppConfig.getInstance();
-
+    
         let x_position: number;
         let y_position: number;
-
+    
+        // Calculer la hauteur disponible pour le joueur
+        const playerZoneHeight = config.wall_InitialY - config.player_Min_Y;
+    
+        // Si l'objet fabric existe déjà, utilisez ses positions actuelles
         if(this.fabricObject && this.fabricObject.left && this.fabricObject.top) {
             x_position = this.fabricObject.left;
-            y_position = this.fabricObject.top;
-        }else{
+            // Y position basée sur le design actuel pour conserver la hauteur appropriée
+            const playerDesignHeight = design.height; // Assurez-vous que votre objet de design a une propriété `height`
+            y_position = config.player_Min_Y + (playerZoneHeight - playerDesignHeight) / 2;
+        } else {
+            // Sinon, initialisez les positions X et Y à partir des configurations
             x_position = config.player_InitialX;
-            y_position = config.player_InitialY;
+            // Calcul initial pour centrer le design du joueur dans sa zone disponible
+            const initialDesignHeight = design.height; // Utiliser la hauteur du premier design
+            y_position = config.player_Min_Y + (playerZoneHeight - initialDesignHeight) / 2;
         }
-
+    
+        // Mettre à jour ou initialiser l'objet fabric avec le design et les positions calculées
         this.fabricObject = await this.createFabricObject(design, { x: x_position, y: y_position });
         if(this.fabricObject) {
             this.shouldUpdateDesign = false;
         }
     }
+    
 
     onCollisionWith(entity: GameEntity): void {
         if (entity instanceof Player) {

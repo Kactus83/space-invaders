@@ -10,14 +10,14 @@ export class AppConfig implements IGlobalConfig {
     // Player settings
     public readonly player_InitialX: number = 380;
     public readonly player_InitialY: number = 500;
-    public readonly player_Min_Y: number = 560;
+    public readonly player_Min_Y: number = 570;
 
     public readonly experience_PointPerScore: number = 0.1;
     public readonly experience_WinMultiplicator: number = 2;
 
     // Wall settings
-    public readonly wall_InitialY: number = 490;
-    public readonly wall_MaxY: number = 400;
+    public readonly wall_InitialY: number = 485;
+    public readonly wall_MaxY: number = 405;
     public readonly wall_Size: number = 8;
 
     // Invaders settings
