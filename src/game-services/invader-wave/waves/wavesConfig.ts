@@ -66,6 +66,20 @@ export const waveConfigs: WaveConfig[] = [
         ],
     },
     {
+        delay: 10, // Seconde vague après 20 secondes
+        invaders: [
+            { type: InvaderType.Fast, count: 5, row: 1 },
+            { type: InvaderType.Fast, count: 5, row: 2 },
+        ],
+    },
+    {
+        delay: 5, // Seconde vague après 20 secondes
+        invaders: [
+            { type: InvaderType.Fast, count: 5, row: 1 },
+            { type: InvaderType.Fast_Kamikaze, count: 5, row: 2 },
+        ],
+    },
+    {
         delay: 8, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Light, count: 5, row: 1 },
@@ -94,6 +108,20 @@ export const waveConfigs: WaveConfig[] = [
         ],
     },
     {
+        delay: 25, // Seconde vague après 20 secondes
+        invaders: [
+            { type: InvaderType.Specialized, count: 5, row: 1 },
+            { type: InvaderType.Specialized, count: 5, row: 2 },
+        ],
+    },
+    {
+        delay: 10, // Seconde vague après 20 secondes
+        invaders: [
+            { type: InvaderType.Fast_Kamikaze, count: 5, row: 1 },
+            { type: InvaderType.Fast_Kamikaze, count: 5, row: 2 },
+        ],
+    },
+    {
         delay: 10, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Elite, count: 5, row: 1 },
@@ -111,7 +139,7 @@ export const waveConfigs: WaveConfig[] = [
         delay: 15, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Elite, count: 5, row: 1 },
-            { type: InvaderType.Boss, count: 5, row: 2 },
+            { type: InvaderType.Light_Boss, count: 5, row: 2 },
         ],
     },
     {
@@ -145,8 +173,8 @@ export const waveConfigs: WaveConfig[] = [
     {
         delay: 8, // Seconde vague après 20 secondes
         invaders: [
-            { type: InvaderType.Boss, count: 5, row: 1 },
-            { type: InvaderType.Boss, count: 5, row: 2 },
+            { type: InvaderType.Heavy_Boss, count: 5, row: 1 },
+            { type: InvaderType.Heavy_Boss, count: 5, row: 2 },
         ],
     },
     {
