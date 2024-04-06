@@ -42,9 +42,16 @@ export class BonusDisplayComponent {
 
     private createBonusText(bonus: SystemBonus, left: number, top: number, color: string): fabric.Text {
         const bonusName = bonus.effect.name;
-        const bonusState = this.formatBonusState(bonus.getState());
+        let bonusState = this.formatBonusState(bonus.getState());
+        
+        // Si le bonus est actif, incluez le temps restant dans l'affichage
+        if (bonus.getState() === 'active') {
+            const remainingTime = (bonus.getRemainingDuration() / 1000).toFixed(2); // Convertir en secondes et formater
+            bonusState += ` - ${remainingTime}s`;
+        }
+        
         const bonusTextContent = `${bonusName} - ${bonusState}`;
-
+        
         return new fabric.Text(bonusTextContent, {
             left,
             top,
@@ -52,7 +59,7 @@ export class BonusDisplayComponent {
             fill: color,
             fontFamily: 'Arial',
         });
-    }
+    }    
 
     private formatBonusState(state: 'available' | 'active' | 'expired'): string {
         switch (state) {

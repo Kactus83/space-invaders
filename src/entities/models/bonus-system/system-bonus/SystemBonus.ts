@@ -52,5 +52,9 @@ export abstract class SystemBonus {
         return this.state;
     }
 
+    getRemainingDuration(): number {
+        return this.remainingDuration;
+    }
+
     abstract getEffect(): ISystemBonusEffect;
 }
