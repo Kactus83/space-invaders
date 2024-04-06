@@ -11,6 +11,7 @@ import { GroundLine } from "../ground-line/GroundLine";
 import { SpeedSystem } from "../models/speed-system/SpeedSystem";
 import { GameBonus } from "../bonus/GameBonus";
 import { SkillsIds } from "../models/skill-system/types/SkillsIds";
+import { AppConfig } from "../../core/config/AppConfig";
 
 export class Projectile extends GameEntity {
     private x_Position: number;
@@ -52,8 +53,8 @@ export class Projectile extends GameEntity {
             this.x_Position = this.fabricObject.left;
         }
         
-        if (this.y_Position < 0 - this.fabricObject.height) {
-            this.state = EntityState.ToBeRemoved; // Marque le projectile pour suppression si sorti de l'écran
+        if (this.y_Position < 0 - this.fabricObject.height || this.y_Position > AppConfig.getInstance().canvasHeight) {
+            this.state = EntityState.ToBeRemoved; 
         }
     }
 
