@@ -41,7 +41,7 @@ export class HorizontalMenu implements IRenderable {
         // Création et positionnement des boutons
         let currentPositionX = startLeft; // Démarrez du point calculé pour centrer les boutons
         buttonNames.forEach((name, index) => {
-            const button = new SquareButton(name, { x: currentPositionX, y: menuHeight / 2 });
+            const button = new SquareButton(name, { x: currentPositionX, y: menuHeight / 2 }, 10, (btn) => this.onButtonHover(btn), () => this.onMouseOut());
             button.triggerAction = buttonActions[index];
             this.buttons.push(button);
 
@@ -134,6 +134,25 @@ export class HorizontalMenu implements IRenderable {
     }
 
     cleanup(): void {
+        this.buttons.forEach(button => button.cleanup());
         this.inputManager.unsubscribe(this.subscriptionId);
+    } 
+
+    // Fonction appelée lors du survol d'un bouton
+    private onButtonHover(button: SquareButton) {
+        const index = this.buttons.indexOf(button);
+        if(index !== -1) {
+            this.selectButton(index);
+        }
+    }
+
+    private onMouseOut() {
+        this.deactivateMenu(); // Rend le menu inactif
+    }
+
+    // Fonction pour sélectionner un bouton basé sur l'index
+    private selectButton(index: number) {
+        this.selectedIndex = index;
+        this.highlightSelectedButton();
     }
 }

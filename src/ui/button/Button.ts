@@ -9,7 +9,7 @@ export class Button implements IRenderable {
     private isHighlighted: boolean = false;
     public triggerAction: () => void;
 
-    constructor(private text: string, private position: { x: number, y: number }, private width: number = 200, private height: number = 40) {
+    constructor(private text: string, private position: { x: number, y: number }, private width: number = 200, private height: number = 40, private onHover?: (button: Button) => void, private onMouseOut?: () => void) {
         this.fabricRect = new fabric.Rect({
             left: position.x - width / 2,
             top: position.y - height / 2,
@@ -32,7 +32,17 @@ export class Button implements IRenderable {
             originY: 'center',
             selectable: false,
         });
-        this.setHighlight(false); // Appliquer l'état initial non-surligné
+        this.setHighlight(false);
+        // Ajoutez des écouteurs d'événements pour gérer le survol
+        this.fabricRect.on('mouseover', () => {
+            this.setHighlight(true);
+            if(this.onHover) this.onHover(this);
+        });
+    
+        this.fabricRect.on('mouseout', () => {
+            this.setHighlight(false);
+            if(this.onMouseOut) this.onMouseOut();
+        });
     }
 
     getDrawableObjects(): Promise<fabric.Object[]> {
@@ -59,4 +69,13 @@ export class Button implements IRenderable {
             this.triggerAction();
         }
     }
+    
+    cleanup() {
+        // Supprime les écouteurs d'événements pour éviter les fuites de mémoire
+        if (this.fabricRect) {
+            this.fabricRect.off('mouseover');
+            this.fabricRect.off('mouseout');
+        }
+    }
+    
 }

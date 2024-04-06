@@ -42,7 +42,7 @@ export class Menu implements IRenderable, IInteractive {
         // Création et positionnement des boutons
         let posY = this.menuBackground.top + spacing;
         buttonNames.forEach((name, index) => {
-            const button = new Button(name, { x: config.canvasWidth / 2, y: posY }, menuWidth - spacing * 2, buttonHeight);
+            const button = new Button(name, { x: config.canvasWidth / 2, y: posY }, menuWidth - spacing * 2, buttonHeight, (btn) => this.onButtonHover(btn), () => this.onMouseOut());
             button.triggerAction = buttonActions[index];
             this.buttons.push(button);
             posY += buttonHeight + spacing;
@@ -96,6 +96,7 @@ export class Menu implements IRenderable, IInteractive {
     }
 
     cleanup(): void {
+        this.buttons.forEach(button => button.cleanup());
         this.inputManager.unsubscribe(this.subscriptionId);
     }
 
@@ -117,5 +118,23 @@ export class Menu implements IRenderable, IInteractive {
         if (index >= 0 && index < this.buttons.length) {
             this.buttons[index].updateText(newText);
         }
+    }
+
+    // Fonction appelée lors du survol d'un bouton
+    private onButtonHover(button: Button) {
+        const index = this.buttons.indexOf(button);
+        if(index !== -1) {
+            this.selectButton(index);
+        }
+    }
+    
+    private onMouseOut() {
+        this.deactivateMenu(); 
+    }
+    
+    // Fonction pour sélectionner un bouton basé sur l'index
+    private selectButton(index: number) {
+        this.selectedIndex = index;
+        this.highlightSelectedButton();
     }
 }

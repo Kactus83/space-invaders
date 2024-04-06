@@ -10,7 +10,7 @@ export class SquareButton implements IRenderable {
     private isHighlighted: boolean = false;
     public triggerAction: () => void;
 
-    constructor(private text: string, public position: { x: number, y: number }, private padding: number = 10) {
+    constructor(private text: string, public position: { x: number, y: number }, private padding: number = 10, private onHover?: (button: SquareButton) => void, private onMouseOut?: () => void) {
         // Créez d'abord le texte pour pouvoir calculer sa largeur
         this.fabricText = new fabric.Text(text, {
             left: position.x,
@@ -44,6 +44,16 @@ export class SquareButton implements IRenderable {
         this.width = size;
 
         this.setHighlight(false);
+        // Ajoutez des écouteurs d'événements pour gérer le survol
+        this.fabricRect.on('mouseover', () => {
+            this.setHighlight(true);
+            if(this.onHover) this.onHover(this);
+        });
+    
+        this.fabricRect.on('mouseout', () => {
+            this.setHighlight(false);
+            if(this.onMouseOut) this.onMouseOut();
+        });
     }
 
     getDrawableObjects(): Promise<fabric.Object[]> {
@@ -81,4 +91,13 @@ export class SquareButton implements IRenderable {
             this.triggerAction();
         }
     }
+    
+    cleanup() {
+        // Supprime les écouteurs d'événements pour éviter les fuites de mémoire
+        if (this.fabricRect) {
+            this.fabricRect.off('mouseover');
+            this.fabricRect.off('mouseout');
+        }
+    }
+    
 }
