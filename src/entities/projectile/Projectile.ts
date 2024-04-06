@@ -45,6 +45,9 @@ export class Projectile extends GameEntity {
     
         // Détermine la direction du déplacement en fonction de l'origine du projectile
         const direction = this.origin instanceof Player ? -1 : 1;
+
+        // Sauvegarde la position actuelle du projectile
+        const lastPosition = { x: this.fabricObject.left, y: this.fabricObject.top };
     
         // Met à jour la position y du projectile en fonction de la vitesse et de la direction
         if (this.fabricObject) {
@@ -53,7 +56,9 @@ export class Projectile extends GameEntity {
             this.x_Position = this.fabricObject.left;
         }
         
-        if (this.y_Position < 0 - this.fabricObject.height || this.y_Position > AppConfig.getInstance().canvasHeight) {
+        if (this.y_Position < 0 || this.y_Position > AppConfig.getInstance().canvasHeight) {
+            this.y_Position = lastPosition.y;
+            this.x_Position = lastPosition.x;
             this.state = EntityState.ToBeRemoved; 
         }
     }
