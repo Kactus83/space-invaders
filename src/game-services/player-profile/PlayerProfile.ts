@@ -1,6 +1,5 @@
-import { PlayerDataService } from "./datas/PlayerDataService";
 import { PlayerExperience } from "./experience/PlayerExperience";
-import { GameSessionStats } from "./experience/models/GameSessionStats";
+import { PlayerGroundLine } from "./ground-line/PlayerGroundLine";
 import { PlayerInventory } from "./inventory/PlayerInventory";
 import { PlayerSkills } from "./skills/PlayerSkills";
 import { PlayerWalls } from "./walls/PlayerWalls";
@@ -11,6 +10,7 @@ export class PlayerProfile {
     private experience: PlayerExperience;
     private skills: PlayerSkills;
     private walls: PlayerWalls;
+    private groundLine: PlayerGroundLine;
 
     private playerName: string = 'Player';
 
@@ -19,6 +19,7 @@ export class PlayerProfile {
         this.experience = new PlayerExperience(this);
         this.skills = new PlayerSkills(this);
         this.walls = new PlayerWalls(this);
+        this.groundLine = new PlayerGroundLine(this);
     }
 
     public static getInstance(): PlayerProfile {
@@ -38,6 +39,7 @@ export class PlayerProfile {
         this.inventory.restoreFromData();
         this.skills.restoreFromData();
         this.walls.restoreFromData();
+        this.groundLine.restoreFromData();
     }
 
     getInventory(): PlayerInventory {
@@ -54,6 +56,10 @@ export class PlayerProfile {
 
     getWalls(): PlayerWalls {
         return this.walls;
+    }
+
+    getGroundLine(): PlayerGroundLine {
+        return this.groundLine;
     }
 
 }

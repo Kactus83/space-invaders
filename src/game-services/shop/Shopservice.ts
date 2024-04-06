@@ -1,3 +1,4 @@
+import { GroundLineLevels } from "../../entities/ground-line/GroundLineLevels";
 import { SkillLibrary } from "../../entities/models/skill-system/library/SkillLibrary";
 import { SkillsIds } from "../../entities/models/skill-system/types/SkillsIds";
 import { PlayerProfile } from "../player-profile/PlayerProfile";
@@ -58,6 +59,36 @@ export class ShopService {
         playerProfile.getWalls().setLevel(level);
         playerProfile.getExperience().subtractExperiencePoints(nextLevelConfig.experienceCost);
         console.log(`Wall level ${level} has been purchased.`);
+        return true;
+    }
+
+    buyGroundLineLevel(level: number): boolean {
+        const playerProfile = PlayerProfile.getInstance();
+        const currentLevel = playerProfile.getGroundLine().getLevel();
+        const levelConfig = GroundLineLevels[level];
+    
+        // Vérifier si la configuration pour le niveau demandé existe
+        if (!levelConfig) {
+            console.error(`GroundLine level ${level} configuration does not exist.`);
+            return false;
+        }
+    
+        // Vérifier si le joueur essaie d'acheter un niveau inférieur ou égal à son niveau actuel
+        if (level <= currentLevel) {
+            console.error("This GroundLine level is already unlocked or not available for upgrade.");
+            return false;
+        }
+    
+        // Vérifier si le joueur a suffisamment de points d'expérience pour l'achat
+        if (playerProfile.getExperience().getExperiencePoints() < levelConfig.experience_Cost) {
+            console.error("Not enough experience points to buy this GroundLine level.");
+            return false;
+        }
+    
+        // Procéder à l'achat
+        playerProfile.getGroundLine().setLevel(level);
+        playerProfile.getExperience().subtractExperiencePoints(levelConfig.experience_Cost);
+        console.log(`GroundLine level ${level} has been purchased.`);
         return true;
     }
 }

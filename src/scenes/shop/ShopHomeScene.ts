@@ -11,11 +11,13 @@ export class ShopHomeScene implements IScene {
         const buttonNames = [
             'Skills Shop',
             'Walls Shop', 
+            'Ground Line Shop',
             'Back to Main Menu'
         ];
         const buttonActions = [
             () => SceneManager.getInstance().changeScene(SceneIds.Shop_Skills),
             () => SceneManager.getInstance().changeScene(SceneIds.Shop_Walls),
+            () => SceneManager.getInstance().changeScene(SceneIds.Shop_GroundLine),
             () => SceneManager.getInstance().changeScene(SceneIds.MainMenu)
         ];
 

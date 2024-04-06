@@ -30,7 +30,10 @@ export class PlayerDataService {
             },
             walls: {
                 level: profile.getWalls().getLevel(),
-            }
+            },
+            groundLine: {
+                level: profile.getGroundLine().getLevel(),
+            },
         };
 
         const profileJson = JSON.stringify(profileData);
