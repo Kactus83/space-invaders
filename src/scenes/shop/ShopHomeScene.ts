@@ -10,10 +10,12 @@ export class ShopHomeScene implements IScene {
     async initialize(): Promise<void> {
         const buttonNames = [
             'Skills Shop',
+            'Walls Shop', 
             'Back to Main Menu'
         ];
         const buttonActions = [
             () => SceneManager.getInstance().changeScene(SceneIds.Shop_Skills),
+            () => SceneManager.getInstance().changeScene(SceneIds.Shop_Walls),
             () => SceneManager.getInstance().changeScene(SceneIds.MainMenu)
         ];
 

@@ -13,6 +13,7 @@ export enum SceneIds {
     Player_BonusCrafting = 'Player_BonusCrafting',
     Shop = 'Shop',
     Shop_Skills = 'Shop_Skills',
+    Shop_Walls = 'Shop_Walls',
     GamePlay = 'GamePlay',
     Victory = 'Victory',
     Defeat = 'Defeat',

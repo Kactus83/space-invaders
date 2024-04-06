@@ -15,6 +15,7 @@ import { ShopSkillsScene } from "../../scenes/shop/ShopSkillsScene";
 import { PlayerSkillsScene } from "../../scenes/player-profile/PlayerSkillsScene";
 import { BonusCraftingScene } from "../../scenes/player-profile/BonusCraftingScene";
 import { PlayerNameEntryScene } from "../../scenes/player-login/PlayerNameEntryScene";
+import { ShopWallsScene } from "../../scenes/shop/ShopWallsScene";
 
 /**
  * Class 
@@ -65,6 +66,7 @@ export class SceneManager {
         this.scenes.set(SceneIds.Player_BonusCrafting, new BonusCraftingScene());
         this.scenes.set(SceneIds.Shop, new ShopHomeScene());
         this.scenes.set(SceneIds.Shop_Skills, new ShopSkillsScene());
+        this.scenes.set(SceneIds.Shop_Walls, new ShopWallsScene());
     }
 
     /**

@@ -1,6 +1,7 @@
 import { SkillLibrary } from "../../entities/models/skill-system/library/SkillLibrary";
 import { SkillsIds } from "../../entities/models/skill-system/types/SkillsIds";
 import { PlayerProfile } from "../player-profile/PlayerProfile";
+import { defenseLineConfigurations } from "../walls/config/WallDefenseConfigurations";
 
 export class ShopService {
     private static instance: ShopService;
@@ -31,6 +32,32 @@ export class ShopService {
         playerProfile.getSkills().addSkill(skillId);
         playerProfile.getExperience().subtractExperiencePoints(skill.experiencePointsCost);
         console.log(`Skill ${skill.name} has been purchased.`);
+        return true;
+    }
+
+    buyWallLevel(level: number): boolean {
+        const playerProfile = PlayerProfile.getInstance();
+        const currentLevel = playerProfile.getWalls().getLevel();
+        const nextLevelConfig = defenseLineConfigurations[level];
+
+        if (!nextLevelConfig) {
+            console.error(`Wall level ${level} configuration does not exist.`);
+            return false;
+        }
+
+        if (level <= currentLevel) {
+            console.error("This wall level is already unlocked or not available for upgrade.");
+            return false;
+        }
+
+        if (playerProfile.getExperience().getExperiencePoints() < nextLevelConfig.experienceCost) {
+            console.error("Not enough experience points to buy this wall level.");
+            return false;
+        }
+
+        playerProfile.getWalls().setLevel(level);
+        playerProfile.getExperience().subtractExperiencePoints(nextLevelConfig.experienceCost);
+        console.log(`Wall level ${level} has been purchased.`);
         return true;
     }
 }
