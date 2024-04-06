@@ -1,5 +1,5 @@
-<svg width="6" height="6" xmlns="http://www.w3.org/2000/svg">
-    <rect width="10" height="10" fill="#808080"/>
-    <line x1="0" y1="0" x2="6" y2="6" stroke="red" stroke-width="2"/>
-    <line x1="6" y1="0" x2="0" y2="6" stroke="red" stroke-width="2"/>
+<svg width="8" height="8" xmlns="http://www.w3.org/2000/svg">
+    <rect width="8" height="8" fill="#BDC3C7"/>
+    <path d="M0,0 L8,8 M8,0 L0,8" stroke="#E74C3C" stroke-width="0.5"/>
+    <path d="M2,2 L6,6 M6,2 L2,6" stroke="#E74C3C" stroke-width="0.5"/>
 </svg>
