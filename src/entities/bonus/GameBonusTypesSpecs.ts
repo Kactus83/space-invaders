@@ -33,8 +33,8 @@ export const GameBonusSpecs: Record<GameBonusType, IGameBonusCharacteristics> = 
         systemBonus: new WeaponBonus(new WeaponBonusEffect(GameBonusType.Weapon_Double_FireRate_5sec, 30, 0, 2, 0, 0, 0)),
         moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
     },
-    [GameBonusType.Weapon_Increase_2_FireRate_60sec]: {
-        systemBonus: new WeaponBonus(new WeaponBonusEffect(GameBonusType.Weapon_Increase_2_FireRate_60sec, 60, 2, 1, 0, 0, 0)),
+    [GameBonusType.Weapon_Increase_1_FireRate_60sec]: {
+        systemBonus: new WeaponBonus(new WeaponBonusEffect(GameBonusType.Weapon_Increase_1_FireRate_60sec, 60, 1, 1, 0, 0, 0)),
         moveSpeed: AppConfig.getInstance().bonusBaseSpeed,
     }, 
     [GameBonusType.Speed_Double_Speed_30sec]: {

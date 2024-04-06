@@ -69,7 +69,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         fireRate: 4,
         shootProbability: 0.0035,
         emitProbability: 0.01,
-        bonusTypes: [GameBonusType.Weapon_Increase_2_FireRate_60sec, GameBonusType.Experience_Increase_1_Level, GameBonusType.Experience_Increase_500_Score],
+        bonusTypes: [GameBonusType.Weapon_Increase_1_FireRate_60sec, GameBonusType.Experience_Increase_1_Level, GameBonusType.Experience_Increase_500_Score],
     },
     [InvaderType.Fast]: {
         type: InvaderType.Fast,
@@ -165,7 +165,7 @@ export const InvaderSpecs: Record<InvaderType, IInvaderCharacteristics> = {
         fireRate: 5,
         shootProbability: 0.0004,
         emitProbability: 0.01,
-        bonusTypes: [GameBonusType.Weapon_Double_FireRate_5sec, GameBonusType.Experience_Double_Score_60sec, GameBonusType.Health_Double_Shield_30sec, GameBonusType.Speed_Double_Speed_30sec, GameBonusType.Speed_Increase_5_Speed_60sec, GameBonusType.Experience_Increase_1_Level, GameBonusType.Experience_Increase_500_Score, GameBonusType.Experience_Increase_1000_Score, GameBonusType.Health_Increase_1_Shield_60sec, GameBonusType.Health_Increase_2_Shield_60sec, GameBonusType.Health_Increase_5_Shield_60sec, GameBonusType.Weapon_Increase_2_FireRate_60sec, GameBonusType.Weapon_Double_FireRate_5sec, GameBonusType.Experience_Increase_1_Level, GameBonusType.Experience_Increase_500_Score, GameBonusType.Experience_Increase_1000_Score, GameBonusType.Speed_Double_Speed_30sec, GameBonusType.Speed_Increase_5_Speed_60sec],
+        bonusTypes: [GameBonusType.Weapon_Double_FireRate_5sec, GameBonusType.Experience_Double_Score_60sec, GameBonusType.Health_Double_Shield_30sec, GameBonusType.Speed_Double_Speed_30sec, GameBonusType.Speed_Increase_5_Speed_60sec, GameBonusType.Experience_Increase_1_Level, GameBonusType.Experience_Increase_500_Score, GameBonusType.Experience_Increase_1000_Score, GameBonusType.Health_Increase_1_Shield_60sec, GameBonusType.Health_Increase_2_Shield_60sec, GameBonusType.Health_Increase_5_Shield_60sec, GameBonusType.Weapon_Increase_1_FireRate_60sec, GameBonusType.Weapon_Double_FireRate_5sec, GameBonusType.Experience_Increase_1_Level, GameBonusType.Experience_Increase_500_Score, GameBonusType.Experience_Increase_1000_Score, GameBonusType.Speed_Double_Speed_30sec, GameBonusType.Speed_Increase_5_Speed_60sec],
     },
     [InvaderType.Elite]: {
         type: InvaderType.Elite,
