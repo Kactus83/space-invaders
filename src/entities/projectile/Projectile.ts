@@ -60,10 +60,13 @@ export class Projectile extends GameEntity {
     onCollisionWith(entity: GameEntity): void {
 
         if (entity instanceof Player) {
+
             
             if(this.origin instanceof Player) {
+                this.fabricObject.top = this.fabricObject.top - 1;
                 return;
             }
+
             this.healthSystem.onCollision(entity.healthSystem);
             if(this.healthSystem.health <= 0) {
                 this.state = EntityState.ToBeRemoved;

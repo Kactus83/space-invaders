@@ -64,14 +64,6 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         if (entity instanceof Player) {
             // Logique de collision avec les joueurs
         } else if (entity instanceof Projectile) {
-            
-            // Semi reflective shield skill
-            if (this.skillSystem.isSkillActive(SkillsIds.Semi_ReflectiveShield)) {
-                if(Math.random() < 0.3) {
-                    entity.origin = this;
-                    return;
-                }
-            }
 
             if(entity.origin === this) {
                 return;

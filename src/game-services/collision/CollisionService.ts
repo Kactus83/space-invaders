@@ -2,6 +2,7 @@ import { GameEntity } from "../../entities/GameEntity";
 import { GameBonus } from "../../entities/bonus/GameBonus";
 import { GroundLine } from "../../entities/ground-line/GroundLine";
 import { Invader } from "../../entities/invader/Invader";
+import { SkillsIds } from "../../entities/models/skill-system/types/SkillsIds";
 import { Player } from "../../entities/player/Player";
 import { Projectile } from "../../entities/projectile/Projectile";
 import { EntityState } from "../../entities/types/EntityState";
@@ -12,7 +13,7 @@ export class CollisionService {
     private players: Player[] = [];
     private invaders: Invader[] = [];
     private walls: Wall[] = [];
-    private projectiles: GameEntity[] = [];
+    private projectiles: Projectile[] = [];
     private groundLines: GroundLine[] = [];
     private gameBonus: GameBonus[] = [];
 
@@ -75,8 +76,12 @@ export class CollisionService {
             // Collision Projectile avec Player
             this.players.forEach(player => {
                 if (this.areColliding(projectile, player) && projectile.state !== EntityState.ToBeRemoved) {
-                    projectile.onCollisionWith(player);
-                    player.onCollisionWith(projectile);
+                    if(player.skillSystem.isSkillActive(SkillsIds.Semi_ReflectiveShield) && Math.random() <= 0.3) {
+                        projectile.origin = player;
+                    }else{
+                        projectile.onCollisionWith(player);
+                        player.onCollisionWith(projectile);
+                    }
                 }
             });
 
