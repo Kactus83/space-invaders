@@ -40,7 +40,7 @@ export class WallService {
     
         for (const lineConfig of currentConfig.lines) {
             await this.createDefenseLine(lineConfig, startY);
-            startY -= config.wall_Size * 10; // Décaler startY pour la prochaine ligne
+            startY -= config.wall_Size * 5; // Décaler startY pour la prochaine ligne
         }
     }        
 
@@ -48,8 +48,8 @@ export class WallService {
         console.log("Creating wall block");
         const wallSize = AppConfig.getInstance().wall_Size;
         
-        for (let row = 0; row < 10; row++) {
-            for (let col = 0; col < 10; col++) {
+        for (let row = 0; row < 5; row++) {
+            for (let col = 0; col < 5; col++) {
                 const wallX = x + col * wallSize;
                 const wallY = y + row * wallSize;
                 const wall = new Wall(config.type, { x: wallX, y: wallY });
@@ -61,7 +61,7 @@ export class WallService {
 
     private async createDefenseLine(lineConfig: LineConfig, startY: number): Promise<void> {
         const config = AppConfig.getInstance();
-        const wallBlockSize = config.wall_Size * 10; // Largeur et hauteur d'un bloc (10 murs de 60 pixels de largeur/hauteur)
+        const wallBlockSize = config.wall_Size * 5; // Largeur et hauteur d'un bloc (10 murs de 60 pixels de largeur/hauteur)
         
         let xOffset = 0; // Décalage horizontal pour positionner chaque bloc sur la ligne
         for (const blockConfig of lineConfig.blocks) {
