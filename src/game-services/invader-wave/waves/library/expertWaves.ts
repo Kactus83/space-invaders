@@ -1,7 +1,7 @@
-import { InvaderType } from "../../../entities/invader/InvaderType";
-import { WaveConfig } from "../types/WaveConfig";
+import { InvaderType } from "../../../../entities/invader/InvaderType";
+import { WaveConfig } from "../../types/WaveConfig";
 
-export const waveConfigs: WaveConfig[] = [
+export const expertWaves: WaveConfig[] = [
     {
         delay: 5, // Première vague après 10 secondes
         invaders: [
@@ -195,4 +195,4 @@ export const waveConfigs: WaveConfig[] = [
 ];
 
 
-export const maxWave: number = waveConfigs.length;
+export const maxExpertWave: number = expertWaves.length;

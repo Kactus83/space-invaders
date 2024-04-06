@@ -1,9 +1,10 @@
 import { Invader } from "../../entities/invader/Invader";
-import { InvaderType } from "../../entities/invader/InvaderType";
 import { AppConfig } from "../../core/config/AppConfig";
-import { maxWave, waveConfigs } from "./waves/wavesConfig";
 import { WaveInvaderConfig } from "./types/WaveInvaderConfig";
 import { InvaderSpecs } from "../../entities/invader/InvaderTypesSpecs";
+import { PlayerProfile } from "../player-profile/PlayerProfile";
+import { waveSetsConfig } from "./waves/waveSetsConfig";
+import { WaveConfig } from "./types/WaveConfig";
 
 export class InvaderWaveService {
     public isInit: boolean = false;
@@ -12,25 +13,38 @@ export class InvaderWaveService {
     private pendingInvaders: Invader[] = [];
     private allWavesLaunched: boolean = false;
     private config = AppConfig.getInstance();
+    private waveConfigs: WaveConfig[] = [];
 
     constructor() {
         this.scheduleNextWave();
     }
 
     private scheduleNextWave(): void {
-        console.log('scheduleNextWave', this.currentWaveIndex, waveConfigs.length);
-        if (this.currentWaveIndex < waveConfigs.length) {
-            this.nextWaveTime = waveConfigs[this.currentWaveIndex].delay * 1000;
+        
+        const totalExperience = PlayerProfile.getInstance().getExperience().getTotalExperiencePoints();
+        const config = waveSetsConfig.find(set => totalExperience >= set.experienceThreshold);
+
+        if (config) {
+            this.waveConfigs = config.waveConfigs;
+        } else {
+            console.error("No wave configuration found for the current experience level.");
+            // Gérez l'absence de configuration, par exemple en utilisant une configuration par défaut
+            this.waveConfigs = []; // Ou une configuration par défaut
+        }
+
+        console.log('scheduleNextWave', this.currentWaveIndex, this.waveConfigs.length);
+        if (this.currentWaveIndex < this.waveConfigs.length) {
+            this.nextWaveTime = this.waveConfigs[this.currentWaveIndex].delay * 1000;
         }
     }
 
     async update(deltaTime: number): Promise<void> {
         this.nextWaveTime -= deltaTime;
         if (this.nextWaveTime <= 0) {
-            if (this.currentWaveIndex < waveConfigs.length) {
+            if (this.currentWaveIndex < this.waveConfigs.length) {
                 this.scheduleNextWave();
                 this.isInit = true;
-                const waveConfig = waveConfigs[this.currentWaveIndex++];
+                const waveConfig = this.waveConfigs[this.currentWaveIndex++];
                 await this.launchWave(waveConfig.invaders);
             } else if (!this.allWavesLaunched) {
                 this.allWavesLaunched = true;
