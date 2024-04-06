@@ -30,6 +30,8 @@ export class AppConfig implements IGlobalConfig {
 
     // Game Settings
     public god_Mode: boolean = false;
+    public admin_Name: string = "Flo";
+    public dev_Mode: boolean = false;   
 
     // Private constructor to prevent instantiation
     private constructor() {}

@@ -29,25 +29,29 @@ export class PlayerNameEntryScene implements IScene {
 
     cleanup(): void {
         this.verticalMenu?.cleanup();
-        this.horizontalMenu.cleanup();
+        if (this.horizontalMenu) {
+            this.horizontalMenu.cleanup();
+            this.horizontalMenu = null; 
+        }
+        this.removeInputElement(); 
+        this.removeValidationButton(); 
+    }
+
+    private removeInputElement(): void {
         if (this.inputElement) {
-            this.inputElement.remove();
+            document.body.removeChild(this.inputElement);
             this.inputElement = null;
         }
-        // Remove input element and its event listeners
-        if (this.inputElement) {
-            document.body.removeChild(this.inputElement); // Remove from DOM
-            this.inputElement = null; // Help GC
-        }
+    }
     
-        // Remove validation button and its event listeners
+    private removeValidationButton(): void {
         const validationButton = document.querySelector(".buttonAnimated");
         if (validationButton) {
             validationButton.removeEventListener("click", this.validateAndSavePlayerName);
-            document.body.removeChild(validationButton); // Remove from DOM
+            document.body.removeChild(validationButton);
         }
-    }    
-
+    }
+    
     private createHorizontalMenu(): void {
         const navigationButtonNames = ["Choose existing profile", "Create new profile"];
         const navigationButtonActions = [
@@ -62,18 +66,6 @@ export class PlayerNameEntryScene implements IScene {
         if (this.verticalMenu) {
             this.verticalMenu.cleanup();
             this.verticalMenu = null;
-        }
-        // Cleanup inputElement if it exists
-        if (this.inputElement) {
-            this.inputElement.remove();
-            this.inputElement = null;
-        }
-    
-        // Remove validation button and its event listeners
-        const validationButton = document.querySelector(".buttonAnimated");
-        if (validationButton) {
-            validationButton.removeEventListener("click", this.validateAndSavePlayerName);
-            document.body.removeChild(validationButton); // Remove from DOM
         }
 
         const playerButtonNames = this.playersList.length > 0 ? this.playersList : ["No player registered."];
@@ -93,7 +85,9 @@ export class PlayerNameEntryScene implements IScene {
         this.verticalMenu = null;
         if (this.inputElement) {
             this.inputElement.remove();
-        }
+        }      
+        this.horizontalMenu.cleanup();
+        this.horizontalMenu = null;
 
         // Create validation button
         const validationButton = document.createElement("button");
@@ -106,34 +100,13 @@ export class PlayerNameEntryScene implements IScene {
         this.inputElement.placeholder = "Choose your name";
         this.inputElement.className = "inputAnimated";
 
+        // Add event listener to the validation button
+        validationButton.addEventListener("click", this.validateAndSavePlayerName.bind(this));
+
         // Position and append elements to the body
         document.body.appendChild(this.inputElement);
         document.body.appendChild(validationButton);
         this.inputElement.focus();
-
-        // Event listener for pressing Enter key
-        const enterKeyListener = (e: KeyboardEvent) => {
-            if (e.key === "Enter") {
-                this.validateAndSavePlayerName();
-                removeEventListeners();
-            }
-        };
-
-        // Event listener for button click
-        const buttonClickListener = () => {
-            this.validateAndSavePlayerName();
-            removeEventListeners();
-        };
-
-        // Function to remove event listeners
-        const removeEventListeners = () => {
-            this.inputElement?.removeEventListener("keypress", enterKeyListener);
-            validationButton.removeEventListener("click", buttonClickListener);
-        };
-
-        // Add event listeners
-        this.inputElement.addEventListener("keypress", enterKeyListener);
-        validationButton.addEventListener("click", buttonClickListener);
     }
     
     private validateAndSavePlayerName(): void {

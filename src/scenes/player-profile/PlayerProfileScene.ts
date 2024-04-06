@@ -5,6 +5,9 @@ import { SceneIds } from "../../core/scene-manager/types/SceneIds";
 import { Menu } from "../../ui/menu/Menu";
 import { PlayerProfile } from "../../game-services/player-profile/PlayerProfile";
 import { PlayerDataService } from "../../game-services/player-profile/datas/PlayerDataService";
+import { AppConfig } from "../../core/config/AppConfig";
+import { DataCleanupService } from "../../game-services/data-cleanup/DataCleanUpService";
+import { UserLoginService } from "../../game-services/user-login/UserLoginService";
 
 export class PlayerProfileScene implements IScene {
     private menu: Menu;
@@ -12,6 +15,7 @@ export class PlayerProfileScene implements IScene {
     async initialize(): Promise<void> {
         const profile = PlayerProfile.getInstance();
         const experience = profile.getExperience();
+        const config = AppConfig.getInstance();
 
         const buttonNames = [
             `Best Score: ${experience.getBestScore()}`,
@@ -31,6 +35,12 @@ export class PlayerProfileScene implements IScene {
             () => this.onResetData(), 
             () => this.onBackToMainMenu()
         ];
+
+        // Ajouter le bouton de réinitialisation des données uniquement pour l'admin
+        if (profile.getPlayerName() === config.admin_Name) {
+            buttonNames.push('Reset All Data');
+            buttonActions.push(() => this.onResetAllData());
+        }
 
         this.menu = new Menu(buttonNames, buttonActions);
     }
@@ -73,5 +83,22 @@ export class PlayerProfileScene implements IScene {
         alert('Data reset successfully');
         // Optionnellement, rediriger l'utilisateur vers le menu principal ou une autre scène après la réinitialisation
         SceneManager.getInstance().changeScene(SceneIds.MainMenu);
+    }
+    
+    private onResetAllData(): void {
+        // Implémentez la logique de réinitialisation ici
+        alert('All data will be reset. This action cannot be undone.');
+
+        // Supprime toutes les données de jeu
+        DataCleanupService.clearAllGameData();
+
+        // Recréer le profil utilisateur par défaut et le profil de l'admin si le mode dev est activé
+        UserLoginService.getInstance().savePlayerName("Player");
+        if (AppConfig.getInstance().dev_Mode) {
+            UserLoginService.getInstance().savePlayerName(AppConfig.getInstance().admin_Name);
+        }
+
+        // Redirection vers le menu principal
+        SceneManager.getInstance().changeScene(SceneIds.PlayerNameEntry);
     }
 }
