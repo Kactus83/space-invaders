@@ -1,3 +1,4 @@
+import { AppConfig } from "../../core/config/AppConfig";
 import { PlayerProfile } from "../player-profile/PlayerProfile";
 
 export class UserLoginService {
@@ -25,7 +26,7 @@ export class UserLoginService {
         if (playersJson) {
             return JSON.parse(playersJson);
         } else {
-            const defaultPlayer = ['Player'];
+            const defaultPlayer = [AppConfig.getInstance().default_Username];
             localStorage.setItem('players', JSON.stringify(defaultPlayer));
             return defaultPlayer;
         }

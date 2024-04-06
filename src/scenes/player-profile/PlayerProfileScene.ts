@@ -93,7 +93,7 @@ export class PlayerProfileScene implements IScene {
         DataCleanupService.clearAllGameData();
 
         // Recréer le profil utilisateur par défaut et le profil de l'admin si le mode dev est activé
-        UserLoginService.getInstance().savePlayerName("Player");
+        UserLoginService.getInstance().savePlayerName(AppConfig.getInstance().default_Username);
         if (AppConfig.getInstance().dev_Mode) {
             UserLoginService.getInstance().savePlayerName(AppConfig.getInstance().admin_Name);
         }
