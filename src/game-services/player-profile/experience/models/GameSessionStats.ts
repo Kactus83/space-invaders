@@ -13,7 +13,12 @@ export class GameSessionStats {
         [InvaderType.Advanced]: 0,
         [InvaderType.Heavy]: 0,
         [InvaderType.Elite]: 0,
-        [InvaderType.Boss]: 0
+        [InvaderType.Boss]: 0,
+        [InvaderType.Fast]: 0,
+        [InvaderType.Fast_Kamikaze]: 0,
+        [InvaderType.Specialized]: 0,
+        [InvaderType.Light_Boss]: 0,
+        [InvaderType.Heavy_Boss]: 0
     };
 
     constructor() {
