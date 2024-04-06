@@ -25,7 +25,7 @@ export class UserLoginService {
         if (playersJson) {
             return JSON.parse(playersJson);
         } else {
-            const defaultPlayer = ['player'];
+            const defaultPlayer = ['Player'];
             localStorage.setItem('players', JSON.stringify(defaultPlayer));
             return defaultPlayer;
         }
