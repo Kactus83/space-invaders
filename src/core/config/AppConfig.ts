@@ -20,8 +20,8 @@ export class AppConfig implements IGlobalConfig {
     public readonly wall_Size: number = 8;
 
     // Invaders settings
-    public readonly rushLineLimit: number = 300;
-    public readonly rushProbability: number = 0.001;
+    public readonly rushLineLimit: number = 280;
+    public readonly rushProbability: number = 0.0025;
 
     // Bonus settings
     public readonly bonusBaseSpeed: number = 25;
