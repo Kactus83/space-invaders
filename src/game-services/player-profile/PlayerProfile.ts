@@ -31,6 +31,9 @@ export class PlayerProfile {
     
     setPlayerName(name: string): void {
         this.playerName = name;
+        this.experience.restoreFromData();
+        this.inventory.restoreFromData();
+        this.skills.restoreFromData();
     }
 
     getInventory(): PlayerInventory {
