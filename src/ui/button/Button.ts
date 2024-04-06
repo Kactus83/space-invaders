@@ -32,8 +32,10 @@ export class Button implements IRenderable {
             originY: 'center',
             selectable: false,
         });
+
         this.setHighlight(false);
-        // Ajoutez des écouteurs d'événements pour gérer le survol
+
+        // Ajouter des écouteurs d'événements pour gérer le survol
         this.fabricRect.on('mouseover', () => {
             this.setHighlight(true);
             if(this.onHover) this.onHover(this);
@@ -42,6 +44,13 @@ export class Button implements IRenderable {
         this.fabricRect.on('mouseout', () => {
             this.setHighlight(false);
             if(this.onMouseOut) this.onMouseOut();
+        });
+        
+        // Ajouter un écouteur pour le clic
+        this.fabricRect.on('mousedown', () => {
+            if(this.triggerAction) {
+                this.triggerAction();
+            }
         });
     }
 
@@ -69,12 +78,13 @@ export class Button implements IRenderable {
             this.triggerAction();
         }
     }
-    
+
     cleanup() {
         // Supprime les écouteurs d'événements pour éviter les fuites de mémoire
         if (this.fabricRect) {
             this.fabricRect.off('mouseover');
             this.fabricRect.off('mouseout');
+            this.fabricRect.off('mousedown');
         }
     }
     

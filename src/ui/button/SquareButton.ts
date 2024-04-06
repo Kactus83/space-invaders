@@ -44,6 +44,7 @@ export class SquareButton implements IRenderable {
         this.width = size;
 
         this.setHighlight(false);
+        
         // Ajoutez des écouteurs d'événements pour gérer le survol
         this.fabricRect.on('mouseover', () => {
             this.setHighlight(true);
@@ -53,6 +54,13 @@ export class SquareButton implements IRenderable {
         this.fabricRect.on('mouseout', () => {
             this.setHighlight(false);
             if(this.onMouseOut) this.onMouseOut();
+        });
+        
+        // Ajouter un écouteur pour le clic
+        this.fabricRect.on('mousedown', () => {
+            if(this.triggerAction) {
+                this.triggerAction();
+            }
         });
     }
 
@@ -97,6 +105,7 @@ export class SquareButton implements IRenderable {
         if (this.fabricRect) {
             this.fabricRect.off('mouseover');
             this.fabricRect.off('mouseout');
+            this.fabricRect.off('mousedown');
         }
     }
     
