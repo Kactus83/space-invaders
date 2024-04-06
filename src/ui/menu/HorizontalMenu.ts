@@ -23,7 +23,7 @@ export class HorizontalMenu implements IRenderable {
         // Dimensions and positioning
         const menuWidth = config.canvasWidth;
         const menuHeight = 50;
-        const buttonSize = 50; // Taille carrée pour les boutons
+        const buttonSize = 20; // Taille carrée pour les boutons
         const buttonSpacing = 10; // Espacement entre les boutons
         const totalButtonsWidth = buttonNames.length * buttonSize + (buttonNames.length - 1) * buttonSpacing;
         const startLeft = (config.canvasWidth - totalButtonsWidth) / 2 + buttonSize / 2; // Calcul pour centrer les boutons
@@ -38,13 +38,25 @@ export class HorizontalMenu implements IRenderable {
             selectable: false,
         });
 
-        // Create and position buttons
+        // Création et positionnement des boutons
+        let currentPositionX = startLeft; // Démarrez du point calculé pour centrer les boutons
         buttonNames.forEach((name, index) => {
-            const positionX = startLeft + index * (buttonSize + buttonSpacing);
-            const button = new SquareButton(name, { x: positionX, y: menuHeight / 2 }, buttonSize);
+            const button = new SquareButton(name, { x: currentPositionX, y: menuHeight / 2 });
             button.triggerAction = buttonActions[index];
             this.buttons.push(button);
+
+            // Mise à jour de currentPositionX pour le prochain bouton
+            // Assurez-vous que SquareButton a une propriété width accessible
+            currentPositionX += button.width + buttonSpacing;
         });
+
+        // Adjustez les positions X des boutons pour les centrer
+        const totalContentWidth = currentPositionX - startLeft - buttonSpacing; // Soustrayez le dernier espacement
+        const offsetX = (config.canvasWidth - totalContentWidth) / 2; // Nouvelle position de départ pour centrer
+        this.buttons.forEach(button => {
+            button.updatePosition({ x: button.position.x + offsetX - startLeft, y: button.position.y });
+        });
+
     }
 
     async getDrawableObjects(): Promise<fabric.Object[]> {
