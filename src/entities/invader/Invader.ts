@@ -185,10 +185,7 @@ export class Invader extends GameEntity implements IShooter {
                 this.state = EntityState.ToBeRemoved;
             }
         } else if (entity instanceof GroundLine) {
-            this.healthSystem.onCollision(entity.healthSystem);
-            if(this.healthSystem.health <= 0) {
-                this.state = EntityState.ToBeRemoved;
-            }
+            this.state = EntityState.ToBeRemoved;
         } else if (entity instanceof Projectile) {
             if(entity.origin instanceof Invader) {
                 return;
