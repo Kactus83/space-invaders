@@ -25,6 +25,7 @@ export abstract class SystemBonus {
         if (this.state === 'active' && this.activationTimestamp) {
             const elapsed = Date.now() - this.activationTimestamp;
             this.remainingDuration -= elapsed;
+            this.activationTimestamp = Date.now();
 
             if (this.remainingDuration <= 0) {
                 this.state = 'expired';
