@@ -12,6 +12,7 @@ export class CraftingRecipeDisplayList implements IRenderable, IInteractive {
     private fabricObjects: fabric.Text[] = [];
     private filterBonusType?: GameBonusType; 
     private selectedIndex: number = 0;
+    private isActive: boolean = false;
     public onRecipeSelected: (selectedRecipe: CraftRecipe) => void;
 
     constructor(recipes: CraftRecipe[]) {
@@ -56,16 +57,25 @@ export class CraftingRecipeDisplayList implements IRenderable, IInteractive {
     handleInput(inputType: UserInputType): void {
         const recipesCount = this.fabricObjects.length;
         if (inputType === UserInputType.Up && this.selectedIndex > 0) {
+            this.isActive = true;
             this.selectedIndex--;
             this.updateDisplay();
         } else if (inputType === UserInputType.Down && this.selectedIndex < recipesCount - 1) {
+            this.isActive = true;
             this.selectedIndex++;
             this.updateDisplay();
         } else if (inputType === UserInputType.Enter) {
+            if(!this.isActive) {
+                return;
+            }
             const selectedRecipe = this.filterRecipesList()[this.selectedIndex];
             if (this.onRecipeSelected) {
                 this.onRecipeSelected(selectedRecipe);
             }
+        } else if (inputType === UserInputType.Left) {
+            this.isActive = false;
+        } else if (inputType === UserInputType.Right) {
+            this.isActive = false;
         }
     }
 
