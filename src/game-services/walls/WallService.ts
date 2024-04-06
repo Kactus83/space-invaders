@@ -5,22 +5,22 @@ import { defenseLineConfigurations } from "./config/WallDefenseConfigurations";
 import { WallBlockConfig } from "./types/WallBlockConfig";
 import { WallType } from "../../entities/wall/WallType";
 import { LineConfig } from "./types/LineConfig";
+import { LevelConfiguration } from "./types/LevelConfiguration";
+import { PlayerProfile } from "../player-profile/PlayerProfile";
 
 export class WallService {
     private isInitilized: boolean = false;
-    private groundLine: GroundLine;
     private currentWalls: Wall[] = [];
     private newWalls: Wall[] = [];
     private lastLevel: number = -1;
 
-    constructor(groundLine: GroundLine) {
-        this.groundLine = groundLine;
+    constructor() {
     }
 
     public async initialize(): Promise<void> {
         console.log("init wall service");
         // Initialisation anticipée des murs
-        await this.prepareAndInitWallsForLevel(this.groundLine.level);
+        await this.prepareAndInitWallsForLevel(PlayerProfile.getInstance().getWalls().getLevel());
         this.isInitilized = true;
     }
 
@@ -28,8 +28,8 @@ export class WallService {
         if (level === this.lastLevel) return;
     
         this.lastLevel = level;
-        const currentConfig = defenseLineConfigurations.find(conf => conf.level === level);
-        if (!currentConfig) {
+        const levelConfig: LevelConfiguration = defenseLineConfigurations[level];
+        if (!levelConfig) {
             console.error("No wall configuration found for level", level);
             return;
         }
@@ -38,7 +38,7 @@ export class WallService {
         const config = AppConfig.getInstance();
         let startY = config.wall_InitialY; // Y de départ pour la première ligne
     
-        for (const lineConfig of currentConfig.lines) {
+        for (const lineConfig of levelConfig.defenseConfig.lines) {
             await this.createDefenseLine(lineConfig, startY);
             startY -= config.wall_Size * 5; // Décaler startY pour la prochaine ligne
         }
@@ -77,7 +77,7 @@ export class WallService {
 
     public update(deltaTime: number): void {
         // Vérifie si le niveau a changé et prépare les murs si nécessaire
-        this.prepareAndInitWallsForLevel(this.groundLine.level);
+        this.prepareAndInitWallsForLevel(PlayerProfile.getInstance().getWalls().getLevel());
     }
 
     public getWallsAndClear(): Wall[] {

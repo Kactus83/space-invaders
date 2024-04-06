@@ -16,10 +16,12 @@ export class PlayerSkills {
 
     addSkill(skillId: SkillsIds): void {
         this.skills.add(skillId);
+        PlayerDataService.getInstance().saveCurrentProfile(this.playerProfile);
     }
 
     removeSkill(skillId: SkillsIds): void {
         this.skills.delete(skillId);
+        PlayerDataService.getInstance().saveCurrentProfile(this.playerProfile);
     }
 
     getSkills(): ISkill[] {

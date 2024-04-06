@@ -28,6 +28,9 @@ export class PlayerDataService {
             skills: {
                 skillIds: profile.getSkills().getSkillsIds(),
             },
+            walls: {
+                level: profile.getWalls().getLevel(),
+            }
         };
 
         const profileJson = JSON.stringify(profileData);

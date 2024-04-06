@@ -3,12 +3,14 @@ import { PlayerExperience } from "./experience/PlayerExperience";
 import { GameSessionStats } from "./experience/models/GameSessionStats";
 import { PlayerInventory } from "./inventory/PlayerInventory";
 import { PlayerSkills } from "./skills/PlayerSkills";
+import { PlayerWalls } from "./walls/PlayerWalls";
 
 export class PlayerProfile {
     private static instance: PlayerProfile;
     private inventory: PlayerInventory;
     private experience: PlayerExperience;
     private skills: PlayerSkills;
+    private walls: PlayerWalls;
 
     private playerName: string = 'Player';
 
@@ -16,6 +18,7 @@ export class PlayerProfile {
         this.inventory = new PlayerInventory(this);
         this.experience = new PlayerExperience(this);
         this.skills = new PlayerSkills(this);
+        this.walls = new PlayerWalls(this);
     }
 
     public static getInstance(): PlayerProfile {
@@ -46,6 +49,10 @@ export class PlayerProfile {
 
     getSkills(): PlayerSkills {
         return this.skills;
+    }
+
+    getWalls(): PlayerWalls {
+        return this.walls;
     }
 
 }

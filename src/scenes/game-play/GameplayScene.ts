@@ -38,7 +38,7 @@ export class GamePlayScene implements IScene {
         await this.player.init();
         this.collisionService.registerEntity(this.player);
         
-        this.wallService = new WallService(this.groundLine);
+        this.wallService = new WallService();
         await this.wallService.initialize();
         
         this.hud = new HUD(this.player, this.groundLine);
