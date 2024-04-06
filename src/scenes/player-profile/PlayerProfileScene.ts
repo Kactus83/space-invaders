@@ -23,8 +23,7 @@ export class PlayerProfileScene implements IScene {
             'Game Statistics',
             'Inventory',
             'Skills',
-            'Reset Data',
-            'Back to Main Menu'
+            'Reset Data'
         ];
         const buttonActions = [
             null, // Best score et Experience points ne sont pas interactifs
@@ -32,14 +31,18 @@ export class PlayerProfileScene implements IScene {
             () => this.onGameStatistics(),
             () => this.onInventory(),
             () => this.onSkills(),
-            () => this.onResetData(), 
-            () => this.onBackToMainMenu()
+            () => this.onResetData()
         ];
 
         // Ajouter le bouton de réinitialisation des données uniquement pour l'admin
         if (profile.getPlayerName() === config.admin_Name) {
             buttonNames.push('Reset All Data');
             buttonActions.push(() => this.onResetAllData());
+            buttonNames.push('Back to Main Menu');
+            buttonActions.push(() => this.onBackToMainMenu());
+        }else{
+            buttonNames.push('Back to Main Menu');
+            buttonActions.push(() => this.onBackToMainMenu());
         }
 
         this.menu = new Menu(buttonNames, buttonActions);
