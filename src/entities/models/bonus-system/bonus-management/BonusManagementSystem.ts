@@ -34,32 +34,49 @@ export class BonusManagementSystem {
 
     // Activer et appliquer un bonus spécifique
     private activateAndApplyBonus(bonus: SystemBonus): void {
+        let canDeposit = false;
+    
         if (bonus instanceof SpeedBonus) {
-            this.player.speedSystem.depositBonus(bonus);
+            canDeposit = !this.player.speedSystem.hasActiveBonus();
+            if (canDeposit) this.player.speedSystem.depositBonus(bonus);
         } else if (bonus instanceof HealthBonus) {
-            this.player.healthSystem.depositBonus(bonus);
+            canDeposit = !this.player.healthSystem.hasActiveBonus();
+            if (canDeposit) this.player.healthSystem.depositBonus(bonus);
         } else if (bonus instanceof WeaponBonus) {
-            this.player.weaponSystem.depositBonus(bonus);
+            canDeposit = !this.player.weaponSystem.hasActiveBonus();
+            if (canDeposit) this.player.weaponSystem.depositBonus(bonus);
         } else if (bonus instanceof ExperienceBonus) {
-            this.player.experienceSystem.depositBonus(bonus);
-        }  else if (bonus instanceof SkillBonus) {
-            this.player.skillSystem.depositBonus(bonus);        
+            canDeposit = !this.player.experienceSystem.hasActiveBonus();
+            if (canDeposit) this.player.experienceSystem.depositBonus(bonus);
+        } else if (bonus instanceof SkillBonus) {
+            canDeposit = !this.player.skillSystem.hasActiveBonus();
+            if (canDeposit) this.player.skillSystem.depositBonus(bonus);
         } else {
             console.error("Unhandled bonus type:", bonus.getType());
             return;
         }
-        
-        bonus.activate();
-        this.activeBonuses.push(bonus);
-        this.availableBonuses = this.availableBonuses.filter(b => b !== bonus);
-    }
+    
+        if (canDeposit) {
+            bonus.activate();
+            this.activeBonuses.push(bonus);
+            // Enlever le bonus de la liste des disponibles
+            this.availableBonuses = this.availableBonuses.filter(b => b !== bonus);
+        } else {
+            // Gérer le cas où un bonus ne peut être activé car un bonus est déjà actif dans le sous-système
+            console.log(`Cannot activate ${bonus.getType()} bonus because another bonus is already active in its system.`);
+        }
+    }    
 
     // Mise à jour régulière pour vérifier l'expiration des bonus
     public update(): void {
-        this.availableBonuses = this.availableBonuses.filter(bonus => {
+        // Mise à jour des bonus actifs
+        this.activeBonuses.forEach(bonus => bonus.update());
+    
+        // Filtrer les bonus actifs pour retirer ceux qui sont expirés
+        this.activeBonuses = this.activeBonuses.filter(bonus => {
             if (bonus.getState() === 'expired') {
-                this.withdrawBonus(bonus); // Retirer le bonus expiré
-                return false; // Retirer de la liste des bonus actifs
+                this.withdrawBonus(bonus);
+                return false; 
             }
             return true;
         });
@@ -71,26 +88,36 @@ export class BonusManagementSystem {
             case SystemBonusTypes.Speed:
                 if (this.player.speedSystem.getActiveBonus() === bonus) {
                     this.player.speedSystem.withdrawBonus();
+                    // Retirer le bonus de la liste des actifs
+                    this.activeBonuses = this.activeBonuses.filter(b => b !== bonus);
                 }
                 break;
             case SystemBonusTypes.Health:
                 if (this.player.healthSystem.getActiveBonus() === bonus) {
                     this.player.healthSystem.withdrawBonus();
+                    // Retirer le bonus de la liste des actifs
+                    this.activeBonuses = this.activeBonuses.filter(b => b !== bonus);
                 }
                 break;
             case SystemBonusTypes.Weapon:
                 if (this.player.weaponSystem.getActiveBonus() === bonus) {
                     this.player.weaponSystem.withdrawBonus();
+                    // Retirer le bonus de la liste des actifs
+                    this.activeBonuses = this.activeBonuses.filter(b => b !== bonus);
                 }
                 break;
             case SystemBonusTypes.Experience:
                 if(this.player.experienceSystem.getActiveBonus() === bonus) {
                     this.player.experienceSystem.withdrawBonus();
+                    // Retirer le bonus de la liste des actifs
+                    this.activeBonuses = this.activeBonuses.filter(b => b !== bonus);
                 }
                 break;
             case SystemBonusTypes.Skill:
                 if(this.player.skillSystem.getActiveBonus() === bonus) {
                     this.player.skillSystem.withdrawBonus();
+                    // Retirer le bonus de la liste des actifs
+                    this.activeBonuses = this.activeBonuses.filter(b => b !== bonus);
                 }
                 break;
             default:

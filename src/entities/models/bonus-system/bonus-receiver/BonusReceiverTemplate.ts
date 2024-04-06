@@ -5,6 +5,10 @@ export abstract class BonusReceiverTemplate<T extends SystemBonus> {
 
     // Déposer un bonus dans le système
     public depositBonus(bonus: T): void {
+        if (this.currentBonus !== null) {
+            console.warn(`Un bonus de type ${bonus.getType()} est déjà actif. Impossible de déposer un nouveau bonus.`);
+            return;
+        }
         this.currentBonus = bonus;
     }
 

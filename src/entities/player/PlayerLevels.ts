@@ -110,8 +110,8 @@ const PlayerLevels: ExperienceSystemLevelSet = {
         shield: 4,
         damage: 4,
         regenerationRate: 0.1,
-        moveSpeed: 11,
-        lifeBonus: 100,
+        moveSpeed: 100,
+        lifeBonus: 5,
         cooldownRatio: 1
     },
     9: {

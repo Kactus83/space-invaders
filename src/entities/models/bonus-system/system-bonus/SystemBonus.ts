@@ -5,6 +5,7 @@ export abstract class SystemBonus {
     protected type: SystemBonusTypes;
     public readonly effect: ISystemBonusEffect;
     protected activationTimestamp: number | null = null;
+    protected remainingDuration: number;
     protected state: 'available' | 'active' | 'expired' = 'available';
 
     constructor(type: SystemBonusTypes, effect: ISystemBonusEffect) {
@@ -16,13 +17,26 @@ export abstract class SystemBonus {
     activate(): void {
         this.state = 'active';
         this.activationTimestamp = Date.now();
+        this.remainingDuration = this.effect.duration * 1000;
+    }
+    
+    // Méthode pour mettre à jour l'état du bonus
+    update(): void {
+        if (this.state === 'active' && this.activationTimestamp) {
+            const elapsed = Date.now() - this.activationTimestamp;
+            this.remainingDuration -= elapsed;
+
+            if (this.remainingDuration <= 0) {
+                this.state = 'expired';
+            }
+        }
     }
 
     // Vérifie si le bonus est expiré
     checkExpiration(): void {
         if (this.state !== 'active' || this.activationTimestamp === null) return;
 
-        if ((Date.now() - this.activationTimestamp) >= this.effect.duration * 1000) {
+        if (this.state === 'active' && this.remainingDuration <= 0) {
             this.state = 'expired';
         }
     }
