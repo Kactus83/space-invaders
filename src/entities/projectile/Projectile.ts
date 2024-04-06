@@ -61,12 +61,6 @@ export class Projectile extends GameEntity {
 
         if (entity instanceof Player) {
             
-            if (entity.skillSystem.isSkillActive(SkillsIds.Semi_ReflectiveShield)) {
-                if(Math.random() < 0.3) {
-                    this.origin = entity;
-                    return;
-                }
-            }
             if(this.origin instanceof Player) {
                 return;
             }

@@ -15,6 +15,7 @@ import { IShooter } from "../types/IShooter";
 import { Wall } from "../wall/Wall";
 import { PlayerLevels, MaxLevel } from "./PlayerLevels";
 import { SkillSystem } from "../models/skill-system/SkillSystem";
+import { SkillsIds } from "../models/skill-system/types/SkillsIds";
 
 export class Player extends GameEntity implements IInteractive, IShooter {
     private subscriptionId: number;
@@ -63,6 +64,15 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         if (entity instanceof Player) {
             // Logique de collision avec les joueurs
         } else if (entity instanceof Projectile) {
+            
+            // Semi reflective shield skill
+            if (this.skillSystem.isSkillActive(SkillsIds.Semi_ReflectiveShield)) {
+                if(Math.random() < 0.3) {
+                    entity.origin = this;
+                    return;
+                }
+            }
+
             if(entity.origin === this) {
                 return;
             }
