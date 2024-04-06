@@ -36,6 +36,14 @@ export class SpeedSystem extends BonusReceiverTemplate<SpeedBonus> {
             effectiveMoveSpeed *= 2;
         }
 
+        if (this.owner instanceof Player && this.owner.skillSystem.isSkillActive(SkillsIds.Permanent_20PercentSpeedBoost)) {
+            effectiveMoveSpeed *= 1.2;
+        }
+
+        if (this.owner instanceof Player && this.owner.skillSystem.isSkillActive(SkillsIds.Permanent_50PercentSpeedBoost)) {
+            effectiveMoveSpeed *= 1.5;
+        }
+
         return effectiveMoveSpeed;
     }
 }
