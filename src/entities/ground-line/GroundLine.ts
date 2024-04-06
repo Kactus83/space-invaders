@@ -7,9 +7,10 @@ import { Projectile } from "../projectile/Projectile";
 import { Wall } from "../wall/Wall";
 import { Invader } from "../invader/Invader";
 import { GameBonus } from "../bonus/GameBonus";
+import { PlayerProfile } from "../../game-services/player-profile/PlayerProfile";
 
 export class GroundLine extends GameEntity {
-    public  level: number = 1;
+    public level: number = PlayerProfile.getInstance().getGroundLine().getLevel();
     public healthSystem: HealthSystem;
 
     constructor() {
