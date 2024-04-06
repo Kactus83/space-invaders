@@ -85,7 +85,7 @@ export class CollisionService {
                 }
             });
 
-            if (projectile.isInCollisionZone() && projectile.state !== EntityState.ToBeRemoved) {
+            if (projectile.isInWallCollisionZone() && projectile.state !== EntityState.ToBeRemoved) {
                 this.walls.forEach(wall => {
                     if (this.areColliding(projectile, wall)) {
                         projectile.onCollisionWith(wall);
@@ -95,7 +95,7 @@ export class CollisionService {
             }
     
             // Collision Projectile avec GroundLine
-            if (projectile.isInCollisionZone() && projectile.state !== EntityState.ToBeRemoved) {
+            if (projectile.isInWallCollisionZone() && projectile.state !== EntityState.ToBeRemoved) {
                 this.groundLines.forEach(groundLine => {
                     if (this.areColliding(projectile, groundLine)) {
                         projectile.onCollisionWith(groundLine);
@@ -116,7 +116,7 @@ export class CollisionService {
             });
     
             // Collision Invader avec Walls
-            if (invader.isInCollisionZone()) {
+            if (invader.isInWallCollisionZone()) {
                 this.walls.forEach(wall => {
                     if (this.areColliding(invader, wall)) {
                         invader.onCollisionWith(wall);
@@ -126,7 +126,7 @@ export class CollisionService {
             }
     
             // Collision Invader avec GroundLine
-            if (invader.isInCollisionZone()) {
+            if (invader.isInWallCollisionZone()) {
                 this.groundLines.forEach(groundLine => {
                     if (this.areColliding(invader, groundLine)) {
                         invader.onCollisionWith(groundLine);
@@ -155,7 +155,7 @@ export class CollisionService {
             });
     
             // Collision Bonus avec GroundLine
-            if (bonus.isInCollisionZone()) {
+            if (bonus.isInWallCollisionZone()) {
                 this.groundLines.forEach(groundLine => {
                     if (this.areColliding(bonus, groundLine)) {
                         bonus.onCollisionWith(groundLine);

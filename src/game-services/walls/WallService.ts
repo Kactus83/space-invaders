@@ -1,4 +1,3 @@
-import { GroundLine } from "../../entities/ground-line/GroundLine";
 import { Wall } from "../../entities/wall/Wall";
 import { AppConfig } from "../../core/config/AppConfig";
 import { defenseLineConfigurations } from "./config/WallDefenseConfigurations";
@@ -76,8 +75,6 @@ export class WallService {
     
 
     public update(deltaTime: number): void {
-        // Vérifie si le niveau a changé et prépare les murs si nécessaire
-        this.prepareAndInitWallsForLevel(PlayerProfile.getInstance().getWalls().getLevel());
     }
 
     public getWallsAndClear(): Wall[] {

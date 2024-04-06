@@ -88,7 +88,10 @@ export class Projectile extends GameEntity {
             }
 
         } else if (entity instanceof Wall) {
-            this.state = EntityState.ToBeRemoved;
+            this.healthSystem.onCollision(entity.healthSystem);
+            if(this.healthSystem.health <= 0) {
+                this.state = EntityState.ToBeRemoved;
+            }
 
         } else if (entity instanceof GameBonus) {
             if(this.origin instanceof Player && this.origin.skillSystem.isSkillActive(SkillsIds.PickupBonus)) {

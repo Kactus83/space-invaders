@@ -79,9 +79,9 @@ export abstract class GameEntity implements IRenderable, ICollidable {
         };
     }
     
-    isInCollisionZone(): boolean {
+    isInWallCollisionZone(): boolean {
         const config = AppConfig.getInstance();
-        const wallCollisionZoneTop = config.wall_InitialY - (config.wall_Size * 10); // Zone de collision en dessous de cette valeur
+        const wallCollisionZoneTop = (config.wall_InitialY - 10) - (config.wall_Size * 15); // Zone de collision en dessous de cette valeur
 
         return this.getCollisionBounds().y + this.getCollisionBounds().height >= wallCollisionZoneTop;
     }

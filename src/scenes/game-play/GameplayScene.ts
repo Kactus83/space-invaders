@@ -39,7 +39,20 @@ export class GamePlayScene implements IScene {
         this.collisionService.registerEntity(this.player);
         
         this.wallService = new WallService();
-        await this.wallService.initialize();
+        await this.wallService.initialize();  
+        // Récupération et mise à jour des murs
+        const newWalls = this.wallService.getWallsAndClear();
+        if (newWalls.length > 0) {
+            console.log("New walls created");
+            // Désenregistrer les anciens murs de la détection des collisions
+            this.walls.forEach(wall => this.collisionService.unregisterEntity(wall));
+
+            // Mise à jour de la liste des murs dans la scène
+            this.walls = newWalls;
+
+            // Enregistrer les nouveaux murs pour la détection des collisions
+            this.walls.forEach(wall => this.collisionService.registerEntity(wall));
+        }
         
         this.hud = new HUD(this.player, this.groundLine);
 
@@ -62,19 +75,6 @@ export class GamePlayScene implements IScene {
         }
          
         this.wallService.update(deltaTime);
-        
-        // Récupération et mise à jour des murs
-        const newWalls = this.wallService.getWallsAndClear();
-        if (newWalls.length > 0) {
-            // Désenregistrer les anciens murs de la détection des collisions
-            this.walls.forEach(wall => this.collisionService.unregisterEntity(wall));
-
-            // Mise à jour de la liste des murs dans la scène
-            this.walls = newWalls;
-
-            // Enregistrer les nouveaux murs pour la détection des collisions
-            this.walls.forEach(wall => this.collisionService.registerEntity(wall));
-        }
 
         // Mise à jour des services
         this.invaderWaveService.update(deltaTime);
@@ -173,19 +173,6 @@ export class GamePlayScene implements IScene {
         this.isSceneInit = false;
     }
     
-    // Exemple de méthode pour réinitialiser le joueur
-    private initializePlayer(): void {
-        this.player = new Player();
-        this.player.init().then(() => {
-            this.collisionService.registerEntity(this.player);
-        });
-    }
-    
-    // Exemple de méthode pour réinitialiser les murs (si nécessaire)
-    private initializeWalls(): void {
-        // La logique pour réinitialiser ou recréer les murs
-    }
-    
 
     private cleanupEntities() {
         // Filtre les invaders qui doivent être supprimés et les désenregistre de la détection de collision
@@ -203,19 +190,19 @@ export class GamePlayScene implements IScene {
             return true;
         });
 
-        // Applique le même principe aux projectiles
-        this.projectiles = this.projectiles.filter(projectile => {
-            if (projectile.state === EntityState.ToBeRemoved) {
-                this.collisionService.unregisterEntity(projectile);
+        // Applique le même principe aux murs
+        this.walls = this.walls.filter(wall => {
+            if (wall.state === EntityState.ToBeRemoved) {
+                this.collisionService.unregisterEntity(wall);
                 return false;
             }
             return true;
         });
 
         // Applique le même principe aux projectiles
-        this.walls = this.walls.filter(wall => {
-            if (wall.state === EntityState.ToBeRemoved) {
-                this.collisionService.unregisterEntity(wall);
+        this.projectiles = this.projectiles.filter(projectile => {
+            if (projectile.state === EntityState.ToBeRemoved) {
+                this.collisionService.unregisterEntity(projectile);
                 return false;
             }
             return true;
@@ -229,9 +216,5 @@ export class GamePlayScene implements IScene {
             }
             return true;
         });
-
-        // Appliquez le même principe aux murs et à d'autres entités si nécessaire
     }
-
-    // Ajoutez ici les méthodes spécifiques à la scène de gameplay si nécessaire
 }

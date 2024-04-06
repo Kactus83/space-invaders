@@ -8,6 +8,6 @@ import { GameEntityType } from "../../entities/types/GameEntityType";
 export interface ICollidable {
     getCollisionBounds(): { x: number, y: number, width: number, height: number };
     onCollisionWith(entity: GameEntity): void; 
-    isInCollisionZone(): boolean;
+    isInWallCollisionZone(): boolean;
     entityType: GameEntityType; 
 }
