@@ -3,11 +3,13 @@ import { IRenderable } from "../../core/renderer/Irenderable";
 import { InputManager } from "../../core/input-manager/InputManager";
 import { UserInputType } from "../../core/input-manager/UserInputType";
 import { AppConfig } from "../../core/config/AppConfig";
+import { SquareButton } from "../button/SquareButton";
 
 export class HorizontalMenu implements IRenderable {
+    private isActive: boolean = false;
     private inputManager: InputManager;
     private subscriptionId: number;
-    private buttons: fabric.IText[] = [];
+    private buttons: SquareButton[] = [];
     private selectedIndex: number = 0;
     private actions: (() => void)[];
     private menuBackground: fabric.Rect;
@@ -19,9 +21,12 @@ export class HorizontalMenu implements IRenderable {
         this.actions = buttonActions;
 
         // Dimensions and positioning
-        const menuWidth = config.canvasWidth; // Full width
-        const buttonWidth = menuWidth / buttonNames.length;
-        const menuHeight = 50; // Adjust as necessary
+        const menuWidth = config.canvasWidth;
+        const menuHeight = 50;
+        const buttonSize = 50; // Taille carrée pour les boutons
+        const buttonSpacing = 10; // Espacement entre les boutons
+        const totalButtonsWidth = buttonNames.length * buttonSize + (buttonNames.length - 1) * buttonSpacing;
+        const startLeft = (config.canvasWidth - totalButtonsWidth) / 2 + buttonSize / 2; // Calcul pour centrer les boutons
 
         // Create menu background
         this.menuBackground = new fabric.Rect({
@@ -35,37 +40,62 @@ export class HorizontalMenu implements IRenderable {
 
         // Create and position buttons
         buttonNames.forEach((name, index) => {
-            const button = new fabric.IText(name, {
-                left: index * buttonWidth + buttonWidth / 2,
-                top: menuHeight / 2,
-                fontSize: 20,
-                fill: '#FFFFFF',
-                textAlign: 'center',
-                originX: 'center',
-                originY: 'center',
-                selectable: false,
-                hoverCursor: 'pointer',
-            });
+            const positionX = startLeft + index * (buttonSize + buttonSpacing);
+            const button = new SquareButton(name, { x: positionX, y: menuHeight / 2 }, buttonSize);
+            button.triggerAction = buttonActions[index];
             this.buttons.push(button);
         });
     }
 
     async getDrawableObjects(): Promise<fabric.Object[]> {
-        return [this.menuBackground, ...this.buttons];
-    }
+        let drawableObjects = [this.menuBackground];
+        for (const button of this.buttons) {
+            const buttonObjects = await button.getDrawableObjects();
+            drawableObjects = drawableObjects.concat(buttonObjects);
+        }
+        return drawableObjects;
+    }  
 
     handleInput(inputType: UserInputType): void {
         switch (inputType) {
             case UserInputType.Left:
-                this.selectPreviousButton();
+                if(this.isActive) {
+                    this.selectPreviousButton();
+                }else{
+                    this.activateMenu();
+                }
                 break;
             case UserInputType.Right:
-                this.selectNextButton();
+                if(this.isActive) {
+                    this.selectNextButton();
+                }else{
+                    this.activateMenu();
+                }
                 break;
             case UserInputType.Enter:
-                this.triggerSelectedAction();
+                if(this.isActive) {
+                    this.buttons[this.selectedIndex].trigger();
+                }
+                break;            
+            case UserInputType.Up:
+            case UserInputType.Down:
+                if(this.isActive) {
+                    this.deactivateMenu();
+                }
                 break;
         }
+    } 
+    
+    public activateMenu(): void {
+        this.isActive = true;
+        this.highlightSelectedButton();
+    }
+    
+    public deactivateMenu(): void {
+        this.buttons.forEach((button) => {
+            button.setHighlight(false)
+        });
+        this.isActive = false;
     }
 
     private selectNextButton(): void {
@@ -87,9 +117,7 @@ export class HorizontalMenu implements IRenderable {
 
     private highlightSelectedButton(): void {
         this.buttons.forEach((button, index) => {
-            button.set({
-                fill: index === this.selectedIndex ? 'yellow' : 'white'
-            });
+            button.setHighlight(index === this.selectedIndex)
         });
     }
 

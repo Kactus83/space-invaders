@@ -17,7 +17,7 @@ export class GameEngine {
      * Start the game engine
      */
     public async start(): Promise<void> {
-        await this.sceneManager.changeScene(SceneIds.MainMenu); // Initialise the main menu scene
+        await this.sceneManager.changeScene(SceneIds.PlayerNameEntry); // Initialise the login scene
         requestAnimationFrame(this.gameLoop.bind(this)); // Start the game loop
     }
 

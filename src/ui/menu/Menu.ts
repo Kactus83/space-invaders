@@ -7,6 +7,7 @@ import { Button } from "../button/Button";
 import { AppConfig } from "../../core/config/AppConfig";
 
 export class Menu implements IRenderable, IInteractive {
+    private isActive: boolean = false;
     private buttons: Button[] = [];
     private selectedIndex: number = 0;
     private inputManager: InputManager;
@@ -59,15 +60,41 @@ export class Menu implements IRenderable, IInteractive {
     handleInput(inputType: UserInputType): void {
         switch (inputType) {
             case UserInputType.Up:
-                this.selectPreviousButton();
+                if(this.isActive) {
+                    this.selectPreviousButton();
+                }else{
+                    this.activateMenu();
+                }
                 break;
             case UserInputType.Down:
-                this.selectNextButton();
+                if(this.isActive) {
+                    this.selectNextButton();
+                }else{
+                    this.activateMenu();
+                }
                 break;
             case UserInputType.Enter:
-                this.buttons[this.selectedIndex].trigger();
+                if(this.isActive) {
+                    this.buttons[this.selectedIndex].trigger();
+                }
+                break;            
+            case UserInputType.Left:
+            case UserInputType.Right:
+                if(this.isActive) {
+                    this.deactivateMenu();
+                }
                 break;
         }
+    }
+    
+    public activateMenu(): void {
+        this.isActive = true;
+        this.highlightSelectedButton();
+    }
+    
+    public deactivateMenu(): void {
+        this.buttons.forEach(button => button.setHighlight(false));
+        this.isActive = false;
     }
 
     cleanup(): void {

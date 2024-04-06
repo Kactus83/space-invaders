@@ -14,6 +14,7 @@ import { ShopHomeScene } from "../../scenes/shop/ShopHomeScene";
 import { ShopSkillsScene } from "../../scenes/shop/ShopSkillsScene";
 import { PlayerSkillsScene } from "../../scenes/player-profile/PlayerSkillsScene";
 import { BonusCraftingScene } from "../../scenes/player-profile/BonusCraftingScene";
+import { PlayerNameEntryScene } from "../../scenes/player-login/PlayerNameEntryScene";
 
 /**
  * Class 
@@ -50,6 +51,7 @@ export class SceneManager {
      * Registers all the scenes in the scene manager.
      */
     private registerScenes(): void {
+        this.scenes.set(SceneIds.PlayerNameEntry, new PlayerNameEntryScene());
         this.scenes.set(SceneIds.MainMenu, new MainMenuScene());
         this.scenes.set(SceneIds.Settings, new SettingsScene());
         this.scenes.set(SceneIds.Victory, new VictoryScene());

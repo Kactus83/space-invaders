@@ -13,3 +13,56 @@ body, html {
 canvas {
     box-shadow: 0 0 20px rgba(0, 255, 255, 0.5); /* Cyan glow for a modern look */
 }
+
+.inputAnimated {
+    position: absolute;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 20px;
+    font-size: 18px;
+    border: 2px solid #00BFFF; /* Bleu profond */
+    background-color: transparent;
+    color: #00BFFF;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.5); /* Légère lueur bleue */
+}
+
+.inputAnimated:focus {
+    box-shadow: 0 0 20px rgba(0, 191, 255, 0.75); /* Lueur bleue plus intense */
+    border-color: #FFFFFF;
+    background-color: rgba(0, 0, 0, 0.5); /* Fond légèrement sombre lors de la sélection */
+}
+
+.buttonAnimated {
+    position: absolute;
+    top: 56%; /* Ajustement pour mieux aligner avec l'input */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: #00BFFF; /* Couleur de texte cohérente avec l'input */
+    background-color: #121212; /* Fond sombre pour contraste */
+    border: 2px solid #00BFFF; /* Bordure bleue pour l'harmonie */
+    border-radius: 10px; /* Coins arrondis pour un look moderne */
+    cursor: pointer;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 0 15px rgba(0, 191, 255, 0.75); /* Ombre externe pour effet lumineux */
+    text-transform: uppercase; /* Texte en majuscules pour plus d'impact */
+    letter-spacing: 1px; /* Espacement des lettres pour la lisibilité */
+}
+
+.buttonAnimated:hover, .buttonAnimated:focus {
+    background-color: #00BFFF; /* Changement de fond au survol */
+    color: #121212; /* Texte sombre pour contraste */
+    box-shadow: 0 0 20px rgba(0, 191, 255, 1), 0 0 40px rgba(0, 191, 255, 1) inset; /* Ombre plus intense et ombre interne pour effet "glow" */
+    border-color: #FFFFFF; /* Bordure blanche pour le contraste */
+}
+
+.buttonAnimated:active {
+    transform: translate(-50%, -50%) scale(0.98); /* Légère réduction de taille pour effet de clic */
+    box-shadow: 0 0 10px rgba(0, 191, 255, 0.75), 0 0 20px rgba(0, 191, 255, 0.75) inset; /* Diminution de l'ombre pour effet enfoncé */
+}
