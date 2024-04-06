@@ -20,6 +20,7 @@ export class PlayerDataService {
             experience: {
                 bestScore: profile.getExperience().getBestScore(),
                 experiencePoints: profile.getExperience().getExperiencePoints(),
+                total_ExperiencePoints: profile.getExperience().getTotalExperiencePoints(),
                 gameSessions: profile.getExperience().getAllGameSessions(),
             },
             inventory: {

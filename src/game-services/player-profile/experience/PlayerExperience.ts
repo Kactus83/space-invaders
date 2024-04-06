@@ -6,7 +6,8 @@ import { GameSessionStats } from "./models/GameSessionStats";
 export class PlayerExperience {
     private playerProfile: PlayerProfile;
     private bestScore: number;
-    private experiencePoints: number;
+    private experiencePoints: number = 0;
+    private totalExperiencePoints: number = 0;
     private gameSessions: GameSessionStats[];
 
     constructor(playerProfile: PlayerProfile) {
@@ -78,10 +79,15 @@ export class PlayerExperience {
             this.bestScore = score;
         }
     }
-
+    
     addExperiencePoints(points: number): void {
         this.experiencePoints += points;
+        this.totalExperiencePoints += points; // Ajoutez également les points au total
         PlayerDataService.getInstance().saveCurrentProfile(this.playerProfile);
+    }
+
+    getTotalExperiencePoints(): number {
+        return this.totalExperiencePoints;
     }
 
     subtractExperiencePoints(points: number): void {
