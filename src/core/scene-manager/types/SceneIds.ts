@@ -1,3 +1,6 @@
+/**
+ * Enum for scene identifiers.
+ */
 export enum SceneIds {
     PlayerNameEntry = 'PlayerNameEntry',
     MainMenu = 'MainMenu',
@@ -13,5 +16,4 @@ export enum SceneIds {
     GamePlay = 'GamePlay',
     Victory = 'Victory',
     Defeat = 'Defeat',
-    // Ajoutez d'autres identifiants de scène ici selon vos besoins
 }

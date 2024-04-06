@@ -15,17 +15,30 @@ import { ShopSkillsScene } from "../../scenes/shop/ShopSkillsScene";
 import { PlayerSkillsScene } from "../../scenes/player-profile/PlayerSkillsScene";
 import { BonusCraftingScene } from "../../scenes/player-profile/BonusCraftingScene";
 
+/**
+ * Class 
+ */
+/**
+ * Represents the scene manager that handles the switching and rendering of scenes.
+ */
 export class SceneManager {
     private static instance: SceneManager;
     private currentScene: IScene | null = null;
     private scenes: Map<SceneIds, IScene> = new Map();
     private renderer: Renderer;
 
+    /**
+     * Constructor for the SceneManager class.
+     */
     private constructor() {
         this.renderer = new Renderer();
         this.registerScenes();
     }
 
+    /**
+     * Gets the singleton instance of the SceneManager.
+     * @returns The singleton instance of the SceneManager.
+     */
     public static getInstance(): SceneManager {
         if (!SceneManager.instance) {
             SceneManager.instance = new SceneManager();
@@ -33,6 +46,9 @@ export class SceneManager {
         return SceneManager.instance;
     }
 
+    /**
+     * Registers all the scenes in the scene manager.
+     */
     private registerScenes(): void {
         this.scenes.set(SceneIds.MainMenu, new MainMenuScene());
         this.scenes.set(SceneIds.Settings, new SettingsScene());
@@ -47,10 +63,12 @@ export class SceneManager {
         this.scenes.set(SceneIds.Player_BonusCrafting, new BonusCraftingScene());
         this.scenes.set(SceneIds.Shop, new ShopHomeScene());
         this.scenes.set(SceneIds.Shop_Skills, new ShopSkillsScene());
-        
-        // Enregistrer d'autres scènes de la même manière
     }
 
+    /**
+     * Changes the current scene to the specified scene.
+     * @param sceneId - The ID of the scene to change to.
+     */
     public async changeScene(sceneId: SceneIds): Promise<void> {
         const newScene = this.scenes.get(sceneId);
         if (!newScene) {
@@ -64,10 +82,17 @@ export class SceneManager {
         await this.currentScene.initialize();
     }
 
+    /**
+     * Updates the current scene.
+     * @param deltaTime - The time elapsed since the last update.
+     */
     public update(deltaTime: number): void {
         this.currentScene?.update(deltaTime);
     }
 
+    /**
+     * Renders the current scene.
+     */
     public render(): void {
         if (this.currentScene) {
             const objectsToDraw = this.currentScene.getDrawableObjects();

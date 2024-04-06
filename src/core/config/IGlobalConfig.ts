@@ -5,6 +5,9 @@ import { IWallConfig } from "../../entities/wall/IWallConfig";
 import { IPlayerProfileConfig } from "../../game-services/player-profile/config/IPlayerProfileConfig";
 import { IRendererConfig } from "../renderer/IRendererConfig";
 
+/**
+ * Interface for the global configuration of the game
+ * (Extends all the configuration interfaces of the modules)
+ */
 export interface IGlobalConfig extends IRendererConfig, IPlayerConfig, IPlayerProfileConfig, IWallConfig, IInvadersConfig, IGameBonusConfig {
-    // Etendre avec d'autres configurations de modules au fur et à mesure
 }

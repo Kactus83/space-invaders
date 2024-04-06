@@ -1,10 +1,22 @@
 import { UserInputType } from "./UserInputType";
 import { IInteractive } from "./IInteractive";
 
+/**
+ * Class that manages user input and dispatches it to subscribers.
+ */
+/**
+ * Manages user input and provides callbacks for subscribed entities.
+ */
 export class InputManager {
+
+    // Singleton instance
     private static instance: InputManager;
+
+    // Subscribers & ID management
     private subscribers: Map<number, IInteractive> = new Map();
     private nextId: number = 0;
+
+    // Key mapping
     private keyMap: { [key: string]: UserInputType } = {
         "ArrowLeft": UserInputType.Left,
         "ArrowRight": UserInputType.Right,
@@ -25,13 +37,22 @@ export class InputManager {
         "9": UserInputType.Num9,
         "0": UserInputType.Num0,
     };
+
     private keysPressed: { [key: string]: boolean } = {};
 
+    /**
+     * Constructor for the InputManager class.
+     * Initializes the key event listeners.
+     */
     private constructor() {
         window.addEventListener('keydown', this.handleKeyDown.bind(this));
         window.addEventListener('keyup', this.handleKeyUp.bind(this));
     }
 
+    /**
+     * Get the singleton instance of the InputManager.
+     * @returns The singleton instance of the InputManager.
+     */
     public static getInstance(): InputManager {
         if (!InputManager.instance) {
             InputManager.instance = new InputManager();
@@ -39,35 +60,60 @@ export class InputManager {
         return InputManager.instance;
     }
 
+    /**
+     * Allow components to subscribe to user input callbacks.
+     * @param interactive The entity that subscribes.
+     * @returns The id of the subscription.
+     */
     public subscribe(interactive: IInteractive): number {
         const id = this.nextId++;
         this.subscribers.set(id, interactive);
         return id;
     }
 
+    /**
+     * Allow components to unsubscribe from user input callbacks.
+     * @param id The subscription id of the entity.
+     */
     public unsubscribe(id: number): void {
         this.subscribers.delete(id);
     }
 
+    /**
+     * Handles the keydown event and triggers the appropriate callback for the subscribed entities.
+     * @param event The keydown event.
+     */
     private handleKeyDown(event: KeyboardEvent): void {
         const inputType = this.keyMap[event.key];
         if (inputType) {
-            this.keysPressed[event.key] = true; // Marquer la touche comme enfoncée
+            this.keysPressed[event.key] = true;
             this.subscribers.forEach(interactive => interactive.handleInput(inputType));
         }
     }
 
+    /**
+     * Handles the keyup event and updates the keysPressed object accordingly.
+     * @param event The keyup event.
+     */
     private handleKeyUp(event: KeyboardEvent): void {
         const inputType = this.keyMap[event.key];
         if (inputType) {
-            this.keysPressed[event.key] = false; // Marquer la touche comme relâchée
+            this.keysPressed[event.key] = false;
         }
     }
 
+    /**
+     * Checks if a specific key is currently pressed.
+     * @param key The UserInputType to check.
+     * @returns True if the key is pressed, false otherwise.
+     */
     public isKeyPressed(key: UserInputType): boolean {
         return !!this.keysPressed[key];
     }
 
+    /**
+     * Cleans up the event listeners.
+     */
     public cleanup(): void {
         window.removeEventListener('keydown', this.handleKeyDown.bind(this));
         window.removeEventListener('keyup', this.handleKeyUp.bind(this));
