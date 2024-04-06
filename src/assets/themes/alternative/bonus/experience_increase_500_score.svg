@@ -1,0 +1,4 @@
+<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="10" cy="10" r="9" fill="lightgreen" stroke="green" stroke-width="1"/>
+    <text x="5" y="14" font-family="Arial" font-size="10" fill="darkgreen">+500</text>
+</svg>

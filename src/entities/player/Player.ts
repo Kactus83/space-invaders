@@ -114,20 +114,6 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         }
     }
 
-    private moveLeft(): void {
-        // Utilisation de SpeedSystem pour déterminer la vitesse de déplacement
-        if (this.fabricObject && this.fabricObject.left > 0) {
-            this.fabricObject.left -= this.speedSystem.moveSpeed; // Utilisation de speedSystem ici
-        }
-    }
-
-    private moveRight(): void {
-        // Utilisation de SpeedSystem pour déterminer la vitesse de déplacement
-        if (this.fabricObject && (this.fabricObject.left + this.fabricObject.width) < AppConfig.getInstance().canvasWidth) {
-            this.fabricObject.left += this.speedSystem.moveSpeed; // Utilisation de speedSystem ici
-        }
-    }
-
     public async shoot(): Promise<void> {
         // Utiliser le système d'armement pour tirer
         this.weaponSystem.shoot();
@@ -139,6 +125,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
     
 
     update(deltaTime: number): void {
+        this.experienceSystem.update();
         this.bonusManagementSystem.update();
         this.skillSystem.update(deltaTime);
         this.healthSystem.update(deltaTime);

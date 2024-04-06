@@ -17,7 +17,16 @@ export abstract class SystemBonus {
     activate(): void {
         this.state = 'active';
         this.activationTimestamp = Date.now();
-        this.remainingDuration = this.effect.duration * 1000;
+        if(this.effect.duration > 0) {
+            this.remainingDuration = this.effect.duration * 1000;
+        }else{
+            this.remainingDuration = Infinity;
+        }
+    }
+
+    deactivate(): void {
+        this.state = 'expired';
+        this.remainingDuration = 0;
     }
     
     // Méthode pour mettre à jour l'état du bonus

@@ -7,6 +7,8 @@ import { IExperienceSystemCharacteristics } from "./types/IExperienceSystemChara
 import { ExperienceBonus } from "./bonus/ExperienceBonus";
 import { ExperienceSystemLevelSet } from "./types/ExperienceSystemLevelSet";
 import { ISystemsCaracteristicsSet } from "./types/ISystemsCaracteristicsSet";
+import { SystemBonusTypes } from "../bonus-system/system-bonus/SystemBonusTypes";
+import { GameBonusType } from "../../bonus/GameBonusTypes";
 
 export class ExperienceSystem extends BonusReceiverTemplate<ExperienceBonus> {
     private levelSet: ExperienceSystemLevelSet;
@@ -23,6 +25,37 @@ export class ExperienceSystem extends BonusReceiverTemplate<ExperienceBonus> {
         this.updateSystems();
     }
 
+    update(): void {
+        const activeBonus = this.getActiveBonus();
+        if (activeBonus) {
+            switch (activeBonus.getEffect().name) {
+                case GameBonusType.Experience_Increase_1_Level:
+                    this.increaseLevelByOne();
+                    activeBonus.deactivate(); 
+                    break;
+                case GameBonusType.Experience_Increase_1000_Score:
+                    this.increaseScore(1000);
+                    activeBonus.deactivate();
+                    break;
+                case GameBonusType.Experience_Increase_500_Score:
+                    this.increaseScore(500);
+                    activeBonus.deactivate();
+                    break;
+            }
+        }
+    }
+    
+    private increaseLevelByOne(): void {
+        // Trouver le prochain ensemble de caractéristiques basé sur le niveau actuel + 1
+        let nextLevel = this.characteristics.level + 1;
+        const nextLevelCharacteristics = PlayerLevels[nextLevel];
+        
+        if (nextLevelCharacteristics) {
+            this.score = nextLevelCharacteristics.scoreThreshold;
+            this.checkForLevelUp(); 
+        }
+    }
+    
     getCharacteristics(): IExperienceSystemCharacteristics {
         return this.characteristics;
     }

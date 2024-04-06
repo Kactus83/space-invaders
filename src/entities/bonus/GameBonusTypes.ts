@@ -7,6 +7,8 @@ export enum GameBonusType {
     Weapon_Increase_2_FireRate_60sec = "Weapon_Increase_2_FireRate_60sec",
     Speed_Double_Speed_30sec = "Speed_Double_Speed_30sec",
     Speed_Increase_5_Speed_60sec = "Speed_Increase_5_Speed__60sec",
+    Experience_Increase_500_Score = "Experience_Increase_500_Score",
+    Experience_Increase_1000_Score = "Experience_Increase_1000_Score",
     Experience_Increase_1_Level = "Experience_Increase_1_Level",
     Experience_Double_Score_60sec = "Experience_Double_Score_60sec",
     // Ajoutzer XP et designs
