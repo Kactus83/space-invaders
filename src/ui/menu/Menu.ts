@@ -47,8 +47,6 @@ export class Menu implements IRenderable, IInteractive {
             this.buttons.push(button);
             posY += buttonHeight + spacing;
         });
-
-        this.highlightSelectedButton();
     }
 
     async getDrawableObjects(): Promise<fabric.Object[]> {
