@@ -37,6 +37,7 @@ export class PlayerProfile {
         this.experience.restoreFromData();
         this.inventory.restoreFromData();
         this.skills.restoreFromData();
+        this.walls.restoreFromData();
     }
 
     getInventory(): PlayerInventory {

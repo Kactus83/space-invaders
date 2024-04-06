@@ -63,7 +63,7 @@ export class ShopWallsScene implements IScene {
         const purchased = ShopService.getInstance().buyWallLevel(level);
         if (purchased) {
             alert("Wall level purchased successfully!");
-            SceneManager.getInstance().changeScene(SceneIds.Shop_Walls); // Rechargez la scène pour refléter les changements
+            SceneManager.getInstance().changeScene(SceneIds.Shop_Walls); 
         }
     }
 }
