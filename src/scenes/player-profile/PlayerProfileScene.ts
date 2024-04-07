@@ -19,15 +19,17 @@ export class PlayerProfileScene implements IScene {
 
         const buttonNames = [
             `Best Score: ${experience.getBestScore()}`,
-            `Experience Points: ${experience.getExperiencePoints()}`,
+            `Available Points: ${experience.getExperiencePoints()}`,
+            `Total XP Earned: ${experience.getTotalExperiencePoints()}`,
             'Game Statistics',
             'Inventory',
             'Skills',
             'Reset Data'
         ];
         const buttonActions = [
-            null, // Best score et Experience points ne sont pas interactifs
-            null, // Mais vous pourriez les rendre interactifs si vous le souhaitez
+            null, //
+            null, // Mais pou l'inzstant
+            null, //
             () => this.onGameStatistics(),
             () => this.onInventory(),
             () => this.onSkills(),

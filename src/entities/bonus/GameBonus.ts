@@ -3,8 +3,13 @@ import { ThemeManager } from "../../themes/services/ThemeManager";
 import { GameEntity } from "../GameEntity";
 import { GroundLine } from "../ground-line/GroundLine";
 import { SystemBonusType } from "../models/bonus-system/system-bonus/SystemBonusType";
+import { ExperienceBonus } from "../models/experience-system/bonus/ExperienceBonus";
+import { HealthBonus } from "../models/health-system/bonus/HealthBonus";
+import { SkillBonus } from "../models/skill-system/bonus/SkillBonus";
 import { SkillsIds } from "../models/skill-system/types/SkillsIds";
 import { SpeedSystem } from "../models/speed-system/SpeedSystem";
+import { SpeedBonus } from "../models/speed-system/bonus/SpeedBonus";
+import { WeaponBonus } from "../models/weapon-system/bonus/WeaponBonus";
 import { Player } from "../player/Player";
 import { Projectile } from "../projectile/Projectile";
 import { EntityState } from "../types/EntityState";
@@ -15,7 +20,7 @@ export class GameBonus extends GameEntity {
     initialPosition: { x: number, y: number };
     private targetX: number;
     private lastChangeTime: number = 0;
-    systemBonus: SystemBonusType;
+    private systemBonus: SystemBonusType;
     type: GameBonusType;
     speedSystem: SpeedSystem;
 
@@ -28,6 +33,24 @@ export class GameBonus extends GameEntity {
         this.speedSystem = new SpeedSystem(this, characteristics);
         this.targetX = Math.random() * AppConfig.getInstance().canvasWidth;
         // Initialisation supplémentaire si nécessaire
+    }
+
+    getSystemBonus(): SystemBonusType {
+        return this.cloneSystemBonus();
+    }
+
+    public cloneSystemBonus(): SystemBonusType {
+        if (this.systemBonus instanceof HealthBonus) {
+            return new HealthBonus(this.systemBonus.getEffect());
+        }else if (this.systemBonus instanceof SpeedBonus) {
+            return new SpeedBonus(this.systemBonus.getEffect());
+        }else if (this.systemBonus instanceof WeaponBonus) {
+            return new WeaponBonus(this.systemBonus.getEffect());
+        }else if (this.systemBonus instanceof ExperienceBonus) {
+            return new ExperienceBonus(this.systemBonus.getEffect());
+        }else if (this.systemBonus instanceof SkillBonus) {
+            return new SkillBonus(this.systemBonus.getEffect()); 
+        }
     }
 
     protected async loadDesign(): Promise<void> {

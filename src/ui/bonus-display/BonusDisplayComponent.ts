@@ -41,11 +41,12 @@ export class BonusDisplayComponent {
     }
 
     private createBonusText(bonus: SystemBonus, left: number, top: number, color: string): fabric.Text {
-        const bonusName = bonus.effect.name;
+        let bonusName = bonus.effect.casualName;
         let bonusState = this.formatBonusState(bonus.getState());
         
         // Si le bonus est actif, incluez le temps restant dans l'affichage
         if (bonus.getState() === 'active') {
+            bonusName = this.cleanBonusName(bonusName);
             const remainingTime = (bonus.getRemainingDuration() / 1000).toFixed(2); // Convertir en secondes et formater
             bonusState += ` - ${remainingTime}s`;
         }
@@ -59,7 +60,19 @@ export class BonusDisplayComponent {
             fill: color,
             fontFamily: 'Arial',
         });
-    }    
+    } 
+
+    private cleanBonusName(bonusName: string): string {
+        // Recherche de la dernière occurrence d'un espace, supposant que la durée est après cet espace
+        const lastSpaceIndex = bonusName.lastIndexOf(" ");
+        if (lastSpaceIndex > -1) {
+            // Retourne la chaîne sans la partie de la durée
+            return bonusName.substring(0, lastSpaceIndex);
+        }
+        // Si aucun espace n'est trouvé, retourne le nom tel quel
+        return bonusName;
+    }
+       
 
     private formatBonusState(state: 'available' | 'active' | 'expired'): string {
         switch (state) {

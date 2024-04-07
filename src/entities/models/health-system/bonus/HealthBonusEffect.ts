@@ -5,6 +5,7 @@ import { GameBonusType } from "../../../bonus/GameBonusTypes";
 
 export class HealthBonusEffect implements ISystemBonusEffect {
     name: GameBonusType;
+    casualName: string;
     duration: number; 
     multiplicator_Hp: number;
     additional_Hp: number;
@@ -17,6 +18,7 @@ export class HealthBonusEffect implements ISystemBonusEffect {
 
     constructor(
         name: GameBonusType,
+        casualName: string,
         duration: number,
         multiplicator_Hp: number,
         additional_Hp: number,
@@ -28,6 +30,7 @@ export class HealthBonusEffect implements ISystemBonusEffect {
         additional_RegenerationRate: number,
     ) {
         this.name = name;
+        this.casualName = casualName;
         this.duration = duration;
         this.multiplicator_Hp = multiplicator_Hp;
         this.additional_Hp = additional_Hp;

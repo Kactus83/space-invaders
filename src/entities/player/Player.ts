@@ -84,7 +84,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         } else if (entity instanceof Invader) {
             this.healthSystem.takeDamage(entity.healthSystem.damage);
         } else if (entity instanceof GameBonus) {
-            this.bonusManagementSystem.addBonus(entity.systemBonus);
+            this.bonusManagementSystem.addBonus(entity.getSystemBonus());
         } else {
             throw new Error("Unknown entity type");
         }

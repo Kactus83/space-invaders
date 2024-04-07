@@ -56,6 +56,58 @@ export const defenseLineConfigurations: Record<number, LevelConfiguration> = {
     },
   },
   2: {
+    experienceCost: 500, // Coût en expérience pour atteindre ce niveau
+    defenseConfig: {
+      level: 1,
+      lines: [
+        { blocks: [
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.Basic}, 
+          { type: WallType.Basic}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.Basic}, 
+          { type: WallType.Basic},
+          { type: WallType.Basic}, 
+          { type: WallType.Basic}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.Basic}, 
+          { type: WallType.Basic}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.None}
+        ] }, 
+        { blocks: [
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.Light}, 
+          { type: WallType.Basic},
+          { type: WallType.Basic}, 
+          { type: WallType.Light}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.None}, 
+          { type: WallType.None}
+        ] }, 
+      ],
+    },
+  },
+  3: {
     experienceCost: 1000, // Coût en expérience pour atteindre ce niveau
     defenseConfig: {
       level: 2,
@@ -107,7 +159,7 @@ export const defenseLineConfigurations: Record<number, LevelConfiguration> = {
       ],
     },
   },
-  3: {
+  4: {
     experienceCost: 2500, // Coût en expérience pour atteindre ce niveau
     defenseConfig: {
       level: 3,
@@ -159,7 +211,7 @@ export const defenseLineConfigurations: Record<number, LevelConfiguration> = {
       ],
     },
   },
-  4: {
+  5: {
     experienceCost: 5000, // Coût en expérience pour atteindre ce niveau
     defenseConfig: {
       level: 4,
@@ -211,7 +263,7 @@ export const defenseLineConfigurations: Record<number, LevelConfiguration> = {
       ],
     },
   },
-  5: {
+  6: {
     experienceCost: 10000, // Coût en expérience pour atteindre ce niveau
     defenseConfig: {
       level: 5,
