@@ -32,7 +32,7 @@ export class CraftingRecipeDisplayList implements IRenderable, IInteractive {
         const filteredRecipes = this.filterRecipesList();
 
         filteredRecipes.forEach((recipe, index) => {
-            const recipeText = `Craft ${recipe.resultBonus} from ${recipe.requiredBonuses.join(", ")}`;
+            const recipeText = `Craft ${recipe.resultBonus}`;
             const text = new fabric.Text(recipeText, {
                 left: 100,
                 top: topOffset + (index * 30),
@@ -70,6 +70,7 @@ export class CraftingRecipeDisplayList implements IRenderable, IInteractive {
             }
             const selectedRecipe = this.filterRecipesList()[this.selectedIndex];
             if (this.onRecipeSelected) {
+                console.log('Recipe selected', selectedRecipe);
                 this.onRecipeSelected(selectedRecipe);
             }
         } else if (inputType === UserInputType.Left) {

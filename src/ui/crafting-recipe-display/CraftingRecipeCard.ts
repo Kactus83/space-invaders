@@ -6,11 +6,12 @@ import { UserInputType } from "../../core/input-manager/UserInputType";
 import { CraftRecipe } from "../../game-services/bonus-craft/library/CraftRecipe";
 
 export class CraftingRecipeCard implements IRenderable, IInteractive {
+    private isActive: boolean = false;
     private subscriptionId: number;
     private recipe: CraftRecipe;
     private fabricObjects: fabric.Object[] = [];
     private buttons: fabric.IText[] = [];
-    private selectedIndex: number = 0;
+    private selectedIndex: number = 3;
     public onCraftRequested: () => void;
     public onBackToListRequested: () => void;
 
@@ -48,7 +49,7 @@ export class CraftingRecipeCard implements IRenderable, IInteractive {
         });
 
         const craftButton = new fabric.IText("Craft", {
-            left: 110,
+            left: 150,
             top: 170,
             fontSize: 18,
             fill: 'green',
@@ -56,8 +57,8 @@ export class CraftingRecipeCard implements IRenderable, IInteractive {
         });
 
         const backButton = new fabric.IText("Back to list", {
-            left: 210,
-            top: 170,
+            left: 150,
+            top: 200,
             fontSize: 18,
             fill: 'blue',
             selectable: false,
@@ -81,14 +82,26 @@ export class CraftingRecipeCard implements IRenderable, IInteractive {
     handleInput(inputType: UserInputType): void {
         switch (inputType) {
             case UserInputType.Left:
+                this.isActive = false;
+                break;
+            case UserInputType.Right:
+                this.isActive = false;
+                break;
+            case UserInputType.Up:
+                this.isActive = true;
                 this.selectedIndex = Math.max(this.selectedIndex - 1, 0);
                 this.highlightSelectedButton();
                 break;
-            case UserInputType.Right:
+            case UserInputType.Down:
+                this.isActive = true;
                 this.selectedIndex = Math.min(this.selectedIndex + 1, this.buttons.length - 1);
                 this.highlightSelectedButton();
                 break;
             case UserInputType.Enter:
+                if(!this.isActive) {
+                    return;
+                }
+
                 if (this.selectedIndex === 0 && this.onCraftRequested) {
                     this.onCraftRequested();
                 } else if (this.selectedIndex === 1 && this.onBackToListRequested) {
