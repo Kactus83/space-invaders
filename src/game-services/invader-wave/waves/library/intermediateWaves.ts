@@ -166,15 +166,15 @@ export const intermediateWaves: WaveConfig[] = [
     {
         delay: 0, // Seconde vague après 20 secondes
         invaders: [
-            { type: InvaderType.Boss, count: 5, row: 1 },
-            { type: InvaderType.Boss, count: 5, row: 2 },
+            { type: InvaderType.Light_Boss, count: 5, row: 1 },
+            { type: InvaderType.Light_Boss, count: 5, row: 2 },
         ],
     },
     {
         delay: 8, // Seconde vague après 20 secondes
         invaders: [
-            { type: InvaderType.Heavy_Boss, count: 5, row: 1 },
-            { type: InvaderType.Heavy_Boss, count: 5, row: 2 },
+            { type: InvaderType.Boss, count: 5, row: 1 },
+            { type: InvaderType.Boss, count: 5, row: 2 },
         ],
     },
     {
