@@ -63,6 +63,12 @@ export class GamePlayScene implements IScene {
             this,
             this.groundLine
         );
+        
+
+        setTimeout(() => {
+            const waveName: string = this.invaderWaveService.getWaveSetType();
+            this.loadingMessageDisplay = new MessageDisplay(waveName);
+        }, 2000);
 
         this.isSceneInit = true;
         console.log("Gameplay scene initialized");

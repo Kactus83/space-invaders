@@ -29,6 +29,7 @@ export class PlayerExperience {
         
         this.bestScore = experienceData.bestScore;
         this.experiencePoints = experienceData.experiencePoints;
+        this.totalExperiencePoints = experienceData.total_ExperiencePoints;
         this.gameSessions = experienceData.gameSessions;
     }
 
@@ -83,7 +84,7 @@ export class PlayerExperience {
     
     addExperiencePoints(points: number): void {
         this.experiencePoints += points;
-        this.totalExperiencePoints += points; // Ajoutez également les points au total
+        this.totalExperiencePoints += points; 
         PlayerDataService.getInstance().saveCurrentProfile(this.playerProfile);
     }
 
