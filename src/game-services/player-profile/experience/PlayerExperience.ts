@@ -107,12 +107,18 @@ export class PlayerExperience {
 
         switch (sessionStats.getWaveSetType()) {
             case WaveSetType.Beginner:
+            case WaveSetType.Beginner_2:
+            case WaveSetType.Beginner_3:
                 experiencePoints *= config.experience_BeginnerMultiplicator;
                 break;
             case WaveSetType.Intermediate:
+            case WaveSetType.Intermediate_2:
+            case WaveSetType.Intermediate_3:
                 experiencePoints *= config.experience_IntermediateMultiplicator;
                 break;
             case WaveSetType.Expert:
+            case WaveSetType.Expert_2:
+            case WaveSetType.Expert_3:
                 experiencePoints *= config.experience_ExpertMultiplicator;
                 break;
         }
