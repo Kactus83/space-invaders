@@ -5,9 +5,11 @@ import { InvaderSpecs } from "../../entities/invader/InvaderTypesSpecs";
 import { PlayerProfile } from "../player-profile/PlayerProfile";
 import { waveSetsConfig } from "./waves/waveSetsConfig";
 import { WaveConfig } from "./types/WaveConfig";
+import { WaveSetType } from "./types/WaveSetType";
 
 export class InvaderWaveService {
     public isInit: boolean = false;
+    private waveSetType: WaveSetType = WaveSetType.Beginner;
     private nextWaveTime: number = 0;
     private currentWaveIndex: number = 0;
     private pendingInvaders: Invader[] = [];
@@ -26,6 +28,7 @@ export class InvaderWaveService {
 
         if (config) {
             this.waveConfigs = config.waveConfigs;
+            this.waveSetType = config.name;
         } else {
             console.error("No wave configuration found for the current experience level.");
             // Gérez l'absence de configuration, par exemple en utilisant une configuration par défaut
@@ -79,6 +82,10 @@ export class InvaderWaveService {
 
     get allWavesCompleted(): boolean {
         return this.allWavesLaunched && this.pendingInvaders.length === 0;
+    }
+
+    getWaveSetType(): WaveSetType {
+        return this.waveSetType;
     }
 
     public reset(): void {

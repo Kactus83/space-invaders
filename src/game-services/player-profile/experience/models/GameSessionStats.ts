@@ -1,7 +1,9 @@
 import { InvaderType } from "../../../../entities/invader/InvaderType";
+import { WaveSetType } from "../../../invader-wave/types/WaveSetType";
 import { InvaderKillCount } from "../types/InvaderKillCount";
 
 export class GameSessionStats {
+    private waveSetType: WaveSetType;
     private isWinningSession: boolean = false;
     private score: number = 0;
     private invaderKills: InvaderKillCount = {
@@ -34,6 +36,14 @@ export class GameSessionStats {
 
     setWinningSessionBool(isWinningSession: boolean): void {
         this.isWinningSession = isWinningSession;
+    }
+    
+    setWaveSetType(waveSetType: WaveSetType): void {
+        this.waveSetType = waveSetType;
+    }
+
+    getWaveSetType(): string {
+        return this.waveSetType;
     }
 
     get totalScore(): number {

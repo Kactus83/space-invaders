@@ -1,4 +1,5 @@
 import { AppConfig } from "../../../core/config/AppConfig";
+import { WaveSetType } from "../../invader-wave/types/WaveSetType";
 import { PlayerProfile } from "../PlayerProfile";
 import { PlayerDataService } from "../datas/PlayerDataService";
 import { GameSessionStats } from "./models/GameSessionStats";
@@ -102,6 +103,18 @@ export class PlayerExperience {
         
         if (sessionStats.hasWon) {
             experiencePoints *= config.experience_WinMultiplicator;
+        }
+
+        switch (sessionStats.getWaveSetType()) {
+            case WaveSetType.Beginner:
+                experiencePoints *= config.experience_BeginnerMultiplicator;
+                break;
+            case WaveSetType.Intermediate:
+                experiencePoints *= config.experience_IntermediateMultiplicator;
+                break;
+            case WaveSetType.Expert:
+                experiencePoints *= config.experience_ExpertMultiplicator;
+                break;
         }
 
         return experiencePoints;

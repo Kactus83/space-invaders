@@ -56,14 +56,13 @@ export class GameStatusService {
     private recordGameSessionStats(isWinningSession: boolean): void {
         const playerProfile = PlayerProfile.getInstance();
         const gameSessionStats = this.player.experienceSystem.getGameSessionStats();
+
+        // Récupérez le type de vague actuel
+        const waveSetType = this.invaderWaveService.getWaveSetType();
+        gameSessionStats.setWaveSetType(waveSetType);
         
-        // Ici, vous allez ajouter toutes les informations pertinentes à gameSessionStats
-        // Par exemple :
+        // Enregistrez si le joueur a gagné ou perdu
         gameSessionStats.setWinningSessionBool(isWinningSession);
-        
-        // Vous devez adapter cette partie pour qu'elle corresponde à votre logique de jeu,
-        // par exemple, en parcourant les ennemis tués, en calculant le score, etc.
-        // gameSessionStats.addKill(invaderType, scoreValue); // Pour chaque type d'invader tué
         
         // Finalement, enregistrez ces stats dans le profil du joueur
         playerProfile.getExperience().addGameSessionStats(gameSessionStats);

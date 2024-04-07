@@ -14,6 +14,9 @@ export class AppConfig implements IGlobalConfig {
 
     public readonly experience_PointPerScore: number = 0.1;
     public readonly experience_WinMultiplicator: number = 2;
+    public readonly experience_BeginnerMultiplicator: number = 1.5;
+    public readonly experience_IntermediateMultiplicator: number = 1;
+    public readonly experience_ExpertMultiplicator: number = 0.5;
 
     // Wall settings
     public readonly wall_InitialY: number = 485;

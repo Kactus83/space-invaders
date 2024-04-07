@@ -10,35 +10,35 @@ export const beginnerWaves: WaveConfig[] = [
         ],
     },
     {
-        delay: 10, // Seconde vague après 20 secondes
+        delay: 25, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Basic, count: 5, row: 1 },
             { type: InvaderType.Basic, count: 5, row: 2 },
         ],
     },
     {
-        delay: 20, // Seconde vague après 20 secondes
+        delay: 55, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Light, count: 5, row: 1 },
             { type: InvaderType.Light, count: 5, row: 2 },
         ],
     },
     {
-        delay: 5, // Seconde vague après 20 secondes
+        delay: 15, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Light, count: 5, row: 1 },
             { type: InvaderType.Light, count: 5, row: 2 },
         ],
     },
     {
-        delay: 18, // Seconde vague après 20 secondes
+        delay: 30, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Basic, count: 5, row: 1 },
             { type: InvaderType.Medium, count: 5, row: 2 },
         ],
     },
     {
-        delay: 15, // Seconde vague après 20 secondes
+        delay: 20, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Basic, count: 5, row: 1 },
             { type: InvaderType.Basic, count: 5, row: 2 },
@@ -80,7 +80,7 @@ export const beginnerWaves: WaveConfig[] = [
         ],
     },
     {
-        delay: 15, // Seconde vague après 20 secondes
+        delay: 25, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Medium, count: 5, row: 1 },
             { type: InvaderType.Medium, count: 5, row: 2 },
@@ -94,7 +94,7 @@ export const beginnerWaves: WaveConfig[] = [
         ],
     },
     {
-        delay: 10, // Seconde vague après 20 secondes
+        delay: 25, // Seconde vague après 20 secondes
         invaders: [
             { type: InvaderType.Medium, count: 5, row: 1 },
             { type: InvaderType.Strong, count: 5, row: 2 },
