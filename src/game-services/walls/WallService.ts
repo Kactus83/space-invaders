@@ -44,7 +44,6 @@ export class WallService {
     }        
 
     private async createWallBlock(x: number, y: number, config: WallBlockConfig): Promise<void> {
-        console.log("Creating wall block");
         const wallSize = AppConfig.getInstance().wall_Size;
         
         for (let row = 0; row < 5; row++) {

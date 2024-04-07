@@ -38,6 +38,7 @@ export class PlayerExperience {
     }
 
     getExperiencePoints(): number {
+        console.log('getExperiencePoints', this.experiencePoints);
         return this.experiencePoints;
     }
     

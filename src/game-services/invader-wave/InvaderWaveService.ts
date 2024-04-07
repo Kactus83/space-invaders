@@ -18,28 +18,39 @@ export class InvaderWaveService {
     private waveConfigs: WaveConfig[] = [];
 
     constructor() {
+    }
+
+    public init(): void {
         this.scheduleNextWave();
     }
 
     private scheduleNextWave(): void {
-        
         const totalExperience = PlayerProfile.getInstance().getExperience().getTotalExperiencePoints();
-        const config = waveSetsConfig.find(set => totalExperience >= set.experienceThreshold);
-
-        if (config) {
-            this.waveConfigs = config.waveConfigs;
-            this.waveSetType = config.name;
+        console.log("Total experience: ", totalExperience);
+    
+        // Filtrer les configurations pour ne garder que celles dont le seuil est inférieur ou égal à l'expérience totale
+        const eligibleConfigs = waveSetsConfig
+            .filter(config => totalExperience >= config.experienceThreshold)
+            .sort((a, b) => b.experienceThreshold - a.experienceThreshold); // Trier par seuil décroissant
+            console.log("eligibleConfigs", eligibleConfigs);
+    
+        const suitableConfig = eligibleConfigs[0]; // Prendre la configuration avec le seuil le plus élevé
+    
+        if (suitableConfig) {
+            this.waveConfigs = suitableConfig.waveConfigs;
+            this.waveSetType = suitableConfig.name;
+            console.log("Using wave set: ", suitableConfig.name);
         } else {
-            console.error("No wave configuration found for the current experience level.");
-            // Gérez l'absence de configuration, par exemple en utilisant une configuration par défaut
-            this.waveConfigs = []; // Ou une configuration par défaut
+            console.error("No suitable wave configuration found.");
+            // Gérer l'absence de configuration appropriée
         }
-
-        console.log('scheduleNextWave', this.currentWaveIndex, this.waveConfigs.length);
+    
+        // Initialiser le compte à rebours pour la prochaine vague si nécessaire
         if (this.currentWaveIndex < this.waveConfigs.length) {
             this.nextWaveTime = this.waveConfigs[this.currentWaveIndex].delay * 1000;
         }
     }
+    
 
     async update(deltaTime: number): Promise<void> {
         this.nextWaveTime -= deltaTime;

@@ -64,6 +64,7 @@ export class GamePlayScene implements IScene {
             this.groundLine
         );
 
+        this.invaderWaveService.init();
         const waveName: string = this.invaderWaveService.getWaveSetType();
         this.loadingMessageDisplay = new MessageDisplay(waveName);
         
