@@ -12,6 +12,7 @@ import { HUD } from "../../ui/HUD/HUD";
 import { WallService } from "../../game-services/walls/WallService";
 import { GameStatusService } from "../../game-services/game-status/GameStatusService";
 import { GameBonus } from "../../entities/bonus/GameBonus";
+import { MessageDisplay } from "../../ui/message-display/MessageDisplay";
 
 export class GamePlayScene implements IScene {
     private isSceneInit: boolean = false;
@@ -27,6 +28,7 @@ export class GamePlayScene implements IScene {
     private projectiles: Projectile[] = [];
     private gameBonus: GameBonus[] = [];
     private hud: HUD;
+    private loadingMessageDisplay: MessageDisplay = new MessageDisplay("LOADING...");
     
     async initialize(): Promise<void> {
         
@@ -43,7 +45,6 @@ export class GamePlayScene implements IScene {
         // Récupération et mise à jour des murs
         const newWalls = this.wallService.getWallsAndClear();
         if (newWalls.length > 0) {
-            console.log("New walls created");
             // Désenregistrer les anciens murs de la détection des collisions
             this.walls.forEach(wall => this.collisionService.unregisterEntity(wall));
 
@@ -134,7 +135,7 @@ export class GamePlayScene implements IScene {
         
         // Vérifier si la scène est initialisée
         if(!this.isSceneInit) {
-            return [];
+            return [this.loadingMessageDisplay];
         }
 
         // Renvoie toutes les entités à dessiner
