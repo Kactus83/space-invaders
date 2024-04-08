@@ -1,5 +1,6 @@
 import { GameEntity } from "../../GameEntity";
 import { FlashEffect } from "./library/FlashEffect";
+import { HealEffect } from "./library/HealEffect";
 import { HitEffect } from "./library/HitEffect";
 import { ShieldEffect } from "./library/ShieldEffect";
 import { IAnimationEffect } from "./types/IAnimationEffect";
@@ -48,5 +49,9 @@ export class AnimationSystem {
 
     startShieldAnimation(): void {
         this.startEffect(new ShieldEffect());
+    }
+
+    startHealAnimation(): void {
+        this.startEffect(new HealEffect());
     }
 }
