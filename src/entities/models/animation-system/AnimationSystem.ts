@@ -1,8 +1,10 @@
 import { GameEntity } from "../../GameEntity";
+import { BonusEffect } from "./library/BonusEffect";
 import { FlashEffect } from "./library/FlashEffect";
 import { HealEffect } from "./library/HealEffect";
 import { HitEffect } from "./library/HitEffect";
 import { ShieldEffect } from "./library/ShieldEffect";
+import { SkillEffect } from "./library/SkillEffect";
 import { IAnimationEffect } from "./types/IAnimationEffect";
 
 export class AnimationSystem {
@@ -53,5 +55,13 @@ export class AnimationSystem {
 
     startHealAnimation(): void {
         this.startEffect(new HealEffect());
+    }
+
+    startBonusAnimation(): void {
+        this.startEffect(new BonusEffect());
+    }
+
+    startSkillAnimation(): void {
+        this.startEffect(new SkillEffect());
     }
 }
