@@ -6,7 +6,7 @@ export class PlayerDamageEffect implements IAnimationEffect {
     private elapsedTime: number = 0;
     private completed: boolean = false;
 
-    constructor(duration: number = 250) { // Durée plus courte pour une réaction rapide
+    constructor(duration: number = 150) { // Durée plus courte pour une réaction rapide
         this.duration = duration;
     }
 
@@ -15,7 +15,7 @@ export class PlayerDamageEffect implements IAnimationEffect {
         target.set({
             shadow: new fabric.Shadow({
                 color: 'rgba(255, 0, 0, 0.8)', // Rouge pour indiquer le dommage
-                blur: 25, // Un flou plus important pour un effet dramatique
+                blur: 15, // Un flou plus important pour un effet dramatique
             })
         });
         this.completed = false;
