@@ -56,6 +56,8 @@ export class HealthSystem extends BonusReceiverTemplate<HealthBonus> {
         if(this.owner instanceof Player || this.owner instanceof Invader) {
             if(effectiveDamage > 0 && this.characteristics.hp > 0 && this.owner instanceof Invader) {
                 this.owner.animationSystem.startHitAnimation();
+            }else if(effectiveDamage > 0 && this.characteristics.hp > 0 && this.owner instanceof Player) {
+                this.owner.animationSystem.startPlayerDamageAnimation();
             }else if(amount > 0 && effectiveDamage === 0 && this.owner instanceof Player) {
                 this.owner.animationSystem.startShieldAnimation();
             }

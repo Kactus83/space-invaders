@@ -3,6 +3,7 @@ import { BonusEffect } from "./library/BonusEffect";
 import { FlashEffect } from "./library/FlashEffect";
 import { HealEffect } from "./library/HealEffect";
 import { HitEffect } from "./library/HitEffect";
+import { PlayerDamageEffect } from "./library/PlayerDamageEffect";
 import { ShieldEffect } from "./library/ShieldEffect";
 import { SkillEffect } from "./library/SkillEffect";
 import { IAnimationEffect } from "./types/IAnimationEffect";
@@ -43,6 +44,10 @@ export class AnimationSystem {
 
     startFlashAnimation(): void {
         this.startEffect(new FlashEffect());
+    }
+
+    startPlayerDamageAnimation(): void {
+        this.startEffect(new PlayerDamageEffect());
     }
 
     startHitAnimation(): void {
