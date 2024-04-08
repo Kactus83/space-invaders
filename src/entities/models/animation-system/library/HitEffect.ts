@@ -30,7 +30,27 @@ export class HitEffect implements IAnimationEffect {
         this.centerX = target.left + target.width * target.scaleX / 2;
         this.centerY = target.top + target.height * target.scaleY / 2;
     }
+
+    stop(target: fabric.Object): void {
+        target.set({
+            'opacity': this.originalOpacity,
+            'scaleX': this.originalScaleX,
+            'scaleY': this.originalScaleY
+        });
     
+        // Si vous avez modifié originX et originY pour l'effet, réinitialisez-les ici
+        target.originX = 'left';
+        target.originY = 'top';
+    
+        // Réinitialisez la position pour compenser le mouvement effectué pendant l'effet
+        target.set({
+            left: this.centerX - target.width * this.originalScaleX / 2 + this.xMoveSinceStart,
+            top: this.centerY - target.height * this.originalScaleY / 2,
+        });
+    
+        this.completed = true;
+    }
+        
     update(target: fabric.Object, deltaTime: number): void {
         this.elapsedTime += deltaTime;
         // Calculez le nouveau centre après mise à jour.

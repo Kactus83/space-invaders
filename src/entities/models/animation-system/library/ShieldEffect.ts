@@ -2,6 +2,7 @@ import { IAnimationEffect } from "../types/IAnimationEffect";
 import { fabric } from "fabric";
 
 export class ShieldEffect implements IAnimationEffect {
+    private completed: boolean = false;
     private duration: number;
     private elapsedTime: number = 0;
 
@@ -17,22 +18,39 @@ export class ShieldEffect implements IAnimationEffect {
                 blur: 15,
             })
         });
+        this.completed = false;
+    }
+
+    stop(target: fabric.Object): void {
+        // Assurez-vous d'éliminer l'ombre ou l'effet visuel spécifique du bouclier
+        target.set({
+            shadow: null // ou rétablissez l'ombre originale si vous l'aviez sauvegardée
+        });
+        this.completed = true;
     }
 
     update(target: fabric.Object, deltaTime: number): void {
+        // Vérifiez si l'ombre existe avant de la modifier
+        if (!target.shadow) {
+            return; // Arrêtez la mise à jour si l'ombre n'existe plus
+        }
+        
         this.elapsedTime += deltaTime;
         const progress = Math.min(this.elapsedTime / this.duration, 1);
         const intensity = Math.sin(progress * Math.PI); // Sinus pour une animation en douceur
-
-        // Mettre à jour l'effet visuel selon le progrès
-        (target.shadow as fabric.Shadow).blur = 20 * intensity;
-        (target.shadow as fabric.Shadow).color = `rgba(0, 191, 255, ${intensity})`; // Cyan avec variation d'opacité
-
+    
+        // Assurez-vous que target.shadow est toujours une instance valide de fabric.Shadow
+        if (target.shadow instanceof fabric.Shadow) {
+            target.shadow.blur = 20 * intensity;
+            target.shadow.color = `rgba(0, 191, 255, ${intensity})`; // Cyan avec variation d'opacité
+        }
+    
         if (progress === 1) {
             // Nettoyage après la fin de l'animation
+            this.completed = true;
             target.set({ shadow: null });
         }
-    }
+    }    
 
     isCompleted(): boolean {
         return this.elapsedTime >= this.duration;

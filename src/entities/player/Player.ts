@@ -26,6 +26,10 @@ export class Player extends GameEntity implements IInteractive, IShooter {
     public bonusManagementSystem: BonusManagementSystem;
     public skillSystem: SkillSystem;
 
+    // Designs
+    private designsByLevel: Record<number, fabric.Object> = {};
+
+
     constructor() {
         super();
         this.subscribeToInputManager();
@@ -37,38 +41,46 @@ export class Player extends GameEntity implements IInteractive, IShooter {
         this.bonusManagementSystem = new BonusManagementSystem(this);
         this.skillSystem = new SkillSystem(this, levelCharacteristics);
     }
+
+    private async preloadDesigns(): Promise<void> {
+        const promises = Object.keys(PlayerLevels).map(async (level) => {
+            const design = this.themeManager.getTheme().getPlayerDesign(parseInt(level));
+            const fabricObject = await this.createFabricObject(design, { x: 0, y: 0 }); 
+            this.designsByLevel[parseInt(level)] = fabricObject;
+        });
     
-    public async loadDesign(): Promise<void> {
-        const design = this.themeManager.getTheme().getPlayerDesign(this.experienceSystem.level);
-        const config = AppConfig.getInstance();
-    
-        let x_position: number;
-        let y_position: number;
-    
-        // Calculer la hauteur disponible pour le joueur
-        const playerZoneHeight = config.wall_InitialY - config.player_Min_Y;
-    
-        // Si l'objet fabric existe déjà, utilisez ses positions actuelles
-        if(this.fabricObject && this.fabricObject.left && this.fabricObject.top) {
-            x_position = this.fabricObject.left;
-            // Y position basée sur le design actuel pour conserver la hauteur appropriée
-            const playerDesignHeight = design.height; // Assurez-vous que votre objet de design a une propriété `height`
-            y_position = config.player_Min_Y + (playerZoneHeight - playerDesignHeight) / 2;
-        } else {
-            // Sinon, initialisez les positions X et Y à partir des configurations
-            x_position = config.player_InitialX;
-            // Calcul initial pour centrer le design du joueur dans sa zone disponible
-            const initialDesignHeight = design.height; // Utiliser la hauteur du premier design
-            y_position = config.player_Min_Y + (playerZoneHeight - initialDesignHeight) / 2;
-        }
-    
-        // Mettre à jour ou initialiser l'objet fabric avec le design et les positions calculées
-        this.fabricObject = await this.createFabricObject(design, { x: x_position, y: y_position });
-        if(this.fabricObject) {
-            this.shouldUpdateDesign = false;
-        }
+        await Promise.all(promises);
     }
     
+    public async loadDesign(): Promise<void> {
+        if (Object.keys(this.designsByLevel).length === 0) {
+            await this.preloadDesigns();
+        }
+        
+        const level = this.experienceSystem.level;
+        const currentDesign = this.designsByLevel[level];
+        const config = AppConfig.getInstance();
+        
+        // Utiliser les coordonnées existantes si disponibles, sinon utiliser les valeurs par défaut
+        const x_position = this.fabricObject?.left ?? config.player_InitialX;
+        let y_position: number;
+        
+        // Calculer la hauteur disponible pour le joueur
+        const playerZoneHeight = config.wall_InitialY - config.player_Min_Y;
+        // Calcul pour centrer le design du joueur dans sa zone disponible
+        const designHeight = currentDesign.getScaledHeight();
+        y_position = config.player_Min_Y + (playerZoneHeight - designHeight) / 2;
+        
+        // Appliquer les nouvelles positions
+        currentDesign.set({
+            left: x_position,
+            top: y_position
+        }).setCoords();  
+        
+        // Mettre à jour l'objet fabric du joueur
+        this.fabricObject = currentDesign;
+        this.shouldUpdateDesign = false;
+    }    
 
     onCollisionWith(entity: GameEntity): void {
         if (entity instanceof Player) {

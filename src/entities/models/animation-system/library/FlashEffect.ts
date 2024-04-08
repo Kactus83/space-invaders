@@ -14,6 +14,11 @@ export class FlashEffect implements IAnimationEffect {
         // Sauvegardez l'opacité originale pour pouvoir la rétablir plus tard
         this.originalOpacity = target.opacity || 1;
     }
+    
+    stop(target: fabric.Object): void {
+        target.set('opacity', this.originalOpacity);
+        this.completed = true;
+    }
 
     update(target: fabric.Object, deltaTime: number): void {
         this.elapsedTime += deltaTime;

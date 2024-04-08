@@ -12,10 +12,21 @@ export class AnimationSystem {
         this.owner = owner;
     }
 
-    startEffect(effect: IAnimationEffect): void {
-        effect.start(this.owner.fabricObject);
-        console.log('Starting effect', effect);
-        this.activeEffects.push(effect);
+    startEffect(newEffect: IAnimationEffect): void {
+        // Recherchez et arrêtez un effet actif du même type
+        this.activeEffects.forEach(effect => {
+            if (effect.constructor.name === newEffect.constructor.name) {
+                effect.stop(this.owner.fabricObject);
+            }
+        });
+    
+        // Nettoyez les effets arrêtés avant d'ajouter le nouvel effet
+        this.activeEffects = this.activeEffects.filter(effect => !effect.isCompleted());
+    
+        // Démarrer le nouvel effet
+        newEffect.start(this.owner.fabricObject);
+        console.log('Starting effect', newEffect.constructor.name);
+        this.activeEffects.push(newEffect);
     }
 
     update(deltaTime: number): void {
