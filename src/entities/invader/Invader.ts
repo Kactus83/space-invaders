@@ -97,6 +97,8 @@ export class Invader extends GameEntity implements IShooter {
         const config = AppConfig.getInstance();
     
         if (!this.fabricObject) return;
+
+        this.animationSystem.update(deltaTime);
     
         if (this.isRushing) {
             this.rushDown(deltaTime);

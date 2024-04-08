@@ -6,11 +6,13 @@ import { ThemeManager } from "../themes/services/ThemeManager";
 import { IDesign } from "../themes/types/IDesign";
 import { EntityState } from "./types/EntityState";
 import { AppConfig } from "../core/config/AppConfig";
+import { AnimationSystem } from "./models/animation-system/AnimationSystem";
 
 export abstract class GameEntity implements IRenderable, ICollidable {
     public state: EntityState = EntityState.Active;
     protected themeManager: ThemeManager = ThemeManager.getInstance();
-    protected fabricObject: fabric.Object;
+    public animationSystem: AnimationSystem = new AnimationSystem(this);
+    public fabricObject: fabric.Object;
     public entityType: GameEntityType;
     public isInitialized: boolean = false;
     public shouldUpdateDesign: boolean = true;

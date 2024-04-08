@@ -135,6 +135,7 @@ export class Player extends GameEntity implements IInteractive, IShooter {
     
 
     update(deltaTime: number): void {
+        this.animationSystem.update(deltaTime);
         this.experienceSystem.update();
         this.bonusManagementSystem.update();
         this.skillSystem.update(deltaTime);

@@ -69,6 +69,9 @@ export class GameBonus extends GameEntity {
     
         // Dérive latérale vers la position cible
         if (Math.random() < AppConfig.getInstance().shiftX_Probability) {
+
+            this.animationSystem.startFlashAnimation();
+            
             // Déterminer la direction de la dérive basée sur la position cible
             const direction = this.targetX > this.fabricObject.left ? 1 : -1;
             // Calculer le mouvement latéral avec une valeur aléatoire jusqu'à shiftX_max
@@ -88,6 +91,8 @@ export class GameBonus extends GameEntity {
                 this.targetX = Math.random() * AppConfig.getInstance().canvasWidth;
             }
         }
+
+        this.animationSystem.update(deltaTime);
     }
         
 

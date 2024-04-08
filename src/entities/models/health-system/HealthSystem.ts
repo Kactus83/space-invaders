@@ -54,6 +54,12 @@ export class HealthSystem extends BonusReceiverTemplate<HealthBonus> {
 
         this.characteristics.hp -= effectiveDamage;
 
+        if(effectiveDamage > 0 && this.characteristics.hp > 0) {
+            this.owner.animationSystem.startHitAnimation();
+        }else if(amount > 0 && effectiveDamage <= 0) {
+            this.owner.animationSystem.startShieldAnimation();
+        }
+
         if (this.health < this.maxHP * 0.3) {
             this.healthState = HealthState.Critical;
             this.owner.shouldUpdateDesign = true;
