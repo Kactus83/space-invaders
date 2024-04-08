@@ -96,21 +96,8 @@ export class GamePlayScene implements IScene {
             this.collisionService.registerEntity(invader);
         });
 
-        // Récupérer les projectiles du joueur
-        const playerProjectiles = this.player.getNewProjectiles();
-        playerProjectiles.forEach(projectile => {
-            this.projectiles.push(projectile);
-            this.collisionService.registerEntity(projectile);
-        });
-
-        // Récupérer les projectiles des invaders
-        this.invaders.forEach(invader => {
-            const invaderProjectiles = invader.getNewProjectiles();
-            invaderProjectiles.forEach(projectile => {
-                this.projectiles.push(projectile);
-                this.collisionService.registerEntity(projectile);
-            });
-        });
+        // Récupérer les projectiles
+        this.collectAndRegisterProjectiles();
     
         // Mise à jour des entités existantes...
         this.gameBonus.forEach(bonus => bonus.update(deltaTime));
@@ -136,7 +123,15 @@ export class GamePlayScene implements IScene {
         // Check game status
         this.gameStatusService.update();
     }
-    
+
+    collectAndRegisterProjectiles() {
+        // Collecte et enregistrement des projectiles en une seule étape
+        const newProjectiles = [...this.player.getNewProjectiles(), ...this.invaders.flatMap(invader => invader.getNewProjectiles())];
+        newProjectiles.forEach(projectile => {
+            this.projectiles.push(projectile);
+            this.collisionService.registerEntity(projectile);
+        });
+    }    
 
     getDrawableObjects(): IRenderable[] {
         
