@@ -7,6 +7,7 @@ import { IDesign } from "../themes/types/IDesign";
 import { EntityState } from "./types/EntityState";
 import { AppConfig } from "../core/config/AppConfig";
 import { AnimationSystem } from "./models/animation-system/AnimationSystem";
+import { CollisionZone } from "../game-services/collision/CollisionZone";
 
 export abstract class GameEntity implements IRenderable, ICollidable {
     public state: EntityState = EntityState.Active;
@@ -86,6 +87,36 @@ export abstract class GameEntity implements IRenderable, ICollidable {
         const wallCollisionZoneTop = (config.wall_InitialY - 10) - (config.wall_Size * 15); // Zone de collision en dessous de cette valeur
 
         return this.getCollisionBounds().y + this.getCollisionBounds().height >= wallCollisionZoneTop;
+    }
+    getCollisionZones(): Set<CollisionZone> {
+        const zones = new Set<CollisionZone>();
+        const bounds = this.getCollisionBounds();
+        const config = AppConfig.getInstance();
+
+        // Déterminez les limites des zones
+        const zoneWidth = config.canvasWidth / 3; // Divise le canvas en trois zones horizontales
+        const leftZoneEnd = zoneWidth;
+        const rightZoneStart = zoneWidth * 2;
+
+        // Vérifiez la présence dans les zones horizontales
+        if (bounds.x < leftZoneEnd) {
+            zones.add(CollisionZone.Left);
+        }
+        if (bounds.x + bounds.width > rightZoneStart) {
+            zones.add(CollisionZone.Right);
+        }
+        if ((bounds.x >= leftZoneEnd && bounds.x <= rightZoneStart) ||
+            (bounds.x + bounds.width > leftZoneEnd && bounds.x + bounds.width <= rightZoneStart) ||
+            (bounds.x < leftZoneEnd && bounds.x + bounds.width > rightZoneStart)) {
+            zones.add(CollisionZone.Center);
+        }
+
+        // Vérifiez si l'entité est dans la zone de collision des murs
+        if (this.isInWallCollisionZone()) {
+            zones.add(CollisionZone.WallCollisionZone);
+        }
+
+        return zones;
     }
 
     abstract onCollisionWith(entity: GameEntity): void;

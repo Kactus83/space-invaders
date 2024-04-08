@@ -51,120 +51,79 @@ export class CollisionService {
     /**
      * Check collisions between entities
      */
+
     public checkCollisions(): void {
-        // Vérifications des collisions pour les projectiles
+        this.checkProjectileCollisions();
+        this.checkInvaderCollisions();
+        this.checkBonusCollisions();
+    }
+
+    private checkProjectileCollisions(): void {
+        // Simplifiez la vérification des collisions pour les projectiles
         this.projectiles.forEach(projectile => {
-            // Collisions entre Projectiles
-            this.projectiles.forEach(other_Projectile => {
-                if(projectile === other_Projectile || projectile.state !== EntityState.ToBeRemoved || other_Projectile.state !== EntityState.ToBeRemoved) {
-                    return;
-                }
-                if (this.areColliding(projectile, other_Projectile)) {
-                    projectile.onCollisionWith(other_Projectile);
-                    other_Projectile.onCollisionWith(projectile);
-                }
-            });
+            if (projectile.state === EntityState.ToBeRemoved) return;
 
-            // Collisions Projectile avec Invaders
-            this.invaders.forEach(invader => {
-                if (this.areColliding(projectile, invader) && projectile.state !== EntityState.ToBeRemoved) {
-                    projectile.onCollisionWith(invader);
-                    invader.onCollisionWith(projectile);
-                }
-            });
-    
-            // Collision Projectile avec Player
-            this.players.forEach(player => {
-                if (this.areColliding(projectile, player) && projectile.state !== EntityState.ToBeRemoved) {
-                    if(player.skillSystem.isSkillActive(SkillsIds.Semi_ReflectiveShield) && Math.random() <= 0.3) {
-                        projectile.origin = player;
-                    }else{
-                        projectile.onCollisionWith(player);
-                        player.onCollisionWith(projectile);
-                    }
-                }
-            });
+            const projectileZones = projectile.getCollisionZones();
 
-            if (projectile.isInWallCollisionZone() && projectile.state !== EntityState.ToBeRemoved) {
-                this.walls.forEach(wall => {
-                    if (this.areColliding(projectile, wall)) {
-                        projectile.onCollisionWith(wall);
-                        wall.onCollisionWith(projectile);
-                    }
-                });
-            }
-    
-            // Collision Projectile avec GroundLine
-            if (projectile.isInWallCollisionZone() && projectile.state !== EntityState.ToBeRemoved) {
-                this.groundLines.forEach(groundLine => {
-                    if (this.areColliding(projectile, groundLine)) {
-                        projectile.onCollisionWith(groundLine);
-                        groundLine.onCollisionWith(projectile);
-                    }
-                });
-            }
+            // Fusionner toutes les entités sauf les projectiles dans un seul tableau pour la vérification
+            const entities = [...this.invaders, ...this.players, ...this.walls, ...this.groundLines];
+
+            entities.forEach(entity => {
+                if (entity.state === EntityState.ToBeRemoved) return;
+
+                const entityZones = entity.getCollisionZones();
+                const commonZones = Array.from(projectileZones).filter(zone => entityZones.has(zone));
+
+                // Procédez à la vérification détaillée des collisions seulement si les zones se croisent
+                if (commonZones.length > 0 && this.areColliding(projectile, entity)) {
+                    projectile.onCollisionWith(entity);
+                    entity.onCollisionWith(projectile);
+                }
+            });
         });
-    
+    }
+
+    private checkInvaderCollisions(): void {
         // Vérifications des collisions pour les invaders
         this.invaders.forEach(invader => {
-            // Collision Invader avec Player
+            if (invader.state === EntityState.ToBeRemoved) return;
+
             this.players.forEach(player => {
                 if (this.areColliding(invader, player)) {
                     invader.onCollisionWith(player);
                     player.onCollisionWith(invader);
                 }
             });
-    
-            // Collision Invader avec Walls
-            if (invader.isInWallCollisionZone()) {
-                this.walls.forEach(wall => {
-                    if (this.areColliding(invader, wall)) {
-                        invader.onCollisionWith(wall);
-                        wall.onCollisionWith(invader);
-                    }
-                });
-            }
-    
-            // Collision Invader avec GroundLine
-            if (invader.isInWallCollisionZone()) {
-                this.groundLines.forEach(groundLine => {
-                    if (this.areColliding(invader, groundLine)) {
-                        invader.onCollisionWith(groundLine);
-                        groundLine.onCollisionWith(invader);
-                    }
-                });
-            }
-        });
 
+            // Collision Invader avec Walls
+            this.walls.forEach(wall => {
+                if (this.areColliding(invader, wall)) {
+                    invader.onCollisionWith(wall);
+                    wall.onCollisionWith(invader);
+                }
+            });
+
+            // Collision Invader avec GroundLine
+            this.groundLines.forEach(groundLine => {
+                if (this.areColliding(invader, groundLine)) {
+                    invader.onCollisionWith(groundLine);
+                    groundLine.onCollisionWith(invader);
+                }
+            });
+        });
+    }
+
+    private checkBonusCollisions(): void {
         // Vérifications des collisions pour les bonus
         this.gameBonus.forEach(bonus => {
-            // Collision Bonus avec Player
             this.players.forEach(player => {
                 if (this.areColliding(bonus, player)) {
                     bonus.onCollisionWith(player);
                     player.onCollisionWith(bonus);
                 }
             });
-
-            // Collision Bonus avec Projectiles
-            this.projectiles.forEach(projectile => {
-                if (this.areColliding(bonus, projectile)) {
-                    bonus.onCollisionWith(projectile);
-                    projectile.onCollisionWith(bonus);
-                }
-            });
-    
-            // Collision Bonus avec GroundLine
-            if (bonus.isInWallCollisionZone()) {
-                this.groundLines.forEach(groundLine => {
-                    if (this.areColliding(bonus, groundLine)) {
-                        bonus.onCollisionWith(groundLine);
-                        groundLine.onCollisionWith(bonus);
-                    }
-                });
-            }
         });
-    }    
+    }  
 
     /**
      * Check if two entities are colliding
