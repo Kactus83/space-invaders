@@ -43,6 +43,7 @@ export class SkillSystem extends BonusReceiverTemplate<SkillBonus>{
     }
 
     useSkill(skillId: string): void {
+        this.owner.animationSystem.startSkillAnimation();
         const skill = this.skills.find(s => s.id === skillId);
         if (skill && skill.isReady()) {
             skill.activate();
@@ -50,6 +51,7 @@ export class SkillSystem extends BonusReceiverTemplate<SkillBonus>{
     }
 
     activateSkillByIndex(index: number): void {
+        this.owner.animationSystem.startSkillAnimation();
         if (index >= 0 && index < this.skills.length) {
             const skill = this.skills[index];
             skill.activate();

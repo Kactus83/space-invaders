@@ -57,6 +57,7 @@ export class BonusManagementSystem {
         }
     
         if (canDeposit) {
+            this.player.animationSystem.startBonusAnimation();
             bonus.activate();
             this.activeBonuses.push(bonus);
             // Enlever le bonus de la liste des disponibles
