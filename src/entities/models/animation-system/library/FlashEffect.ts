@@ -6,7 +6,7 @@ export class FlashEffect implements IAnimationEffect {
     private completed: boolean = false;
     private originalOpacity: number;
 
-    constructor(duration: number = 100) { // Durée en millisecondes
+    constructor(duration: number = 125) { // Durée en millisecondes
         this.duration = duration;
     }
 
@@ -16,7 +16,6 @@ export class FlashEffect implements IAnimationEffect {
     }
 
     update(target: fabric.Object, deltaTime: number): void {
-        console.log('Updating flash effect');
         this.elapsedTime += deltaTime;
 
         if (this.elapsedTime < this.duration) {

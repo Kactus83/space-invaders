@@ -14,7 +14,7 @@ export class ShieldEffect implements IAnimationEffect {
         target.set({
             shadow: new fabric.Shadow({
                 color: '#00BFFF',
-                blur: 20,
+                blur: 15,
             })
         });
     }
