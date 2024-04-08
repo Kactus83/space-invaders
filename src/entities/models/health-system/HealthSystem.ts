@@ -65,10 +65,14 @@ export class HealthSystem extends BonusReceiverTemplate<HealthBonus> {
 
         if (this.health < this.maxHP * 0.3) {
             this.healthState = HealthState.Critical;
-            this.owner.shouldUpdateDesign = true;
+            if(this.owner instanceof Invader) {
+                this.owner.shouldUpdateDesign = true;
+            }
         } else if (this.characteristics.hp < this.maxHP * 0.6) { 
             this.healthState = HealthState.Damaged;
-            this.owner.shouldUpdateDesign = true;
+            if(this.owner instanceof Invader) {
+                this.owner.shouldUpdateDesign = true;
+            }
         }
     }
 
