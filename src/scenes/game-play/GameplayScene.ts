@@ -13,6 +13,7 @@ import { WallService } from "../../game-services/walls/WallService";
 import { GameStatusService } from "../../game-services/game-status/GameStatusService";
 import { GameBonus } from "../../entities/bonus/GameBonus";
 import { MessageDisplay } from "../../ui/message-display/MessageDisplay";
+import { GameEntity } from "../../entities/GameEntity";
 
 export class GamePlayScene implements IScene {
     private isSceneInit: boolean = false;
@@ -175,49 +176,23 @@ export class GamePlayScene implements IScene {
     
         this.isSceneInit = false;
     }
-    
 
     private cleanupEntities() {
-        // Filtre les invaders qui doivent être supprimés et les désenregistre de la détection de collision
-        this.invaders = this.invaders.filter(invader => {
-            if (invader.state === EntityState.ToBeRemoved) {
-                const bonus = invader.getGameBonus();
-                if(bonus) {
-                    console.log("Bonus created");
-                    this.gameBonus.push(bonus);
-                    this.collisionService.registerEntity(bonus);
-                }
-                this.collisionService.unregisterEntity(invader);
-                return false;
-            }
-            return true;
-        });
-
-        // Applique le même principe aux murs
-        this.walls = this.walls.filter(wall => {
-            if (wall.state === EntityState.ToBeRemoved) {
-                this.collisionService.unregisterEntity(wall);
-                return false;
-            }
-            return true;
-        });
-
-        // Applique le même principe aux projectiles
-        this.projectiles = this.projectiles.filter(projectile => {
-            if (projectile.state === EntityState.ToBeRemoved) {
-                this.collisionService.unregisterEntity(projectile);
-                return false;
-            }
-            return true;
-        });
-
-        // Applique le même principe aux bonus
-        this.gameBonus = this.gameBonus.filter(bonus => {
-            if (bonus.state === EntityState.ToBeRemoved) {
-                this.collisionService.unregisterEntity(bonus);
-                return false;
-            }
-            return true;
-        });
+        this.invaders = this.cleanupEntityType(this.invaders);
+        this.walls = this.cleanupEntityType(this.walls);
+        this.projectiles = this.cleanupEntityType(this.projectiles);
+        this.gameBonus = this.cleanupEntityType(this.gameBonus);
     }
+    
+    private cleanupEntityType<T extends GameEntity>(entitiesArray: T[]): T[] {
+        const entitiesToKeep = entitiesArray.filter(entity => {
+            const shouldKeep = entity.state !== EntityState.ToBeRemoved;
+            if (!shouldKeep) {
+                this.collisionService.unregisterEntity(entity);
+            }
+            return shouldKeep;
+        });
+        return entitiesToKeep;
+    }
+    
 }
