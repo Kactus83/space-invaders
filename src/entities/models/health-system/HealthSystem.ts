@@ -1,12 +1,11 @@
 import { GameEntity } from "../../GameEntity";
 import { HealthState } from "../../types/HealthState";
-import { SystemBonusEffectType } from "../bonus-system/system-bonus/SystemBonusEffectType";
 import { BonusReceiverTemplate } from "../bonus-system/bonus-receiver/BonusReceiverTemplate";
 import { HealthBonus } from "./bonus/HealthBonus";
-import { HealthBonusEffect } from "./bonus/HealthBonusEffect";
 import { IHealthCharacteristics } from "./IHealthCharasteristics";
 import { Player } from "../../player/Player";
 import { SkillsIds } from "../skill-system/types/SkillsIds";
+import { Invader } from "../../invader/Invader";
 
 export class HealthSystem extends BonusReceiverTemplate<HealthBonus> {
     healthState: HealthState = HealthState.New;
@@ -54,10 +53,12 @@ export class HealthSystem extends BonusReceiverTemplate<HealthBonus> {
 
         this.characteristics.hp -= effectiveDamage;
 
-        if(effectiveDamage > 0 && this.characteristics.hp > 0) {
-            this.owner.animationSystem.startHitAnimation();
-        }else if(amount > 0 && effectiveDamage <= 0) {
-            this.owner.animationSystem.startShieldAnimation();
+        if(this.owner instanceof Player || this.owner instanceof Invader) {
+            if(effectiveDamage > 0 && this.characteristics.hp > 0 && this.owner instanceof Invader) {
+                this.owner.animationSystem.startHitAnimation();
+            }else if(amount > 0 && effectiveDamage === 0 && this.owner instanceof Player) {
+                this.owner.animationSystem.startShieldAnimation();
+            }
         }
 
         if (this.health < this.maxHP * 0.3) {

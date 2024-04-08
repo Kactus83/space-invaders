@@ -1,39 +1,40 @@
-import { fabric } from "fabric";
 import { IAnimationEffect } from "../types/IAnimationEffect";
+import { fabric } from "fabric";
 
 export class ShieldEffect implements IAnimationEffect {
     private duration: number;
     private elapsedTime: number = 0;
-    private completed: boolean = false;
-    private originalStroke: string | undefined;
-    private originalStrokeWidth: number;
 
-    constructor(duration: number = 250) { // Durée en millisecondes
+    constructor(duration: number = 500) {
         this.duration = duration;
     }
 
     start(target: fabric.Object): void {
-        // Sauvegardez les propriétés de contour originales
-        this.originalStroke = target.stroke;
-        this.originalStrokeWidth = target.strokeWidth || 0;
-        
-        // Configurez l'objet pour afficher l'effet de bouclier
-        target.stroke = '#00BFFF'; // Couleur cyan pour l'effet bouclier
-        target.strokeWidth = 5; // Épaisseur du trait pour rendre l'effet plus visible
+        // Initialisation de l'effet, par exemple, définir une ombre initiale ou une bordure
+        target.set({
+            shadow: new fabric.Shadow({
+                color: '#00BFFF',
+                blur: 20,
+            })
+        });
     }
 
     update(target: fabric.Object, deltaTime: number): void {
         this.elapsedTime += deltaTime;
+        const progress = Math.min(this.elapsedTime / this.duration, 1);
+        const intensity = Math.sin(progress * Math.PI); // Sinus pour une animation en douceur
 
-        if (this.elapsedTime >= this.duration && !this.completed) {
-            // L'animation est terminée, rétablissez les propriétés du contour
-            target.stroke = this.originalStroke;
-            target.strokeWidth = this.originalStrokeWidth;
-            this.completed = true;
+        // Mettre à jour l'effet visuel selon le progrès
+        (target.shadow as fabric.Shadow).blur = 20 * intensity;
+        (target.shadow as fabric.Shadow).color = `rgba(0, 191, 255, ${intensity})`; // Cyan avec variation d'opacité
+
+        if (progress === 1) {
+            // Nettoyage après la fin de l'animation
+            target.set({ shadow: null });
         }
     }
 
     isCompleted(): boolean {
-        return this.completed;
+        return this.elapsedTime >= this.duration;
     }
 }
