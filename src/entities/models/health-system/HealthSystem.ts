@@ -71,6 +71,9 @@ export class HealthSystem extends BonusReceiverTemplate<HealthBonus> {
     }
 
     public heal(amount: number): void {
+        if(amount > 0 && (this.owner instanceof Player || this.owner instanceof Invader)) {
+            this.owner.animationSystem.startHealAnimation();
+        }
         // Calcul du nouveau total de HP après le soin
         let newHp = this.characteristics.hp + amount;
         // Assurer que les HP ne dépassent pas le maximum autorisé
