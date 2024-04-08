@@ -85,7 +85,6 @@ export class InputManager {
      * @param event The keydown event.
      */
     private handleKeyDown(event: KeyboardEvent): void {
-        console.log(event.key);
         const inputType = this.keyMap[event.key];
         if (inputType) {
             this.keysPressed[event.key] = true;

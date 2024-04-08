@@ -12,6 +12,7 @@ export class BonusManagementSystem {
     private player: Player;
     public availableBonuses: SystemBonus[] = [];
     public activeBonuses: SystemBonus[] = [];
+    private selectedBonusIndex: number = 0;
 
     constructor(player: Player) {
         this.player = player;
@@ -127,10 +128,27 @@ export class BonusManagementSystem {
         }
     }
 
-    public activateFirstActiveBonus(): void {
-        if (this.availableBonuses.length > 0) {
-            this.activateAndApplyBonus(this.availableBonuses[0]);
+    // Méthode pour changer le bonus sélectionné vers le haut
+    public selectPreviousBonus(): void {
+        this.selectedBonusIndex = (this.selectedBonusIndex - 1 + this.availableBonuses.length) % this.availableBonuses.length;
+    }
+
+    // Méthode pour changer le bonus sélectionné vers le bas
+    public selectNextBonus(): void {
+        this.selectedBonusIndex = (this.selectedBonusIndex + 1) % this.availableBonuses.length;
+    }
+
+    // Méthode pour activer le bonus sélectionné
+    public activateSelectedBonus(): void {
+        const selectedBonus = this.availableBonuses[this.selectedBonusIndex];
+        if (selectedBonus) {
+            this.activateAndApplyBonus(selectedBonus);
         }
+    }
+
+    // Getter pour récupérer le bonus actuellement sélectionné
+    public getSelectedBonus(): SystemBonus | null {
+        return this.availableBonuses[this.selectedBonusIndex] || null;
     }
 
     public cleanAndStoreAvailableBonuses(): void {

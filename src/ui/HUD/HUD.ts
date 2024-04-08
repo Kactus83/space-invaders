@@ -23,7 +23,7 @@ export class HUD implements IRenderable, IInteractive {
         this.groundLine = groundLine;
         const inputManager = InputManager.getInstance();
         this.subscriptionId = inputManager.subscribe(this);
-        this.bonusDisplayComponent = new BonusDisplayComponent(player.bonusManagementSystem.availableBonuses, player.bonusManagementSystem.activeBonuses);
+        this.bonusDisplayComponent = new BonusDisplayComponent(player.bonusManagementSystem.availableBonuses, player.bonusManagementSystem.activeBonuses, player.bonusManagementSystem.getSelectedBonus());
         this.skillDisplayComponent = new SkillDisplayComponent(player.skillSystem.getSkills());
         this.updateHUD();
     }
@@ -74,7 +74,7 @@ export class HUD implements IRenderable, IInteractive {
         this.fabricObjects.push(groundLineText);
 
         // Bonus
-        this.bonusDisplayComponent.setBonuses(this.player.bonusManagementSystem.availableBonuses, this.player.bonusManagementSystem.activeBonuses);
+        this.bonusDisplayComponent.setBonuses(this.player.bonusManagementSystem.availableBonuses, this.player.bonusManagementSystem.activeBonuses, this.player.bonusManagementSystem.getSelectedBonus());
         this.fabricObjects.push(...this.bonusDisplayComponent.getDrawableObjects());
         
         // Mettre à jour le SkillDisplayComponent avec les compétences actuelles

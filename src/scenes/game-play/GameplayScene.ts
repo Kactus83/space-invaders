@@ -186,6 +186,14 @@ export class GamePlayScene implements IScene {
     
     private cleanupEntityType<T extends GameEntity>(entitiesArray: T[]): T[] {
         const entitiesToKeep = entitiesArray.filter(entity => {
+            if(entity instanceof Invader) {
+                const bonus = entity.getGameBonus();
+                if(bonus) {
+                    console.log("Bonus created");
+                    this.gameBonus.push(bonus);
+                    this.collisionService.registerEntity(bonus);
+                }
+            }
             const shouldKeep = entity.state !== EntityState.ToBeRemoved;
             if (!shouldKeep) {
                 this.collisionService.unregisterEntity(entity);

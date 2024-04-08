@@ -118,7 +118,13 @@ export class Player extends GameEntity implements IInteractive, IShooter {
                 }
                 break;
             case UserInputType.Up:
-                this.bonusManagementSystem.activateFirstActiveBonus();
+                this.bonusManagementSystem.selectNextBonus();
+                break;
+            case UserInputType.Down:
+                this.bonusManagementSystem.selectPreviousBonus();
+                break;
+            case UserInputType.Shift:
+                this.bonusManagementSystem.activateSelectedBonus();
                 break;
             case UserInputType.Num1:
                 this.skillSystem.activateSkillByIndex(1);

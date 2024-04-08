@@ -4,11 +4,13 @@ import { SystemBonus } from "../../entities/models/bonus-system/system-bonus/Sys
 export class BonusDisplayComponent {
     private bonuses: SystemBonus[] = [];
     private activeBonuses: SystemBonus[] = [];
+    private selectedBonus: SystemBonus | null = null;
     private fabricObjects: fabric.Object[] = [];
 
-    constructor(bonuses: SystemBonus[], activeBonuses: SystemBonus[]) {
+    constructor(bonuses: SystemBonus[], activeBonuses: SystemBonus[], selectedBonus: SystemBonus) {
         this.bonuses = bonuses;
         this.activeBonuses = activeBonuses;
+        this.selectedBonus = selectedBonus;
         this.updateDisplay();
     }
 
@@ -34,25 +36,34 @@ export class BonusDisplayComponent {
         return this.fabricObjects;
     }
 
-    setBonuses(bonuses: SystemBonus[], activeBonuses: SystemBonus[]): void {
+    setBonuses(bonuses: SystemBonus[], activeBonuses: SystemBonus[], selectedBonus: SystemBonus): void {
         this.bonuses = bonuses;
         this.activeBonuses = activeBonuses;
+        this.selectedBonus = selectedBonus;
         this.updateDisplay();
     }
 
     private createBonusText(bonus: SystemBonus, left: number, top: number, color: string): fabric.Text {
         let bonusName = bonus.effect.casualName;
         let bonusState = this.formatBonusState(bonus.getState());
-        
+    
         // Si le bonus est actif, incluez le temps restant dans l'affichage
         if (bonus.getState() === 'active') {
             bonusName = this.cleanBonusName(bonusName);
             const remainingTime = (bonus.getRemainingDuration() / 1000).toFixed(2); // Convertir en secondes et formater
             bonusState += ` - ${remainingTime}s`;
         }
-        
+    
+        // Vérifie si le bonus est sélectionné parmi ceux qui sont disponibles
+        const isSelectedAvailableBonus = this.isSelectedAvailableBonus(bonus);
+    
+        // Si le bonus est sélectionné parmi ceux qui sont disponibles, ajoute des crochets
+        if (isSelectedAvailableBonus) {
+            bonusName = `[${bonusName}]`;
+        }
+    
         const bonusTextContent = `${bonusName} - ${bonusState}`;
-        
+    
         return new fabric.Text(bonusTextContent, {
             left,
             top,
@@ -60,7 +71,12 @@ export class BonusDisplayComponent {
             fill: color,
             fontFamily: 'Arial',
         });
-    } 
+    }
+    
+    // Méthode pour vérifier si un bonus est sélectionné parmi ceux qui sont disponibles
+    private isSelectedAvailableBonus(bonus: SystemBonus): boolean {
+        return this.selectedBonus !== null && this.selectedBonus === bonus && !this.activeBonuses.includes(bonus);
+    }    
 
     private cleanBonusName(bonusName: string): string {
         // Recherche de la dernière occurrence d'un espace, supposant que la durée est après cet espace
