@@ -26,6 +26,7 @@ export class InputManager {
         "Enter": UserInputType.Enter,
         "i": UserInputType.ToggleHUD,
         "Escape": UserInputType.Escape,
+        "Shift": UserInputType.Shift,
         "1": UserInputType.Num1,
         "2": UserInputType.Num2,
         "3": UserInputType.Num3,
@@ -84,6 +85,7 @@ export class InputManager {
      * @param event The keydown event.
      */
     private handleKeyDown(event: KeyboardEvent): void {
+        console.log(event.key);
         const inputType = this.keyMap[event.key];
         if (inputType) {
             this.keysPressed[event.key] = true;

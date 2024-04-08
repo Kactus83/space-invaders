@@ -10,6 +10,7 @@ export enum UserInputType {
     Enter = "Enter",
     ToggleHUD = "ToggleHUD",
     Escape = "Escape",
+    Shift = "Shift",
     Num1 = "1",
     Num2 = "2",
     Num3 = "3",
