@@ -106,6 +106,7 @@ export class DualColumnMenu implements IRenderable, IInteractive {
     }
 
     public deactivateMenu(): void {
+        this.leftButtons.forEach((button, index) => button.setHighlight(false));
         this.isActive = false;
     }
 
