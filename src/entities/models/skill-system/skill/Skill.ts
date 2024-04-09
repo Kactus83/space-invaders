@@ -18,7 +18,7 @@ export abstract class Skill implements ISkill {
         this.description = description;
         this.cooldown = cooldown;
         this.duration = duration;
-        this.isPermanent = duration === 0;
+        this.isPermanent = (duration === 0 && cooldown === 0);
         this.experiencePointsCost = experiencePointsCost;
         this.isActive = this.isPermanent; // Si permanent, alors toujours actif, sinon inactif au départ
     }
@@ -34,19 +34,29 @@ export abstract class Skill implements ISkill {
         // Réinitialiser lastActivationTime pour démarrer le cooldown
         this.lastActivationTime = Date.now();
     }
-
+    
     isReady(): boolean {
-        if (this.isPermanent) return true; // Les compétences permanentes sont toujours "prêtes"
-        if (!this.lastActivationTime) return true;
-        const timePassed = Date.now() - this.lastActivationTime;
-        return timePassed >= this.cooldown;
+        if (this.isPermanent) return true; // Les compétences permanentes sont toujours prêtes
+        // Une compétence est prête si lastActivationTime est nul (jamais activée ou cooldown terminé)
+        return this.lastActivationTime === null;
     }
 
     update(deltaTime: number): void {
         if (!this.isPermanent && this.lastActivationTime) {
-            const timeActive = Date.now() - this.lastActivationTime;
-            if (this.isActive && timeActive >= this.duration) {
-                this.deactivate(); // Désactiver automatiquement après la durée
+            const currentTime = Date.now();
+            const timeSinceActivation = currentTime - this.lastActivationTime;
+    
+            if (this.isActive) {
+                // Si la compétence est active et que sa durée s'est écoulée, commencez le cooldown
+                if (timeSinceActivation >= this.duration) {
+                    this.isActive = false;
+                    this.lastActivationTime = currentTime; // Commencez le cooldown maintenant
+                }
+            } else {
+                // Si la compétence est en cooldown, vérifiez si le cooldown est terminé
+                if (timeSinceActivation >= this.cooldown) {
+                    this.lastActivationTime = null; // La compétence est prête à être réactivée
+                }
             }
         }
     }

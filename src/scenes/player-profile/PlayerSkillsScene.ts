@@ -16,9 +16,10 @@ export class PlayerSkillsScene implements IScene {
 
 
     async initialize(): Promise<void> {
-        const profile = PlayerProfile.getInstance();
-        const skills = profile.getSkills().getSkills();
-        const activeSkills = profile.getSkills().getActiveSkills();
+        const profile = PlayerProfile.getInstance().getSkills();
+        profile.restoreFromData();
+        const skills = profile.getSkills();
+        const activeSkillsIds = profile.getActiveSkillsIds();
 
         const navigationButtonNames = ["Retour au Profil", "Accéder à l'Inventaire"];
         const navigationButtonActions = [
@@ -28,15 +29,14 @@ export class PlayerSkillsScene implements IScene {
         this.horizontalMenu = new HorizontalMenu(navigationButtonNames, navigationButtonActions);
 
         if (skills.length === 0) {
+            // Affichez un message si aucune compétence n'est disponible
             this.messageDisplay = new MessageDisplay("No skills available.");
         } else {
-            // Créez des noms pour les boutons de gauche basés sur les compétences disponibles
+            // Préparez les noms et états pour les boutons du menu DualColumn
             const skillButtonNames = skills.map(skill => skill.name);
-
-            // Créez des états pour les boutons de droite basés sur les compétences actives
-            const activeSkillStates = skills.map(skill => activeSkills.includes(skill) ? "Active" : "Inactive");
-
-            // Initialisez le menu à deux colonnes avec les noms et états des boutons
+            const activeSkillStates = skills.map(skill => activeSkillsIds.includes(skill.id) ? "Active" : "Inactive");
+    
+            // Initialisez le DualColumnMenu avec les noms de compétences et leurs états
             this.skillsMenu = new DualColumnMenu(skillButtonNames, activeSkillStates, skills.map(skill => () => this.toggleSkill(skill)));
         }
     }
