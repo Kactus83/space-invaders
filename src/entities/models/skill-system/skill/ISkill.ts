@@ -7,6 +7,7 @@ export interface ISkill {
     isPermanent: boolean;
     experiencePointsCost: number;
     isActive: boolean;
+    parentSkillId?: SkillsIds;
     activate(): void;
     update(deltaTime: number): void;
 }

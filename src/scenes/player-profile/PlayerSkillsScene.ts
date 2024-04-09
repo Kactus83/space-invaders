@@ -2,44 +2,59 @@ import { IScene } from "../../core/scene-manager/types/IScene";
 import { IRenderable } from "../../core/renderer/Irenderable";
 import { SceneManager } from "../../core/scene-manager/SceneManager";
 import { SceneIds } from "../../core/scene-manager/types/SceneIds";
-import { MessageDisplay } from "../../ui/message-display/MessageDisplay"; // Assurez-vous que le chemin d'importation est correct
+import { MessageDisplay } from "../../ui/message-display/MessageDisplay"; 
 import { HorizontalMenu } from "../../ui/menu/HorizontalMenu";
 import { PlayerProfile } from "../../game-services/player-profile/PlayerProfile";
-import { Menu } from "../../ui/menu/Menu";
 import { DualColumnMenu } from "../../ui/menu/DualColumnMenu";
 import { ISkill } from "../../entities/models/skill-system/skill/ISkill";
+import { SkillsIds } from "../../entities/models/skill-system/types/SkillsIds";
 
 export class PlayerSkillsScene implements IScene {
     private skillsMenu: DualColumnMenu | null = null; // Peut être null si aucun skill n'est disponible
     private horizontalMenu: HorizontalMenu;
     private messageDisplay: MessageDisplay | null = null; // Utilisé pour afficher un message si aucun skill n'est disponible
 
-
     async initialize(): Promise<void> {
         const profile = PlayerProfile.getInstance().getSkills();
         profile.restoreFromData();
-        const skills = profile.getSkills();
+        let skills = profile.getSkills();
         const activeSkillsIds = profile.getActiveSkillsIds();
-
+    
+        // Filtrer les compétences pour ne garder que le niveau le plus élevé
+        skills = this.filterHighestLevelSkills(skills);
+    
         const navigationButtonNames = ["Retour au Profil", "Accéder à l'Inventaire"];
         const navigationButtonActions = [
             () => SceneManager.getInstance().changeScene(SceneIds.PlayerProfile),
             () => SceneManager.getInstance().changeScene(SceneIds.Player_Inventory)
         ];
         this.horizontalMenu = new HorizontalMenu(navigationButtonNames, navigationButtonActions);
-
+    
         if (skills.length === 0) {
-            // Affichez un message si aucune compétence n'est disponible
             this.messageDisplay = new MessageDisplay("No skills available.");
         } else {
-            // Préparez les noms et états pour les boutons du menu DualColumn
             const skillButtonNames = skills.map(skill => skill.name);
             const activeSkillStates = skills.map(skill => activeSkillsIds.includes(skill.id) ? "Active" : "Inactive");
     
-            // Initialisez le DualColumnMenu avec les noms de compétences et leurs états
             this.skillsMenu = new DualColumnMenu(skillButtonNames, activeSkillStates, skills.map(skill => () => this.toggleSkill(skill)));
         }
     }
+    
+    private filterHighestLevelSkills(skills: ISkill[]): ISkill[] {
+        const skillMap = new Map<SkillsIds, ISkill>();
+    
+        skills.forEach(skill => {
+            const existingSkill = skillMap.get(skill.id);
+            if (skill.parentSkillId && (!existingSkill || existingSkill.parentSkillId !== skill.id)) {
+                // Si la compétence actuelle a un parent, vérifier si le parent est déjà dans la map
+                skillMap.delete(skill.parentSkillId); // Supprimer le parent
+            }
+            skillMap.set(skill.id, skill); // Ajouter ou mettre à jour la compétence actuelle
+        });
+    
+        return Array.from(skillMap.values());
+    }
+    
 
     getDrawableObjects(): IRenderable[] {
         const drawables: IRenderable[] = [this.horizontalMenu];

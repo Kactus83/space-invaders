@@ -7,7 +7,7 @@ import { DoubleShotSkill } from "./skills/DoubleShotSkill";
 import { TripleShotSkill } from "./skills/TripleShotSkill";
 import { SemiReflectiveShieldSkill } from "./skills/SemiReflectiveShieldSkill";
 import { SkillsIds } from "../types/SkillsIds";
-import { Permanent20PercentSpeedBoostSkill } from "./skills/Permanent20PercentSpeedBosst";
+import { Permanent20PercentSpeedBoostSkill } from "./skills/Permanent20PercentSpeedBoost";
 import { Permanent50PercentSpeedBoostSkill } from "./skills/Permanent50PercentSpeedBoost";
 import { PermanentIncrease1Shield } from "./skills/PermanentIncrease1Shield";
 import { PermanentIncrease2Shield } from "./skills/PermanentIncrease2Shield";
