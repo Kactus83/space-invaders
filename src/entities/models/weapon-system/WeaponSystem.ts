@@ -100,10 +100,24 @@ export class WeaponSystem extends BonusReceiverTemplate<WeaponBonus> {
 
     
     public get effectiveProjectileType(): ProjectileType {
-        if (this.currentBonus) {
-            const upgradeSteps = this.currentBonus.getEffect().upgrade_ProjectileType;
-            return this.upgradeProjectileType(this.projectileType, upgradeSteps);
+
+        let skillSteps: number = 0;
+        let bonusSteps: number = 0;
+
+        if(this.owner instanceof Player && this.owner.skillSystem.isSkillActive(SkillsIds.Permanent_Weapon_Upgrade_2)){
+            skillSteps = 2;
+        }else if(this.owner instanceof Player && this.owner.skillSystem.isSkillActive(SkillsIds.Permanent_Weapon_Upgrade_1) && !this.owner.skillSystem.isSkillActive(SkillsIds.Permanent_Weapon_Upgrade_2)){
+            skillSteps = 1;
         }
+
+        if (this.currentBonus) {
+            bonusSteps = this.currentBonus.getEffect().upgrade_ProjectileType;
+        }
+
+        if(skillSteps > 0 || bonusSteps > 0){
+            return this.upgradeProjectileType(this.projectileType, skillSteps + bonusSteps);
+        }
+
         return this.projectileType;
     }
 
