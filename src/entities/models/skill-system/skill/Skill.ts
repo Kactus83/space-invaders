@@ -56,4 +56,10 @@ export abstract class Skill implements ISkill {
         const timePassed = Date.now() - this.lastActivationTime;
         return Math.max(0, this.cooldown - timePassed);
     }
+
+    getRemainingCooldownTime(): number {
+        if (this.isPermanent || !this.lastActivationTime) return 0;
+        const timePassed = Date.now() - this.lastActivationTime;
+        return Math.max(0, this.cooldown - timePassed);
+    }
 }

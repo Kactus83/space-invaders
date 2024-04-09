@@ -1,9 +1,17 @@
 import { fabric } from "fabric";
 import { Skill } from "../../entities/models/skill-system/skill/Skill";
+import { AppConfig } from "../../core/config/AppConfig";
 
 export class SkillDisplayComponent {
     private skills: Skill[] = [];
     private fabricObjects: fabric.Object[] = [];
+    private config = {
+        leftColumnOffset: 10,
+        centerColumnOffset: 300, 
+        rightColumnOffset: 590,
+        topOffset: 120,
+        spacing: 30
+    };
 
     constructor(skills: Skill[]) {
         this.skills = skills;
@@ -11,24 +19,34 @@ export class SkillDisplayComponent {
     }
 
     updateDisplay(): void {
-        this.fabricObjects = []; // Réinitialisez les objets fabric
-        const config = { leftOffset: 10, topOffset: 100, spacing: 30 };
+        this.fabricObjects = []; 
+        let leftIndex = 0;
+        let centerIndex = 0;
+        let rightIndex = 0;
 
-        // Affiche les compétences avec leur statut
-        this.skills.forEach((skill, index) => {
-            let color = 'lightgray'; // Compétences inactives en gris
-            let statusText = "Cooldown";
+        // Trier les compétences en trois groupes
+        this.skills.forEach(skill => {
             if (skill.isPermanent) {
-                color = 'lightgreen'; // Compétences permanentes en vert
-                statusText = "Permanent";
+                // Compétences permanentes à droite
+                const text = this.createSkillText(`${skill.name}`, this.config.rightColumnOffset, rightIndex * this.config.spacing + this.config.topOffset, 'lightgreen');
+                const textWidth = text.width;
+                const adjustedLeft = AppConfig.getInstance().canvasWidth - textWidth - 5;
+                text.set({ left: adjustedLeft });
+                rightIndex++;
+                this.fabricObjects.push(text);
             } else if (skill.isActive) {
-                color = 'orange'; // Compétences actives en orange
+                // Compétences actives au milieu
                 const remainingTime = skill.getRemainingActivationTime() / 1000; // Converti en secondes
-                statusText = `Active - ${remainingTime.toFixed(1)}s`;
+                const text = this.createSkillText(`${skill.name}: Active - ${remainingTime.toFixed(2)}s`, this.config.centerColumnOffset, centerIndex * this.config.spacing + this.config.topOffset, 'orange');
+                centerIndex++;
+                this.fabricObjects.push(text);
+            } else {
+                // Compétences disponibles ou en cooldown à gauche
+                const remainingTime = skill.getRemainingCooldownTime() / 1000; // Converti en secondes
+                const text = this.createSkillText(`${skill.name}: Cooldown - ${remainingTime.toFixed(1)}`, this.config.leftColumnOffset, leftIndex * this.config.spacing + this.config.topOffset, 'lightgray');
+                leftIndex++;
+                this.fabricObjects.push(text);
             }
-            const skillInfo = `${skill.name}: ${statusText}`;
-            const text = this.createSkillText(skillInfo, config.leftOffset, index * config.spacing + config.topOffset, color);
-            this.fabricObjects.push(text);
         });
     }
     
