@@ -138,6 +138,24 @@ export class Player extends GameEntity implements IInteractive, IShooter {
             case UserInputType.Num4:
                 this.skillSystem.activateSkillByIndex(4);
                 break;
+            case UserInputType.Num5:
+                this.skillSystem.activateSkillByIndex(1);
+                break;
+            case UserInputType.Num6:
+                this.skillSystem.activateSkillByIndex(2);
+                break;
+            case UserInputType.Num7:
+                this.skillSystem.activateSkillByIndex(3);
+                break;
+            case UserInputType.Num8:
+                this.skillSystem.activateSkillByIndex(4);
+                break;
+            case UserInputType.Num9:
+                this.skillSystem.activateSkillByIndex(3);
+                break;
+            case UserInputType.Num0:
+                this.skillSystem.activateSkillByIndex(4);
+                break;
             // Implement other cases if necessary
         }
     }
