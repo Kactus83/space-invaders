@@ -62,7 +62,7 @@ export class SkillSystem extends BonusReceiverTemplate<SkillBonus>{
             const skill = this.skills[index];
             skill.activate();
         } else {
-            throw new Error("Invalid skill index");
+            console.log(`SkillSystem: No skill found at index ${index}`);
         }
     }
 

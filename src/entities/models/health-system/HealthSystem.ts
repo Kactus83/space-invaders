@@ -105,6 +105,19 @@ export class HealthSystem extends BonusReceiverTemplate<HealthBonus> {
 
     public get shield(): number {
         let result = this.characteristics.shield;
+        let additionalSkillShield = 0;
+
+        if(this.owner instanceof Player) {
+            if(this.owner.skillSystem.isSkillActive(SkillsIds.Permanent_Increase_1_Shield)) {
+                additionalSkillShield = 1;
+            }else if(this.owner.skillSystem.isSkillActive(SkillsIds.Permanent_Increase_2_Shield)) {
+                additionalSkillShield = 2;
+            }
+        }
+
+        result += additionalSkillShield;
+
+
         if (this.currentBonus) {
             result += this.currentBonus.getEffect().additional_Shield;
             result *= this.currentBonus.getEffect().multiplicator_Shield;
