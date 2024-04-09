@@ -9,10 +9,11 @@ export abstract class Skill implements ISkill {
     public cooldown: number;
     protected duration: number;
     public lastActivationTime: number | null = null;
+    public parentSkillId?: SkillsIds;
     isPermanent: boolean;
     isActive: boolean;
 
-    constructor(id: SkillsIds, name: string, description: string, cooldown: number, duration: number, experiencePointsCost: number) {
+    constructor(id: SkillsIds, name: string, description: string, cooldown: number, duration: number, experiencePointsCost: number, parentSkillId?: SkillsIds) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -21,6 +22,7 @@ export abstract class Skill implements ISkill {
         this.isPermanent = (duration === 0 && cooldown === 0);
         this.experiencePointsCost = experiencePointsCost;
         this.isActive = this.isPermanent; // Si permanent, alors toujours actif, sinon inactif au départ
+        this.parentSkillId = parentSkillId;
     }
 
     activate(): void {
