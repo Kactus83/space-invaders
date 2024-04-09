@@ -28,6 +28,7 @@ export class PlayerDataService {
             },
             skills: {
                 skillIds: profile.getSkills().getSkillsIds(),
+                activeSkills: profile.getSkills().getActiveSkillsIds(),
             },
             walls: {
                 level: profile.getWalls().getLevel(),

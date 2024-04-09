@@ -2,4 +2,5 @@ import { SkillsIds } from "../../../../entities/models/skill-system/types/Skills
 
 export interface PlayerSkillsData {
     skillIds: SkillsIds[];
+    activeSkills: SkillsIds[];
 }
