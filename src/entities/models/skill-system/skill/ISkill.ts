@@ -1,5 +1,7 @@
+import { SkillsIds } from "../types/SkillsIds";
+
 export interface ISkill {
-    id: string;
+    id: SkillsIds;
     name: string;
     description: string;
     isPermanent: boolean;

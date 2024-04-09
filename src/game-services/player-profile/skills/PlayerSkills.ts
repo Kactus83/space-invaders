@@ -5,7 +5,8 @@ import { PlayerProfile } from "../PlayerProfile";
 import { PlayerDataService } from "../datas/PlayerDataService";
 
 export class PlayerSkills {
-    private skills: Set<SkillsIds>; // Utiliser SkillsIds pour typer le Set
+    private skills: Set<SkillsIds>;
+    private activeSkills: SkillsIds[] = [];
     private playerProfile: PlayerProfile;
 
     constructor(playerProfile: PlayerProfile) {
@@ -34,21 +35,33 @@ export class PlayerSkills {
         return Array.from(this.skills);
     }
 
+    getActiveSkillsIds(): SkillsIds[] {
+        return this.activeSkills;
+    }
+
     hasSkill(skillId: SkillsIds): boolean {
         return this.skills.has(skillId);
     }
 
+    setActiveSkills(skillIds: SkillsIds[]): void {
+        this.activeSkills = skillIds.slice(0, 10); // Garantit un taille de 10 éléments maximum
+        PlayerDataService.getInstance().saveCurrentProfile(this.playerProfile);
+    }
+
+    // Méthode pour obtenir les compétences actives
+    getActiveSkills(): ISkill[] {
+        return this.activeSkills.map(id => SkillLibrary.getSkillById(id)).filter(skill => skill !== null) as ISkill[];
+    }
+
     restoreFromData(): void {
-        // Tentez de charger les données de profil du joueur
         const profileData = PlayerDataService.getInstance().loadCurrentProfile(this.playerProfile.getPlayerName());
         
-        // Vérifiez si les données de profil et les skillIds existent
         if (profileData && profileData.skills && Array.isArray(profileData.skills.skillIds)) {
             const skillsIds: SkillsIds[] = profileData.skills.skillIds;
             // Créer un nouveau Set avec les identifiants de compétences chargés
             this.skills = new Set(skillsIds);
         } else {
-            // Si les données n'existent pas, initialisez simplement le Set sans identifiants
+            // Si les données n'existent pas, initialiser simplement le Set sans identifiants
             this.skills = new Set();
             console.log("No skills data available to restore, or the data format is outdated.");
         }

@@ -3,6 +3,7 @@ import { IRenderable } from "../../core/renderer/Irenderable";
 
 export class SquareButton implements IRenderable {
     public width: number;
+    public isSelectable: boolean = true;
     private fabricText: fabric.Text;
     private fabricRect: fabric.Rect;
     private highlightColor: string = '#FFA500'; 
@@ -62,6 +63,10 @@ export class SquareButton implements IRenderable {
                 this.triggerAction();
             }
         });
+    }
+
+    getText(): string {
+        return this.text;
     }
 
     getDrawableObjects(): Promise<fabric.Object[]> {
