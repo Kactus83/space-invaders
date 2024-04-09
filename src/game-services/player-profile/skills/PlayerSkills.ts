@@ -60,6 +60,11 @@ export class PlayerSkills {
             const skillsIds: SkillsIds[] = profileData.skills.skillIds;
             // Créer un nouveau Set avec les identifiants de compétences chargés
             this.skills = new Set(skillsIds);
+            if(profileData.skills.activeSkills && Array.isArray(profileData.skills.activeSkills)){
+                this.activeSkills = profileData.skills.activeSkills;
+            }else{
+                this.activeSkills = [];
+            }
         } else {
             // Si les données n'existent pas, initialiser simplement le Set sans identifiants
             this.skills = new Set();
