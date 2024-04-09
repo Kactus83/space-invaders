@@ -25,7 +25,7 @@ export class SkillSystem extends BonusReceiverTemplate<SkillBonus>{
 
     loadSkillsFromProfile(): void {
         const playerProfile = PlayerProfile.getInstance();
-        const playerSkills = playerProfile.getSkills().getSkillsIds();
+        const playerSkills = playerProfile.getSkills().getActiveSkillsIds();
 
         playerSkills.forEach(skillId => {
             const skill = SkillLibrary.getSkillById(skillId);
