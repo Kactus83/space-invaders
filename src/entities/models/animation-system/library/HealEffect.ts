@@ -19,7 +19,7 @@ export class HealEffect implements IAnimationEffect {
         target.set({
             shadow: new fabric.Shadow({
                 color: 'rgba(124, 252, 0, 0.75)', // Couleur vert clair pour l'effet de guérison
-                blur: 20,
+                blur: 30,
             })
         });
         this.completed = false;
