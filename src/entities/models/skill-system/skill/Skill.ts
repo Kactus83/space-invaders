@@ -6,9 +6,9 @@ export abstract class Skill implements ISkill {
     name: string;
     description: string;
     experiencePointsCost: number;
-    protected cooldown: number;
+    public cooldown: number;
     protected duration: number;
-    protected lastActivationTime: number | null = null;
+    public lastActivationTime: number | null = null;
     isPermanent: boolean;
     isActive: boolean;
 
@@ -49,5 +49,11 @@ export abstract class Skill implements ISkill {
                 this.deactivate(); // Désactiver automatiquement après la durée
             }
         }
+    }
+
+    getRemainingActivationTime(): number {
+        if (this.isPermanent || !this.lastActivationTime) return 0;
+        const timePassed = Date.now() - this.lastActivationTime;
+        return Math.max(0, this.cooldown - timePassed);
     }
 }

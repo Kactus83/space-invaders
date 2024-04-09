@@ -36,11 +36,17 @@ export class SkillSystem extends BonusReceiverTemplate<SkillBonus>{
     }
 
     addSkill(skill: Skill): void {
-        this.skills.push(skill);
-        if (skill.isPermanent) {
-            skill.activate(); // Activate permanent skills immediately
+        // Si la compétence a un cooldown, ajustez lastActivationTime pour simuler que le cooldown est terminé
+        if (!skill.isPermanent && skill.cooldown > 0) {
+            skill.lastActivationTime = Date.now() - skill.cooldown;
         }
-    }
+        
+        this.skills.push(skill);
+        
+        if (skill.isPermanent) {
+            skill.activate(); // Activez immédiatement les compétences permanentes
+        }
+    }    
 
     useSkill(skillId: string): void {
         this.owner.animationSystem.startSkillAnimation();
