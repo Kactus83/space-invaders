@@ -11,28 +11,37 @@ export class SkillDisplayComponent {
     }
 
     updateDisplay(): void {
-        this.fabricObjects = []; // Reset the fabric objects
-        const config = { leftOffset: 10, topOffset: 100, spacing: 30 }; // Adjust topOffset to avoid overlap with bonuses
+        this.fabricObjects = []; // Réinitialisez les objets fabric
+        const config = { leftOffset: 10, topOffset: 100, spacing: 30 };
 
-        // Display skills with their status
+        // Affiche les compétences avec leur statut
         this.skills.forEach((skill, index) => {
-            const color = skill.isActive ? 'orange' : 'lightgray'; // Active skills in orange, inactive in gray
-            const text = this.createSkillText(skill, config.leftOffset, index * config.spacing + config.topOffset, color);
+            let color = 'lightgray'; // Compétences inactives en gris
+            let statusText = "Cooldown";
+            if (skill.isPermanent) {
+                color = 'lightgreen'; // Compétences permanentes en vert
+                statusText = "Permanent";
+            } else if (skill.isActive) {
+                color = 'orange'; // Compétences actives en orange
+                const remainingTime = skill.getRemainingActivationTime() / 1000; // Converti en secondes
+                statusText = `Active - ${remainingTime.toFixed(1)}s`;
+            }
+            const skillInfo = `${skill.name}: ${statusText}`;
+            const text = this.createSkillText(skillInfo, config.leftOffset, index * config.spacing + config.topOffset, color);
             this.fabricObjects.push(text);
         });
+    }
+    
+    setSkills(skills: Skill[]): void {
+        this.skills = skills;
+        this.updateDisplay();
     }
 
     getDrawableObjects(): fabric.Object[] {
         return this.fabricObjects;
     }
 
-    setSkills(skills: Skill[]): void {
-        this.skills = skills;
-        this.updateDisplay();
-    }
-
-    private createSkillText(skill: Skill, left: number, top: number, color: string): fabric.Text {
-        const skillInfo = `${skill.name}: ${skill.isActive ? "Active" : "Cooldown"}`;
+    private createSkillText(skillInfo: string, left: number, top: number, color: string): fabric.Text {
         return new fabric.Text(skillInfo, {
             left,
             top,
