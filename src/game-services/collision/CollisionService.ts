@@ -66,7 +66,7 @@ export class CollisionService {
             const projectileZones = projectile.getCollisionZones();
 
             // Fusionner toutes les entités sauf les projectiles dans un seul tableau pour la vérification
-            const entities = [...this.invaders, ...this.players, ...this.walls, ...this.groundLines];
+            const entities = [...this.invaders, ...this.players, ...this.walls, ...this.groundLines, ...this.gameBonus];
 
             entities.forEach(entity => {
                 if (entity.state === EntityState.ToBeRemoved) return;
