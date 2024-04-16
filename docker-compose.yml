@@ -1,0 +1,19 @@
+version: '3.8'
+services:
+  space-invaders-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+
+  space-invaders-backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+
+networks:
+  default:
+    driver: bridge
