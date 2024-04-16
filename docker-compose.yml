@@ -6,6 +6,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "80:80"
+    networks:
+      - spaceinvaders_network
 
   space-invaders-backend:
     build:
@@ -13,7 +15,27 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    depends_on:
+      - db
+    env_file:
+      - ./.env
+    networks:
+      - spaceinvaders_network
+
+  db:
+    build:
+      context: ./database
+      dockerfile: Dockerfile
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+    networks:
+      - spaceinvaders_network
 
 networks:
-  default:
+  spaceinvaders_network:
     driver: bridge
+
+volumes:
+  postgres_data:
