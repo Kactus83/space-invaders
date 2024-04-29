@@ -48,6 +48,8 @@ Nous encourageons la contribution au projet. Si vous souhaitez contribuer, veuil
 
 # Objectifs futurs
 
+- remplacer l'usage du local storage par la DB et le backend
+
 - Séparer le jeu lui meme des modules complémentaires (shop, player profile, etc ..) . Le canvas ne devrait contenir que le jeu lui meme et le reste des modules sera intégré dans un app Angular.
 
 - Intégrer les services du jeu (shop, etc ...) dans le backend de manière a ne plus traiter les données dans le front.
