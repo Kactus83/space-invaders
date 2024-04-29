@@ -1,3 +1,85 @@
+
+# Overview
+
+This repository contains the source code for a modern version of the classic Space Invaders game.
+
+# Technologies
+
+- **Frontend**:
+  - **TypeScript**
+  - **Webpack**
+  - **CSS**
+  - **HTML**
+
+- **Backend**:
+  - **Node.js**
+  - **Express**
+  - **TypeScript**
+  - **Sequelize**
+  - **Docker**
+
+- **Database**:
+  - **PostgreSQL**
+  - **Docker**
+
+# Quick Start
+
+To launch the project, follow these simple steps:
+
+- Clone the repository:
+
+git clone <repository_url>
+cd space-invaders
+
+- Launch the services:
+
+Use Docker Compose to build and start the necessary services for the game
+
+docker-compose up --build
+
+
+- Access the game:
+Once the containers are started, the game will be accessible via a web browser at the address http://localhost:8080.
+
+# Game Commands
+
+- Navigation menu :
+
+Arrow keys: Move through the menus.
+Enter: Confirm choices
+
+
+- In-game controls :
+
+Space bar: Shoot.
+Side arrow keys: Move the spaceship left or right.
+Vertical arrow keys: Change the selected bonus.
+Shift key: Activate the selected bonus.
+Keys 0 to 8: Activate special skills available on the right HUD.
+
+# Project Architecture
+The project is divided into several main folders:
+
+backend/: Contains the backend server files.
+frontend/: Currently contains all the game logic which should soon transition to the backend.
+database/: Contains the SQL scripts for the database.
+
+# Contribution
+We encourage contributions to the project. If you wish to contribute, please fork the repository, create a branch for your changes, and submit a pull request.
+
+# Future Objectives
+Replace the use of local storage with the DB and backend
+Separate the game itself from complementary modules (shop, player profile, etc.). The canvas should only contain the game itself and the rest of the modules will be integrated into an Angular app.
+Integrate the game's services (shop, etc.) into the backend to no longer handle data on the front end.
+
+
+----------------------------------------------------------------------------------------------------------
+
+
+# Présentation
+
+Ce dépôt contient le code source d'une version moderne du jeu classique Space Invaders.
+
 # Technologies
 
 - **Frontend**:
