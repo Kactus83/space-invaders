@@ -1,3 +1,22 @@
+# Technologies
+
+- **Frontend**:
+  - **TypeScript**
+  - **Webpack**
+  - **CSS**
+  - **HTML**
+
+- **Backend**:
+  - **Node.js**
+  - **Express**
+  - **TypeScript**
+  - **Sequelize**
+  - **Docker**
+
+- **Database**:
+  - **PostgreSQL**
+  - **Docker**
+
 # Démarrage rapide
 
 Pour lancer le projet, suivez ces étapes simples :
