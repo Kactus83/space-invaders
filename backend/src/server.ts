@@ -2,9 +2,18 @@ import express from 'express';
 import { sequelize } from './config/sequelize';
 import playerProfileRoutes from './routes/playerProfileRoutes';
 import errorHandler from './middlewares/errorHandler';
+import cors from 'cors';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Configuration CORS
+const corsOptions = {
+  origin: 'http://localhost', 
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 
 app.use(express.json());
 

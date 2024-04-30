@@ -13,7 +13,7 @@ export class PlayerNameEntryScene implements IScene {
     private playersList: string[] = [];
 
     async initialize(): Promise<void> {
-        this.playersList = UserLoginService.getInstance().getPlayers();
+        this.playersList = await UserLoginService.getInstance().getPlayers();
         this.createHorizontalMenu();
         this.updateVerticalMenuWithPlayers();
     }

@@ -1,34 +1,40 @@
-import { AppConfig } from "../../core/config/AppConfig";
+import ApiService from "../../core/api/ApiService";
 import { PlayerProfile } from "../player-profile/PlayerProfile";
 
 export class UserLoginService {
-    static instance: UserLoginService;
+    private static instance: UserLoginService;
+    private apiService: ApiService;
 
-    private constructor() {}
+    private constructor() {
+        this.apiService = ApiService.getInstance();
+    }
 
-    static getInstance(): UserLoginService {
+    public static getInstance(): UserLoginService {
         if (!UserLoginService.instance) {
             UserLoginService.instance = new UserLoginService();
         }
         return UserLoginService.instance;
     }
 
-    savePlayerName(name: string): void {
-        const players = this.getPlayers();
-        if (!players.includes(name)) {
-            players.push(name);
-            localStorage.setItem('players', JSON.stringify(players));
+    async savePlayerName(name: string): Promise<void> {
+        try {
+            const players = await this.getPlayers();
+            if (!players.includes(name)) {
+                await this.apiService.post('profiles/addPlayer', { playerName: name });
+            }
+        } catch (error) {
+            console.error('Error saving player name:', error);
+            throw error; // Renvoie l'erreur pour gestion ultérieure ou pour affichage dans l'UI
         }
     }
 
-    getPlayers(): string[] {
-        const playersJson = localStorage.getItem('players');
-        if (playersJson) {
-            return JSON.parse(playersJson);
-        } else {
-            const defaultPlayer = [AppConfig.getInstance().default_Username];
-            localStorage.setItem('players', JSON.stringify(defaultPlayer));
-            return defaultPlayer;
+    async getPlayers(): Promise<string[]> {
+        try {
+            const response = await this.apiService.get('profiles/allPlayers');
+            return response.data; // Supposons que le backend renvoie directement un tableau de noms
+        } catch (error) {
+            console.error('Error retrieving players:', error);
+            return []; // Renvoie un tableau vide en cas d'erreur ou gère autrement selon les besoins de l'application
         }
     }
 

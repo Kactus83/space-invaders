@@ -25,6 +25,33 @@ router.post('/', async (req: Request, res: Response, next: NextFunction) => {
   }
 });
 
+
+router.post('/addPlayer', async (req: Request, res: Response, next: NextFunction) => {
+  const { playerName } = req.body;
+  try {
+    const existingProfile = await PlayerProfile.findByPk(playerName);
+    if (existingProfile) {
+      return res.status(409).send({ message: 'Player name already exists' });
+    }
+    const profile = await PlayerProfile.create({ playerName });
+    res.status(201).json(profile);
+  } catch (error) {
+    next(error);
+  }
+});
+
+router.get('/allPlayers', async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const profiles = await PlayerProfile.findAll({
+      attributes: ['playerName']
+    });
+    const playerNames = profiles.map(profile => profile.playerName);
+    res.json(playerNames);
+  } catch (error) {
+    next(error);
+  }
+});
+
 router.delete('/:playerName', async (req: Request, res: Response, next: NextFunction) => {
   try {
     await PlayerProfile.destroy({ where: { playerName: req.params.playerName } });
