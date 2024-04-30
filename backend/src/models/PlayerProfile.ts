@@ -16,19 +16,22 @@ export class PlayerProfile extends Model {
 
   @Column({
     type: DataType.INTEGER,
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0 
   })
   experiencePoints!: number;
 
   @Column({
     type: DataType.INTEGER,
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0 
   })
   bestScore!: number;
 
   @Column({
     type: DataType.INTEGER,
-    allowNull: false
+    allowNull: false,
+    defaultValue: 0  
   })
   totalExperiencePoints!: number;
 

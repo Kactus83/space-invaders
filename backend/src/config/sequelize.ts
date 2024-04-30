@@ -1,4 +1,8 @@
 import { Sequelize } from 'sequelize-typescript';
+import { PlayerProfile } from '../models/PlayerProfile';
+import { GameSessionStats } from '../models/GameSessionStats';
+import { Skill } from '../models/Skill';
+import { InvaderKill } from '../models/InvaderKill';
 
 export const sequelize = new Sequelize({
   dialect: 'postgres',
@@ -7,6 +11,6 @@ export const sequelize = new Sequelize({
   username: process.env.DB_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME,
-  models: [__dirname + '/../models/**/*.ts'], 
+  models: [PlayerProfile, GameSessionStats, Skill, InvaderKill], 
   logging: false,
 });

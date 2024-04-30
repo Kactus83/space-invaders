@@ -3,7 +3,7 @@ import { PlayerProfile } from '../models/PlayerProfile';
 
 const router = Router();
 
-router.get('/:playerName', async (req: Request, res: Response, next: NextFunction) => {
+router.get('/players/:playerName', async (req: Request, res: Response, next: NextFunction) => {
     try {
         const profile = await PlayerProfile.findByPk(req.params.playerName);
         if (profile) {
