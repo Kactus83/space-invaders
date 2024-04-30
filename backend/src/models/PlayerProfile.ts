@@ -1,4 +1,6 @@
-import { Table, Column, Model, DataType } from 'sequelize-typescript';
+import { Table, Column, Model, DataType, HasMany } from 'sequelize-typescript';
+import { GameSessionStats } from './GameSessionStats';
+import { Skill } from './Skill';
 
 @Table({
   timestamps: false,
@@ -29,5 +31,11 @@ export class PlayerProfile extends Model {
     allowNull: false
   })
   totalExperiencePoints!: number;
+
+  @HasMany(() => GameSessionStats)
+  gameSessions!: GameSessionStats[];
+
+  @HasMany(() => Skill)
+  skills!: Skill[];
 
 }
