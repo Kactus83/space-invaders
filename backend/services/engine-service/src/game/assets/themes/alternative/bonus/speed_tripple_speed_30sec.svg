@@ -1,0 +1,5 @@
+<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+    <path d="M 1 5 L 10 1 L 19 5 L 10 9 Z" stroke="purple" stroke-width="2" fill="lavender"/>
+    <path d="M 1 15 L 10 11 L 19 15 L 10 19 Z" stroke="purple" stroke-width="2" fill="lavender"/>
+    <text x="7" y="13" font-size="8" fill="purple">3x</text>
+</svg>

@@ -33,6 +33,16 @@ services:
       - PORT=3002
     depends_on:
       - postgres
+
+  engine-service:
+    build: ./services/engine-service
+    ports:
+      - "3003:3003"
+    environment:
+      - NODE_ENV=development
+      - PORT=3003
+    depends_on:
+      - postgres
       
   ganache:
     image: trufflesuite/ganache-cli

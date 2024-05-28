@@ -9,6 +9,13 @@ export const defaultNavigation: NavigationItem[] = [
         link : '/example'
     },
     {
+        id   : 'gameplay',
+        title: 'Gameplay',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/gameplay'
+    },
+    {
         id   : 'user-profil',
         title: 'User Profil',
         type : 'basic',
@@ -23,6 +30,13 @@ export const compactNavigation: NavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/example'
+    },
+    {
+        id   : 'gameplay',
+        title: 'Gameplay',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/gameplay'
     },
     {
         id   : 'user-profil',
@@ -41,6 +55,13 @@ export const futuristicNavigation: NavigationItem[] = [
         link : '/example'
     },
     {
+        id   : 'gameplay',
+        title: 'Gameplay',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/gameplay'
+    },
+    {
         id   : 'user-profil',
         title: 'User Profil',
         type : 'basic',
@@ -55,6 +76,13 @@ export const horizontalNavigation: NavigationItem[] = [
         type : 'basic',
         icon : 'heroicons_outline:chart-pie',
         link : '/example'
+    },
+    {
+        id   : 'gameplay',
+        title: 'Gameplay',
+        type : 'basic',
+        icon : 'heroicons_outline:chart-pie',
+        link : '/gameplay'
     },
     {
         id   : 'user-profil',

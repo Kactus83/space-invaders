@@ -1,0 +1,5 @@
+<svg width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+    <rect x="5" y="15" width="10" height="5" fill="orange" />
+    <polygon points="10,1 5,11 15,11" fill="yellow" />
+    <text x="4" y="19" font-size="10" fill="darkorange">XP</text>
+</svg>
