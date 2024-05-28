@@ -1,0 +1,33 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-10">
+
+        <!-- CONTENT GOES HERE -->
+        <div *ngIf="userProfile; else loading" class="h-400 min-h-400 max-h-400 border-2 border-dashed border-gray-300 rounded-2xl">
+
+            <!-- User Profile -->
+            <div class="user-profile">
+                <!-- Profile Picture -->
+                <div class="profile-picture">
+                    <img *ngIf="userProfile.avatar" [src]="userProfile.avatar" alt="Profile Picture">
+                    <img *ngIf="!userProfile.avatar" src="path/to/default-profile-picture.jpg" alt="Default Profile Picture">
+                </div>
+
+                <!-- User Information -->
+                <div class="user-info">
+                    <h2>{{ userProfile.name }}</h2>
+                    <p>Email: {{ userProfile.email }}</p>
+                    <p>Wallet: {{ userProfile.wallet }}</p>
+                </div>
+            </div>
+
+        </div>
+
+        <ng-template #loading>
+            <div>Loading...</div>
+        </ng-template>
+        
+    </div>
+
+</div>

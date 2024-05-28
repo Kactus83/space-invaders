@@ -1,0 +1,31 @@
+<div class="wallet-connector">
+    <div class="header">
+        <h3 *ngIf="!selectedWallet">Web3 authentication</h3>
+        <button class="clear-btn" *ngIf="selectedWallet" (click)="clearSelection()">
+            <span class="reset-text">Reset</span>
+            <mat-icon>close</mat-icon>
+        </button>
+    </div>
+
+    <div *ngIf="!selectedWallet && availableWallets.length > 0" class="wallet-list">
+        <div *ngFor="let wallet of availableWallets" (click)="selectWallet(wallet)" role="button" class="wallet-item">
+            <img [src]="wallet.iconPath" class="wallet-icon" alt="{{ wallet.name }} Icon">
+            <span>{{ wallet.name }}</span>
+        </div>        
+    </div>
+    
+    <div *ngIf="selectedWallet" class="selected-wallet">
+        <div class="selected-wallet-header">
+            <img [src]="selectedWallet.iconPath" class="wallet-icon" alt="{{ selectedWallet.name }} Icon">
+            <h4>{{ selectedWallet.name }}</h4>
+        </div>
+        <div class="selected-wallet-actions">
+            <button mat-raised-button color="accent" *ngIf="!isConnecting" (click)="connectToSelectedWallet()">Connect</button>
+            <mat-spinner *ngIf="isConnecting"></mat-spinner>
+        </div>
+    </div>    
+
+    <ng-template #noWallets>
+        <p>No wallets available. Please install a compatible wallet.</p>
+    </ng-template>
+</div>

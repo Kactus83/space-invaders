@@ -1,0 +1,22 @@
+<div class="web3-sign-up-form">
+    <!-- Utiliser async pipe pour souscrire à config$ et stocker le résultat dans la variable 'config' -->
+    <ng-container *ngIf="(config$ | async) as config">
+        <!-- Afficher Web3ConfigCardComponent pour montrer la configuration actuelle -->
+        <web3-config-card></web3-config-card>
+
+        <!-- Gérer l'état où aucun fournisseur n'est disponible -->
+        <ng-container *ngIf="config.overallState === Web3OverallState.NoProvidersAvailable">
+            <div class="no-provider">Aucun fournisseur Web3 n'est disponible.</div>
+        </ng-container>
+
+        <!-- Afficher le composant de connexion du portefeuille si l'état correspond -->
+        <ng-container *ngIf="config.overallState === Web3OverallState.NoProviderSelected || config.overallState === Web3OverallState.NoWalletSelected || config.overallState === Web3OverallState.WalletLocked">
+            <web3-wallet-connector (walletSelected)="onWalletSelected()"></web3-wallet-connector>
+        </ng-container>
+
+        <!-- Afficher le composant d'authentification Web3 une fois le portefeuille connecté -->
+        <ng-container *ngIf="config.overallState === Web3OverallState.WalletConnected">
+            <web3-auth (signedIn)="onSignedIn()"></web3-auth>
+        </ng-container>
+    </ng-container>
+</div>

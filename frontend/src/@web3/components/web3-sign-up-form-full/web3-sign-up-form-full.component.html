@@ -1,0 +1,107 @@
+<div class="web3-sign-up-form-full">
+
+    <!-- Formulaire d'inscription -->
+    <div class="web3-sign-up-form-container">
+        
+        <div class="component-container">
+            <!-- Utiliser async pipe pour souscrire à config$ et stocker le résultat dans la variable 'config' -->
+            <ng-container *ngIf="(config$ | async) as config">
+                <!-- Afficher Web3ConfigCardComponent pour montrer la configuration actuelle -->
+                <!-- <web3-config-card></web3-config-card> -->
+
+                <!-- Gérer l'état où aucun fournisseur n'est disponible -->
+                <ng-container *ngIf="config.overallState === Web3OverallState.NoProvidersAvailable">
+                    <div class="no-provider">Aucun fournisseur Web3 n'est disponible.</div>
+                </ng-container>
+
+                <!-- Afficher le composant de connexion du portefeuille si l'état correspond -->
+                <ng-container *ngIf="config.overallState === Web3OverallState.NoProviderSelected || config.overallState === Web3OverallState.NoWalletSelected || config.overallState === Web3OverallState.WalletLocked">
+                    <web3-wallet-connector (walletSelected)="onWalletSelected()"></web3-wallet-connector>
+                </ng-container>
+
+                <!-- Afficher le composant d'authentification Web3 une fois le portefeuille connecté -->
+                <ng-container *ngIf="config.overallState === Web3OverallState.WalletConnected">
+                    <web3-auth (signedIn)="onSignedIn()"></web3-auth>
+                </ng-container>
+
+                <!-- État de l'authentification Web3 -->
+                <div *ngIf="config.overallState === Web3OverallState.UserAuthenticated" class="web3-auth-status">
+                    Web3 authentication is valid for address: {{ config.activeWallet?.getCurrentActiveAddress() }}
+                </div>
+            </ng-container>
+        </div>
+        <!-- Formulaire d'inscription -->
+        <div class="web3-sign-up-form-container">
+            <!-- Formulaire d'inscription -->
+            <form [formGroup]="signUpForm" class="sign-up-form">
+                <!-- Champs pour l'inscription classique -->
+                <div class="classic-sign-up">
+                    <mat-form-field appearance="fill" class="w-full">
+                        <mat-label>Email</mat-label>
+                        <input matInput formControlName="email" placeholder="Enter your email">
+                        <mat-error *ngIf="signUpForm.get('email').errors?.email">Invalid email address</mat-error>
+                    </mat-form-field>
+
+                    <mat-form-field class="w-full">
+                        <mat-label>Password</mat-label>
+                        <input
+                            id="password"
+                            matInput
+                            type="password"
+                            [formControlName]="'password'"
+                            #passwordField>
+                        <button
+                            mat-icon-button
+                            type="button"
+                            (click)="passwordField.type === 'password' ? passwordField.type = 'text' : passwordField.type = 'password'"
+                            matSuffix>
+                            <mat-icon
+                                class="icon-size-5"
+                                *ngIf="passwordField.type === 'password'"
+                                [svgIcon]="'heroicons_solid:eye'"></mat-icon>
+                            <mat-icon
+                                class="icon-size-5"
+                                *ngIf="passwordField.type === 'text'"
+                                [svgIcon]="'heroicons_solid:eye-slash'"></mat-icon>
+                        </button>
+                        <mat-error>
+                            Password is required (min length 8 caracters)
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+        
+                <!-- Toggle pour afficher les champs supplémentaires -->
+                <div class="additional-fields-toggle">
+                    <mat-checkbox formControlName="showAdditionalFields">Show additional fields</mat-checkbox>
+                </div>
+        
+                <!-- Champs pour les informations supplémentaires -->
+                <div *ngIf="signUpForm.get('showAdditionalFields').value" class="additional-fields">
+                    <mat-form-field appearance="fill" class="w-full">
+                        <mat-label>Full name</mat-label>
+                        <input matInput formControlName="name" placeholder="Enter your full name">
+                    </mat-form-field>
+        
+                    <mat-form-field appearance="fill" class="w-full">
+                        <mat-label>Company</mat-label>
+                        <input matInput formControlName="company" placeholder="Enter your company name">
+                    </mat-form-field>
+                </div>
+
+                <mat-checkbox formControlName="agreements" class="terms-agreement">
+                    I agree with <a routerLink="./">Terms</a> and <a routerLink="./">Privacy Policy</a>
+                </mat-checkbox>
+                
+                <!-- Afficher l'état de l'authentification complète -->
+                <div *ngIf="isFullyAuthenticated" class="full-auth-status">Full authentication validated</div>
+
+                <!-- Afficher l'état de l'inscription Web3 uniquement si l'authentification complète n'est pas validée -->
+                <div *ngIf="isWeb3Authenticated && !isFullyAuthenticated" class="web3-auth-status">Web3 authentication is valid</div>
+
+                <!-- Afficher l'état de l'inscription classique uniquement si l'authentification complète n'est pas validée -->
+                <div *ngIf="isClassicSignUpValid && !isFullyAuthenticated" class="classic-sign-up-status">Classic sign-up is valid</div>
+
+
+        </form>
+    </div>       
+</div>

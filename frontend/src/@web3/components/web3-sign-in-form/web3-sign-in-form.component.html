@@ -1,0 +1,12 @@
+<div class="web3-sign-in-form">
+    <ng-container *ngIf="(config$ | async) as config">
+
+        <ng-container *ngIf="config.overallState === Web3OverallState.NoProviderSelected || config.overallState === Web3OverallState.NoWalletSelected || config.overallState === Web3OverallState.WalletLocked">
+            <web3-wallet-connector (walletSelected)="onWalletSelected()"></web3-wallet-connector>
+        </ng-container>
+
+        <ng-container *ngIf="config.overallState === Web3OverallState.WalletConnected">
+            <web3-auth (signatureCompleted)="onSignatureCompleted($event)"></web3-auth>
+        </ng-container>
+    </ng-container>
+</div>

@@ -1,0 +1,50 @@
+.web3-config-card {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px;
+    .header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        h3 {
+            margin: 0;
+            flex-grow: 1;
+            font-size: 18px;
+            color: #333;
+        }
+        .status-indicator {
+            width: 15px; /* Augmentation de la taille */
+            height: 15px; /* Augmentation de la taille */
+            border-radius: 50%;
+            box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2); /* Ajout d'une ombre */
+            border: 2px solid #fff; /* Ajout d'une bordure pour contraste */
+            &.no-init { background-color: #9e9e9e; }
+            &.no-providers { background-color: #1a1616; }
+            &.no-provider-selected { background-color: #af7318; }
+            &.no-wallet-selected { background-color: #ffe600; }
+            &.wallet-locked { background-color: #00ffc8; }
+            &.wallet-connected { background-color: #4caf50; }
+            &.user-authenticated { background-color: #81c784; }
+            &.wrong-account { background-color: #ffa000; }
+            &.error { background-color: #d32f2f; }
+        }
+    }
+    .content {
+        .info-item {
+            display: flex;
+            margin-bottom: 8px;
+            label {
+                font-weight: bold;
+                margin-right: 8px;
+                color: #555;
+            }
+            span {
+                font-size: 14px;
+                color: #333;
+            }
+        }
+    }
+}

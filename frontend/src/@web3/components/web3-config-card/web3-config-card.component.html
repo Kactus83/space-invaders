@@ -1,0 +1,58 @@
+<div class="web3-config-card">
+    <div class="header">
+        <h3>Web3 Config</h3>
+        <div class="status-indicator" [ngClass]="{
+            'no-init': web3Config.overallState === Web3OverallState.noInit,
+            'no-providers': web3Config.overallState === Web3OverallState.NoProvidersAvailable,
+            'no-provider-selected': web3Config.overallState === Web3OverallState.NoProviderSelected,
+            'no-wallet-selected': web3Config.overallState === Web3OverallState.NoWalletSelected,
+            'wallet-locked': web3Config.overallState === Web3OverallState.WalletLocked,
+            'wallet-connected': web3Config.overallState === Web3OverallState.WalletConnected,
+            'user-authenticated': web3Config.overallState === Web3OverallState.UserAuthenticated,
+            'wrong-account': web3Config.overallState === Web3OverallState.WrongAccount,
+            'error': web3Config.overallState === Web3OverallState.Error
+        }">
+        </div>
+    </div>
+    <div class="content">
+        <ng-container *ngIf="web3Config.overallState === Web3OverallState.noInit">
+            <div class="error-message">
+                Erreur d'initialisation. Veuillez réessayer.
+            </div>
+        </ng-container>
+        <ng-container *ngIf="web3Config.overallState === Web3OverallState.NoProvidersAvailable">
+            <div class="install-wallet-message">
+                Aucun fournisseur de portefeuille disponible. Veuillez installer un portefeuille pour continuer.
+            </div>
+        </ng-container>
+        <ng-container *ngIf="web3Config.overallState === Web3OverallState.NoProviderSelected">
+            <div class="select-provider-message">
+                Veuillez sélectionner un fournisseur de portefeuille.
+            </div>
+        </ng-container>
+        <ng-container *ngIf="web3Config.overallState === Web3OverallState.Error">
+            <div class="error-message">
+                Une erreur s'est produite. Veuillez vérifier votre configuration.
+            </div>
+        </ng-container>
+        <ng-container *ngIf="
+            web3Config.overallState !== Web3OverallState.noInit &&
+            web3Config.overallState !== Web3OverallState.NoProvidersAvailable &&
+            web3Config.overallState !== Web3OverallState.NoProviderSelected &&
+            web3Config.overallState !== Web3OverallState.Error
+        ">
+            <div class="info-item">
+                <label>Wallet:</label>
+                <span>{{ web3Config.activeWallet?.name }}</span>
+            </div>
+            <div class="info-item">
+                <label>Address:</label>
+                <span>{{ web3Config.activeWallet?.getCurrentActiveAddress() }}</span>
+            </div>
+            <div class="info-item">
+                <label>Blockchain:</label>
+                <span>{{ web3Config.activeWallet?.getActiveNetwork$() | async }}</span>
+            </div>
+        </ng-container>
+    </div>    
+</div>

@@ -1,0 +1,130 @@
+/* Styles de base pour la carte de configuration et le formulaire d'inscription */
+.web3-config-card, .web3-sign-up-form-container {
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px;
+}
+
+/* Styles spécifiques pour le formulaire d'inscription */
+.web3-sign-up-form-container {
+    padding: 20px;
+    margin: 16px auto;
+    max-width: 500px; // Largeur maximale du formulaire
+
+    
+    .component-container {
+        background-color: #fff;
+        border: 1px solid #e0e0e0;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        padding: 16px;
+        margin: 16px auto;
+        min-height: 30%; 
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .sign-up-form {
+        display: flex;
+        flex-direction: column;
+
+        .classic-sign-up, .additional-fields {
+            display: flex;
+            flex-direction: column;
+            gap: 10px; // Espacement entre les champs
+
+            mat-form-field {
+                width: 100%; // Pleine largeur
+            }
+        }
+
+        .additional-fields-toggle {
+            margin-top: 20px;
+        }
+
+        .terms-agreement {
+            margin-top: 10px;
+        }
+
+        .web3-auth-status, .classic-sign-up-status {
+            margin-top: 15px;
+            font-weight: bold;
+            color: green; // Couleur de succès
+        }
+    }
+}
+
+.web3-auth-status, .classic-sign-up-status {
+    background-color: #dff0d8; // Couleur de fond pour le succès
+    color: #3c763d; // Couleur de texte pour le succès
+    padding: 15px; 
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #d6e9c6;
+
+    &:not(:last-child) {
+        margin-bottom: 10px;
+    }
+}
+
+.terms-agreement {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+
+    mat-checkbox {
+        margin-right: 10px;
+    }
+}
+
+.sign-up-form {
+    mat-form-field {
+        width: 100%; // Pleine largeur
+        margin-top: 10px;
+
+        &:first-of-type {
+            margin-top: 0;
+        }
+    }
+
+    .mat-button-wrapper {
+        position: relative;
+
+        mat-progress-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+    }
+}
+
+.full-auth-status {
+    background-color: #dff0d8; // Couleur de fond pour le succès
+    color: #3c763d; // Couleur de texte pour le succès
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 4px;
+    border: 1px solid #d6e9c6;
+    animation: pulseGreen 2s infinite;
+
+    &:not(:last-child) {
+        margin-bottom: 10px;
+    }
+}
+
+@keyframes pulseGreen {
+    0% {
+        box-shadow: 0 0 0 0 rgba(60, 118, 61, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(60, 118, 61, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(60, 118, 61, 0);
+    }
+}
