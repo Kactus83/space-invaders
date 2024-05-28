@@ -3,6 +3,7 @@ import { WebSocket } from 'ws';
 export class GameEngine {
     private lastFrameTimeMs: number = 0;
     private ws: WebSocket;
+    private syncInterval: number = 1000; // Sync interval in milliseconds
 
     constructor(ws: WebSocket) {
         this.ws = ws;
@@ -14,11 +15,14 @@ export class GameEngine {
     }
 
     private gameLoop(): void {
-        setInterval(() => {
-            const deltaTime = Date.now() - this.lastFrameTimeMs;
-            this.lastFrameTimeMs = Date.now();
+        const deltaTime = Date.now() - this.lastFrameTimeMs;
+        this.lastFrameTimeMs = Date.now();
+
+        if (deltaTime >= this.syncInterval) {
             this.synchronize();
-        }, 1000 / 60); // Run at 60 FPS
+        }
+
+        requestAnimationFrame(() => this.gameLoop());
     }
 
     private synchronize(): void {
