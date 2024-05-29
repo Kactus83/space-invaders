@@ -10,6 +10,8 @@ export default class PlayerProfileRepository {
      * @returns The created player profile.
      */
     public async createPlayerProfile(profile: FullPlayerProfile): Promise<FullPlayerProfile> {
+        console.log('Creating player profile with data:', profile);
+        
         const { user_id, player_name, best_score, experience_points, total_experience_points } = profile;
 
         const result = await pool.query(
@@ -18,7 +20,33 @@ export default class PlayerProfileRepository {
              RETURNING id, user_id, player_name, best_score, experience_points, total_experience_points, created_at, updated_at`,
             [user_id, player_name, best_score, experience_points, total_experience_points]
         );
-        return result.rows[0];
+
+        const newProfileId = result.rows[0].id;
+        console.log('Created player profile with ID:', newProfileId);
+
+        // Insert default values for related tables
+        const bonusResult = await pool.query(
+            `INSERT INTO bonus_inventory (player_profile_id, type, effect) VALUES ($1, $2, $3) RETURNING *`,
+            [newProfileId, 'Health', JSON.stringify({})]
+        );
+        console.log('Inserted default bonus inventory:', bonusResult.rows);
+
+        const skillsResult = await pool.query(
+            `INSERT INTO player_skills (player_profile_id, skill_id, is_active) VALUES ($1, $2, $3) RETURNING *`,
+            [newProfileId, 'default_skill', false]
+        );
+        console.log('Inserted default player skills:', skillsResult.rows);
+
+        // Add similar default inserts for player_walls and player_ground_lines if needed
+
+        return {
+            ...result.rows[0],
+            game_sessions: [],
+            bonus_inventory: [],
+            skills: [],
+            walls: [],
+            ground_line: []
+        };
     }
 
     /**
@@ -28,6 +56,8 @@ export default class PlayerProfileRepository {
      * @returns The player profile if found, otherwise null.
      */
     public async getPlayerProfileByUserId(userId: number): Promise<FullPlayerProfile | null> {
+        console.log('Retrieving player profile for user ID:', userId);
+
         const result = await pool.query(
             `SELECT pp.*, gs.*, bi.*, ps.*, pw.*, pgl.*
             FROM player_profiles pp
@@ -40,61 +70,66 @@ export default class PlayerProfileRepository {
             [userId]
         );
 
+        console.log('Retrieved rows:', result.rows);
+
         if (result.rows.length > 0) {
-            const row = result.rows[0];
-            return {
-                id: row.id,
-                user_id: row.user_id,
-                player_name: row.player_name,
-                best_score: row.best_score,
-                experience_points: row.experience_points,
-                total_experience_points: row.total_experience_points,
-                created_at: row.created_at,
-                updated_at: row.updated_at,
-                game_sessions: result.rows.map((r: any) => ({
-                    id: r.id,
-                    player_profile_id: r.player_profile_id,
-                    wave_set_type: r.wave_set_type,
-                    is_winning_session: r.is_winning_session,
-                    score: r.score,
-                    invader_kills: r.invader_kills,
-                    created_at: r.created_at,
-                    updated_at: r.updated_at
+            const rows = result.rows;
+            const profile: FullPlayerProfile = {
+                id: rows[0].id,
+                user_id: rows[0].user_id,
+                player_name: rows[0].player_name,
+                best_score: rows[0].best_score,
+                experience_points: rows[0].experience_points,
+                total_experience_points: rows[0].total_experience_points,
+                created_at: rows[0].created_at,
+                updated_at: rows[0].updated_at,
+                game_sessions: rows.filter((r: any) => r.gs_id).map((r: any) => ({
+                    id: r.gs_id,
+                    player_profile_id: r.gs_player_profile_id,
+                    wave_set_type: r.gs_wave_set_type,
+                    is_winning_session: r.gs_is_winning_session,
+                    score: r.gs_score,
+                    invader_kills: r.gs_invader_kills,
+                    created_at: r.gs_created_at,
+                    updated_at: r.gs_updated_at
                 })),
-                bonus_inventory: result.rows.map((r: any) => ({
-                    id: r.id,
-                    player_profile_id: r.player_profile_id,
-                    type: r.type,
-                    effect: r.effect,
-                    activation_timestamp: r.activation_timestamp,
-                    state: r.state,
-                    remaining_duration: r.remaining_duration,
-                    created_at: r.created_at,
-                    updated_at: r.updated_at
+                bonus_inventory: rows.filter((r: any) => r.bi_id).map((r: any) => ({
+                    id: r.bi_id,
+                    player_profile_id: r.bi_player_profile_id,
+                    type: r.bi_type,
+                    effect: r.bi_effect,
+                    activation_timestamp: r.bi_activation_timestamp,
+                    state: r.bi_state,
+                    remaining_duration: r.bi_remaining_duration,
+                    created_at: r.bi_created_at,
+                    updated_at: r.bi_updated_at
                 })),
-                skills: result.rows.map((r: any) => ({
-                    id: r.id,
-                    player_profile_id: r.player_profile_id,
-                    skill_id: r.skill_id,
-                    is_active: r.is_active,
-                    created_at: r.created_at,
-                    updated_at: r.updated_at
+                skills: rows.filter((r: any) => r.ps_id).map((r: any) => ({
+                    id: r.ps_id,
+                    player_profile_id: r.ps_player_profile_id,
+                    skill_id: r.ps_skill_id,
+                    is_active: r.ps_is_active,
+                    created_at: r.ps_created_at,
+                    updated_at: r.ps_updated_at
                 })),
-                walls: result.rows.map((r: any) => ({
-                    id: r.id,
-                    player_profile_id: r.player_profile_id,
-                    level: r.level,
-                    created_at: r.created_at,
-                    updated_at: r.updated_at
+                walls: rows.filter((r: any) => r.pw_id).map((r: any) => ({
+                    id: r.pw_id,
+                    player_profile_id: r.pw_player_profile_id,
+                    level: r.pw_level,
+                    created_at: r.pw_created_at,
+                    updated_at: r.pw_updated_at
                 })),
-                ground_line: result.rows.map((r: any) => ({
-                    id: r.id,
-                    player_profile_id: r.player_profile_id,
-                    level: r.level,
-                    created_at: r.created_at,
-                    updated_at: r.updated_at
+                ground_line: rows.filter((r: any) => r.pgl_id).map((r: any) => ({
+                    id: r.pgl_id,
+                    player_profile_id: r.pgl_player_profile_id,
+                    level: r.pgl_level,
+                    created_at: r.pgl_created_at,
+                    updated_at: r.pgl_updated_at
                 }))
             };
+
+            console.log('Constructed player profile:', profile);
+            return profile;
         }
 
         return null;
