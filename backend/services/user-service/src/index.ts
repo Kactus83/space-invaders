@@ -30,7 +30,7 @@ const nonceRepository = new NonceRepository();
 const nonceService = new NonceService(nonceRepository);
 const userProfileService = new UserProfileService(userRepository);
 const playerProfileService = new PlayerProfileService(playerProfileRepository);
-const userRegistrationService = new UserRegistrationService(userRepository, nonceService);
+const userRegistrationService = new UserRegistrationService(userRepository, nonceService, playerProfileService);
 const userAuthenticationService = new UserAuthenticationService(userRepository, nonceService); 
 
 // Initialize controllers

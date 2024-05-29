@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import PlayerProfileService from '../services/PlayerProfileService';
 import { FullPlayerProfile } from '../models/player/FullPlayerProfile';
+import JWTUtil from '../utils/JWTUtil';
 
 export default class PlayerProfileController {
     private playerProfileService: PlayerProfileService;
