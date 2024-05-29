@@ -57,4 +57,14 @@ export class GameSessionStats {
     get hasWon(): boolean {
         return this.isWinningSession;
     }
+
+    // Method to create an instance from backend data
+    static fromBackendData(data: any): GameSessionStats {
+        const session = new GameSessionStats();
+        session.setWaveSetType(data.wave_set_type as WaveSetType);
+        session.setWinningSessionBool(data.is_winning_session);
+        session.score = data.score;
+        session.invaderKills = data.invader_kills;
+        return session;
+    }
 }

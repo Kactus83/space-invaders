@@ -1,3 +1,4 @@
+import { PlayerProfileData } from "./datas/types/PlayerProfileData";
 import { PlayerExperience } from "./experience/PlayerExperience";
 import { PlayerGroundLine } from "./ground-line/PlayerGroundLine";
 import { PlayerInventory } from "./inventory/PlayerInventory";
@@ -12,9 +13,10 @@ export class PlayerProfile {
     private walls: PlayerWalls;
     private groundLine: PlayerGroundLine;
 
-    private playerName: string = 'Player';
+    private playerName: string;
 
-    private constructor() {
+    private constructor(profileData: PlayerProfileData) {
+        this.playerName = profileData.playerName;
         this.inventory = new PlayerInventory(this);
         this.experience = new PlayerExperience(this);
         this.skills = new PlayerSkills(this);
@@ -22,24 +24,15 @@ export class PlayerProfile {
         this.groundLine = new PlayerGroundLine(this);
     }
 
-    public static getInstance(): PlayerProfile {
-        if (!PlayerProfile.instance) {
-            PlayerProfile.instance = new PlayerProfile();
+    public static getInstance(profileData?: PlayerProfileData): PlayerProfile {
+        if (!PlayerProfile.instance && profileData) {
+            PlayerProfile.instance = new PlayerProfile(profileData);
         }
         return PlayerProfile.instance;
     }
 
     getPlayerName(): string {
         return this.playerName;
-    }
-    
-    setPlayerName(name: string): void {
-        this.playerName = name;
-        this.experience.restoreFromData();
-        this.inventory.restoreFromData();
-        this.skills.restoreFromData();
-        this.walls.restoreFromData();
-        this.groundLine.restoreFromData();
     }
 
     getInventory(): PlayerInventory {
@@ -61,5 +54,4 @@ export class PlayerProfile {
     getGroundLine(): PlayerGroundLine {
         return this.groundLine;
     }
-
 }

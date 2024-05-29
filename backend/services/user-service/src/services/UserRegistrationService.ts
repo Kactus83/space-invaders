@@ -5,17 +5,21 @@ import { toFrontendUser } from '../utils/userTransforms';
 import { User } from '../models/user/User';
 import { FrontendUser } from '../models/user/FrontendUser';
 import { NonceService } from './NonceService';
+import PlayerProfileService from './PlayerProfileService';
 import { FullSignUpRequest } from '../models/sign-up/FullSignUpRequest';
 import { ClassicSignUpRequest } from '../models/sign-up/ClassicSignUpRequest';
 import { Web3SignUpRequest } from '../models/sign-up/Web3SignUpRequest';
+import { FullPlayerProfile } from '../models/player/FullPlayerProfile';
 
 export class UserRegistrationService {
     private userRepository: UserRepository;
     private nonceService: NonceService;
+    private playerProfileService: PlayerProfileService;
 
-    constructor(userRepository: UserRepository, nonceService: NonceService) {
+    constructor(userRepository: UserRepository, nonceService: NonceService, playerProfileService: PlayerProfileService) {
         this.userRepository = userRepository;
         this.nonceService = nonceService;
+        this.playerProfileService = playerProfileService;
     }
 
     /**
@@ -56,6 +60,26 @@ export class UserRegistrationService {
         console.log('User created ...', user);
 
         const newUser = await this.userRepository.createUser(user);
+
+        // Create default player profile for the new user
+        const defaultPlayerProfile: FullPlayerProfile = {
+            id: 0,
+            user_id: newUser.id,
+            player_name: user.name || 'Default Player',
+            best_score: 0,
+            experience_points: 0,
+            total_experience_points: 0,
+            created_at: new Date(),
+            updated_at: new Date(),
+            game_sessions: [],
+            bonus_inventory: [],
+            skills: [],
+            walls: [],
+            ground_line: []
+        };
+
+        await this.playerProfileService.createPlayerProfile(defaultPlayerProfile);
+
         return toFrontendUser(newUser);
     }  
 

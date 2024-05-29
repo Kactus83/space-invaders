@@ -1,5 +1,9 @@
 import { GamePlayScene } from "./GameplayScene";
 import { Renderer } from "./services/renderer/Renderer";
+import { PlayerProfile } from "./services/player-profile/PlayerProfile";
+import { FullPlayerProfile } from "app/core/player/player-profile.types";
+import { PlayerProfileData } from "./services/player-profile/datas/types/PlayerProfileData";
+import { PlayerDataService } from "./services/player-profile/datas/PlayerDataService";
 
 export class GameEngine {
     private lastFrameTimeMs: number = 0;
@@ -33,5 +37,11 @@ export class GameEngine {
 
     public sync(gameState: any): void {
         this.scene.sync(gameState);
+    }
+
+    public initializePlayerProfile(profile: FullPlayerProfile): void {
+        const playerProfileData: PlayerProfileData = PlayerDataService.getInstance().convertBackendProfile(profile);
+        PlayerDataService.getInstance().setProfile(playerProfileData);
+        PlayerProfile.getInstance(playerProfileData);
     }
 }

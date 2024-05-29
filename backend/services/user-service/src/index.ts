@@ -3,15 +3,18 @@ import helmet from 'helmet';
 import cors from 'cors';
 import morgan from 'morgan';
 import UserController from './controllers/UserController';
+import PlayerProfileController from './controllers/PlayerProfileController';
 import { UserRegistrationService } from './services/UserRegistrationService';
 import { UserAuthenticationService } from './services/UserAuthenticationService';
 import { NonceService } from './services/NonceService';
 import UserRepository from './repositories/UserRepository';
+import PlayerProfileRepository from './repositories/PlayerProfileRepository';
 import NonceRepository from './repositories/NonceRepository';
 import { validateRequest } from './middlewares/validateRequest';
 import { classicSignInSchema, classicSignUpSchema, fullSignUpSchema, web3SignInSchema, web3SignUpSchema } from './config/validationSchema';
 import { normalizeData } from './middlewares/normalizeData';
 import UserProfileService from './services/UserProfileService';
+import PlayerProfileService from './services/PlayerProfileService';
 import { authenticateToken } from './middlewares/authenticateToken';
 
 // Initialize express app
@@ -20,16 +23,19 @@ const port = process.env.PORT || 3001;
 
 // Initialize repositories
 const userRepository = new UserRepository();
+const playerProfileRepository = new PlayerProfileRepository();
 const nonceRepository = new NonceRepository();
 
 // Initialisation des services
 const nonceService = new NonceService(nonceRepository);
-const userprofileService = new UserProfileService(userRepository);
+const userProfileService = new UserProfileService(userRepository);
+const playerProfileService = new PlayerProfileService(playerProfileRepository);
 const userRegistrationService = new UserRegistrationService(userRepository, nonceService);
 const userAuthenticationService = new UserAuthenticationService(userRepository, nonceService); 
 
-// Initialize controller
-const userController = new UserController(userprofileService, userRegistrationService, userAuthenticationService, nonceService);
+// Initialize controllers
+const userController = new UserController(userProfileService, userRegistrationService, userAuthenticationService, nonceService);
+const playerProfileController = new PlayerProfileController(playerProfileService);
 
 // Middlewares
 app.use(helmet()); // Security middleware for setting various HTTP headers
@@ -51,8 +57,11 @@ app.use(express.json()); // Middleware for parsing application/json
 // Route for obtaining a nonce
 app.get('/nonce/:walletAddress', userController.getMessageForSignature.bind(userController));
 
-// Route for obtaining a user
+// Route for obtaining a user profile
 app.get('/user/profile', authenticateToken, userController.getUserProfile.bind(userController));
+
+// Route for obtaining a player profile
+app.get('/player/profile', authenticateToken, playerProfileController.getPlayerProfile.bind(playerProfileController));
 
 // SignUp routes
 app.post('/sign-up/classic',

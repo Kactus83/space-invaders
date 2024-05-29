@@ -1,23 +1,24 @@
 import { Component, ElementRef, ViewChild, ViewEncapsulation, OnInit, OnDestroy } from '@angular/core';
 import { GameEngine } from '@game/GameEngine';
 import { fabric } from "fabric";
+import { PlayerProfileService } from 'app/core/player/player-profile.service';
+import { FullPlayerProfile } from 'app/core/player/player-profile.types';
 
 @Component({
-    selector     : 'gameplay',
-    standalone   : true,
-    templateUrl  : './gameplay.component.html',
-    styleUrls    : ['./gameplay.component.scss'],
+    selector: 'gameplay',
+    standalone: true,
+    templateUrl: './gameplay.component.html',
+    styleUrls: ['./gameplay.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class GameplayComponent implements OnInit, OnDestroy
-{
+export class GameplayComponent implements OnInit, OnDestroy {
     @ViewChild('gameCanvas', { static: true }) gameCanvas: ElementRef<HTMLCanvasElement>;
   
     private canvas: fabric.Canvas;
     private ws: WebSocket;
     private engine: GameEngine;
 
-    constructor() {}
+    constructor(private _playerProfileService: PlayerProfileService) {}
 
     ngOnInit(): void {
         this.canvas = new fabric.Canvas(this.gameCanvas.nativeElement);
@@ -38,6 +39,12 @@ export class GameplayComponent implements OnInit, OnDestroy
         this.ws.onclose = () => {
             console.log('Disconnected from game engine');
         };
+
+        this._playerProfileService.getPlayerProfile().subscribe((profile: FullPlayerProfile) => {
+            console.log('Player profile loaded:', profile);
+            // Initialize the player profile in the game engine
+            this.engine.initializePlayerProfile(profile);
+        });
 
         this.engine = new GameEngine();
         this.engine.start(this.gameCanvas.nativeElement);
