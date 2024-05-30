@@ -11,12 +11,12 @@ export class GameEngine {
     private renderer: Renderer;
 
     constructor() {
-        this.scene = new GamePlayScene();
         this.renderer = new Renderer();
     }
 
     public async start(canvasElement: HTMLCanvasElement): Promise<void> {
         this.renderer.initialize(canvasElement);
+        this.scene = new GamePlayScene();
         await this.scene.initialize();
         this.gameLoop();
     }
