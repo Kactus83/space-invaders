@@ -55,5 +55,6 @@ wss.on('connection', (ws: WebSocket) => {
 
     ws.on('close', () => {
         console.log('Client disconnected');
+        engine.stop(); // Stop the game loop when the client disconnects
     });
 });
