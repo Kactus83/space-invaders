@@ -42,12 +42,11 @@ export class GameplayComponent implements OnInit, OnDestroy {
 
         this._playerProfileService.getPlayerProfile().subscribe((profile: FullPlayerProfile) => {
             console.log('Player profile loaded:', profile);
+            this.engine = new GameEngine();
             // Initialize the player profile in the game engine
             this.engine.initializePlayerProfile(profile);
+            this.engine.start(this.gameCanvas.nativeElement);
         });
-
-        this.engine = new GameEngine();
-        this.engine.start(this.gameCanvas.nativeElement);
     }
 
     ngOnDestroy(): void {
