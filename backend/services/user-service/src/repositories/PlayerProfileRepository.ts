@@ -24,16 +24,16 @@ export default class PlayerProfileRepository {
         const newProfileId = result.rows[0].id;
         console.log('Created player profile with ID:', newProfileId);
 
-        // Insert default values for related tables from provided profile
+        // Insert default values for related tables
         const wallsResult = await pool.query(
             `INSERT INTO player_walls (player_profile_id, level) VALUES ($1, $2) RETURNING *`,
-            [newProfileId, profile.walls.length > 0 ? profile.walls[0].level : 1]
+            [newProfileId, 1]
         );
         console.log('Inserted default player walls:', wallsResult.rows);
 
         const groundLineResult = await pool.query(
             `INSERT INTO player_ground_lines (player_profile_id, level) VALUES ($1, $2) RETURNING *`,
-            [newProfileId, profile.ground_line.length > 0 ? profile.ground_line[0].level : 1]
+            [newProfileId, 1]
         );
         console.log('Inserted default player ground lines:', groundLineResult.rows);
 
@@ -42,8 +42,8 @@ export default class PlayerProfileRepository {
             game_sessions: [],
             bonus_inventory: [],
             skills: [],
-            walls: wallsResult.rows,
-            ground_line: groundLineResult.rows
+            walls: wallsResult.rows[0],
+            ground_line: groundLineResult.rows[0]
         };
     }
 
@@ -110,28 +110,26 @@ export default class PlayerProfileRepository {
                     created_at: r.ps_created_at,
                     updated_at: r.ps_updated_at
                 })),
-                walls: rows.filter((r: any) => r.pw_id).map((r: any) => ({
-                    id: r.pw_id,
-                    player_profile_id: r.pw_player_profile_id,
-                    level: r.pw_level,
-                    created_at: r.pw_created_at,
-                    updated_at: r.pw_updated_at
-                })),
-                ground_line: rows.filter((r: any) => r.pgl_id).map((r: any) => ({
-                    id: r.pgl_id,
-                    player_profile_id: r.pgl_player_profile_id,
-                    level: r.pgl_level,
-                    created_at: r.pgl_created_at,
-                    updated_at: r.pgl_updated_at
-                }))
+                walls: {
+                    id: rows[0].pw_id,
+                    player_profile_id: rows[0].pw_player_profile_id,
+                    level: rows[0].pw_level,
+                    created_at: rows[0].pw_created_at,
+                    updated_at: rows[0].pw_updated_at
+                },
+                ground_line: {
+                    id: rows[0].pgl_id,
+                    player_profile_id: rows[0].pgl_player_profile_id,
+                    level: rows[0].pgl_level,
+                    created_at: rows[0].pgl_created_at,
+                    updated_at: rows[0].pgl_updated_at
+                }
             };
 
             // Ensure arrays are not null
             profile.bonus_inventory = profile.bonus_inventory.length > 0 ? profile.bonus_inventory : [];
             profile.skills = profile.skills.length > 0 ? profile.skills : [];
             profile.game_sessions = profile.game_sessions.length > 0 ? profile.game_sessions : [];
-            profile.walls = profile.walls.length > 0 ? profile.walls : [];
-            profile.ground_line = profile.ground_line.length > 0 ? profile.ground_line : [];
 
             console.log('Constructed player profile:', profile);
             return profile;

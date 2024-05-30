@@ -74,8 +74,20 @@ export class UserRegistrationService {
             game_sessions: [],
             bonus_inventory: [],
             skills: [],
-            walls: [],
-            ground_line: []
+            walls: {
+                id: 0,
+                player_profile_id: 0,
+                level: 1,
+                created_at: new Date(),
+                updated_at: new Date()
+            },
+            ground_line: {
+                id: 0,
+                player_profile_id: 0,
+                level: 1,
+                created_at: new Date(),
+                updated_at: new Date()
+            }
         };
 
         await this.playerProfileService.createPlayerProfile(defaultPlayerProfile);

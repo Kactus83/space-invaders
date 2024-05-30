@@ -1,6 +1,6 @@
 import { BonusInventory } from "./BonusInventory";
 import { GameSession } from "./GameSession";
-import { PlayerGroundLines } from "./PlayerGroundLines";
+import { PlayerGroundLine } from "./PlayerGroundLine";
 import { PlayerSkills } from "./PlayerSkills";
 import { PlayerWalls } from "./PlayerWalls";
 
@@ -16,6 +16,6 @@ export interface FullPlayerProfile {
     game_sessions: GameSession[];
     bonus_inventory: BonusInventory[];
     skills: PlayerSkills[];
-    walls: PlayerWalls[];
-    ground_line: PlayerGroundLines[];
+    walls: PlayerWalls;
+    ground_line: PlayerGroundLine;
 }

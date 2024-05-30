@@ -1,4 +1,4 @@
-export interface PlayerGroundLines {
+export interface PlayerGroundLine {
     id: number;
     player_profile_id: number;
     level: number;
