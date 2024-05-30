@@ -11,7 +11,7 @@ export default class PlayerProfileRepository {
      */
     public async createPlayerProfile(profile: FullPlayerProfile): Promise<FullPlayerProfile> {
         console.log('Creating player profile with data:', profile);
-        
+
         const { user_id, player_name, best_score, experience_points, total_experience_points } = profile;
 
         const result = await pool.query(
@@ -24,28 +24,26 @@ export default class PlayerProfileRepository {
         const newProfileId = result.rows[0].id;
         console.log('Created player profile with ID:', newProfileId);
 
-        // Insert default values for related tables
-        const bonusResult = await pool.query(
-            `INSERT INTO bonus_inventory (player_profile_id, type, effect) VALUES ($1, $2, $3) RETURNING *`,
-            [newProfileId, 'Health', JSON.stringify({})]
+        // Insert default values for related tables from provided profile
+        const wallsResult = await pool.query(
+            `INSERT INTO player_walls (player_profile_id, level) VALUES ($1, $2) RETURNING *`,
+            [newProfileId, profile.walls.length > 0 ? profile.walls[0].level : 1]
         );
-        console.log('Inserted default bonus inventory:', bonusResult.rows);
+        console.log('Inserted default player walls:', wallsResult.rows);
 
-        const skillsResult = await pool.query(
-            `INSERT INTO player_skills (player_profile_id, skill_id, is_active) VALUES ($1, $2, $3) RETURNING *`,
-            [newProfileId, 'default_skill', false]
+        const groundLineResult = await pool.query(
+            `INSERT INTO player_ground_lines (player_profile_id, level) VALUES ($1, $2) RETURNING *`,
+            [newProfileId, profile.ground_line.length > 0 ? profile.ground_line[0].level : 1]
         );
-        console.log('Inserted default player skills:', skillsResult.rows);
-
-        // Add similar default inserts for player_walls and player_ground_lines if needed
+        console.log('Inserted default player ground lines:', groundLineResult.rows);
 
         return {
             ...result.rows[0],
             game_sessions: [],
             bonus_inventory: [],
             skills: [],
-            walls: [],
-            ground_line: []
+            walls: wallsResult.rows,
+            ground_line: groundLineResult.rows
         };
     }
 
@@ -127,6 +125,13 @@ export default class PlayerProfileRepository {
                     updated_at: r.pgl_updated_at
                 }))
             };
+
+            // Ensure arrays are not null
+            profile.bonus_inventory = profile.bonus_inventory.length > 0 ? profile.bonus_inventory : [];
+            profile.skills = profile.skills.length > 0 ? profile.skills : [];
+            profile.game_sessions = profile.game_sessions.length > 0 ? profile.game_sessions : [];
+            profile.walls = profile.walls.length > 0 ? profile.walls : [];
+            profile.ground_line = profile.ground_line.length > 0 ? profile.ground_line : [];
 
             console.log('Constructed player profile:', profile);
             return profile;
