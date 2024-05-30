@@ -42,6 +42,6 @@ export class GameEngine {
     public initializePlayerProfile(profile: FullPlayerProfile): void {
         const playerProfileData: PlayerProfileData = PlayerDataService.getInstance().convertBackendProfile(profile);
         PlayerDataService.getInstance().setProfile(playerProfileData);
-        PlayerProfile.getInstance(playerProfileData);
+        PlayerProfile.getInstance();
     }
 }

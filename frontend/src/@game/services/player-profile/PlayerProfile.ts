@@ -4,6 +4,7 @@ import { PlayerGroundLine } from "./ground-line/PlayerGroundLine";
 import { PlayerInventory } from "./inventory/PlayerInventory";
 import { PlayerSkills } from "./skills/PlayerSkills";
 import { PlayerWalls } from "./walls/PlayerWalls";
+import { PlayerDataService } from "./datas/PlayerDataService";
 
 export class PlayerProfile {
     private static instance: PlayerProfile;
@@ -15,18 +16,25 @@ export class PlayerProfile {
 
     private playerName: string;
 
-    private constructor(profileData: PlayerProfileData) {
-        this.playerName = profileData.playerName;
-        this.inventory = new PlayerInventory(this);
-        this.experience = new PlayerExperience(this);
-        this.skills = new PlayerSkills(this);
-        this.walls = new PlayerWalls(this);
-        this.groundLine = new PlayerGroundLine(this);
+    private constructor() {
+        const profileData = PlayerDataService.getInstance().getProfile();
+
+        if (profileData) {
+            this.playerName = profileData.playerName;
+            this.inventory = new PlayerInventory(this);
+            this.experience = new PlayerExperience(this);
+            this.skills = new PlayerSkills(this);
+            this.walls = new PlayerWalls(this);
+            this.groundLine = new PlayerGroundLine(this);
+        } else {
+            // Handle case where profileData is null or undefined
+            throw new Error("Player profile data is not available");
+        }
     }
 
-    public static getInstance(profileData?: PlayerProfileData): PlayerProfile {
-        if (!PlayerProfile.instance && profileData) {
-            PlayerProfile.instance = new PlayerProfile(profileData);
+    public static getInstance(): PlayerProfile {
+        if (!PlayerProfile.instance) {
+            PlayerProfile.instance = new PlayerProfile();
         }
         return PlayerProfile.instance;
     }
