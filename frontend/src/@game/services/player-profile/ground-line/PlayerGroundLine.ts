@@ -18,7 +18,6 @@ export class PlayerGroundLine {
     setLevel(newLevel: number): void {
         if (GroundLineLevels[newLevel]) {
             this.level = newLevel;
-            PlayerDataService.getInstance().saveCurrentProfile(this.playerProfile);
         }
     }
 
@@ -33,7 +32,7 @@ export class PlayerGroundLine {
     }
 
     restoreFromData(): void {
-        const data = PlayerDataService.getInstance().loadCurrentProfile(this.playerProfile.getPlayerName());
+        const data = PlayerDataService.getInstance().getProfile();
         if (data && data.groundLine && data.groundLine.level) {
             this.setLevel(data.groundLine.level);
         }

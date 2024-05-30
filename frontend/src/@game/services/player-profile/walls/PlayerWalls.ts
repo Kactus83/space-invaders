@@ -11,7 +11,6 @@ export class PlayerWalls {
 
     setLevel(level: number): void {
         this.level = level;
-        PlayerDataService.getInstance().saveCurrentProfile(this.playerProfile);
     }
 
     getLevel(): number {
@@ -20,7 +19,7 @@ export class PlayerWalls {
 
     restoreFromData(): void {
         // Tenter de charger les données de profil du joueur
-        const profileData = PlayerDataService.getInstance().loadCurrentProfile(this.playerProfile.getPlayerName());
+        const profileData = PlayerDataService.getInstance().getProfile();
         if (profileData && profileData.walls) {
             this.level = profileData.walls.level;
         }

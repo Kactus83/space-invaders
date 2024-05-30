@@ -17,12 +17,10 @@ export class PlayerSkills {
 
     addSkill(skillId: SkillsIds): void {
         this.skills.add(skillId);
-        PlayerDataService.getInstance().saveCurrentProfile(this.playerProfile);
     }
 
     removeSkill(skillId: SkillsIds): void {
         this.skills.delete(skillId);
-        PlayerDataService.getInstance().saveCurrentProfile(this.playerProfile);
     }
 
     getSkills(): ISkill[] {
@@ -45,7 +43,6 @@ export class PlayerSkills {
 
     setActiveSkills(skillIds: SkillsIds[]): void {
         this.activeSkills = skillIds.slice(0, 10); // Garantit un taille de 10 éléments maximum
-        PlayerDataService.getInstance().saveCurrentProfile(this.playerProfile);
     }
 
     // Méthode pour obtenir les compétences actives
@@ -54,7 +51,7 @@ export class PlayerSkills {
     }
 
     restoreFromData(): void {
-        const profileData = PlayerDataService.getInstance().loadCurrentProfile(this.playerProfile.getPlayerName());
+        const profileData = PlayerDataService.getInstance().getProfile();
         
         if (profileData && profileData.skills && Array.isArray(profileData.skills.skillIds)) {
             const skillsIds: SkillsIds[] = profileData.skills.skillIds;

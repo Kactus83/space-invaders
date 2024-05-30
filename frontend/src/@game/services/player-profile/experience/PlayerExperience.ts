@@ -20,7 +20,7 @@ export class PlayerExperience {
     }
 
     restoreFromData(): void {
-        const experienceData = PlayerDataService.getInstance().loadCurrentProfile(this.playerProfile.getPlayerName())?.experience;
+        const experienceData = PlayerDataService.getInstance().getProfile().experience;
         
         if (!experienceData) {
             console.error("No bonus data available to restore.");
@@ -86,7 +86,6 @@ export class PlayerExperience {
     addExperiencePoints(points: number): void {
         this.experiencePoints += points;
         this.totalExperiencePoints += points; 
-        PlayerDataService.getInstance().saveCurrentProfile(this.playerProfile);
     }
 
     getTotalExperiencePoints(): number {
@@ -95,7 +94,6 @@ export class PlayerExperience {
 
     subtractExperiencePoints(points: number): void {
         this.experiencePoints -= points;
-        PlayerDataService.getInstance().saveCurrentProfile(this.playerProfile);
     }
 
     private calculateExperiencePointsFromSession(sessionStats: GameSessionStats): number {
