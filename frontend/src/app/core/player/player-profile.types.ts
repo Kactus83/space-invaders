@@ -10,8 +10,8 @@ export interface FullPlayerProfile {
     game_sessions: GameSession[];
     bonus_inventory: BonusInventory[];
     skills: PlayerSkills[];
-    walls: PlayerWalls[];
-    ground_line: PlayerGroundLine[];
+    walls: PlayerWalls;
+    ground_line: PlayerGroundLine;
 }
 
 export interface GameSession {

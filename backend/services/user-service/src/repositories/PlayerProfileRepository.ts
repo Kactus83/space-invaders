@@ -3,12 +3,6 @@ import { FullPlayerProfile } from '../models/player/FullPlayerProfile';
 
 export default class PlayerProfileRepository {
 
-    /**
-     * Create a new player profile in the database.
-     *
-     * @param profile Data for the new player profile.
-     * @returns The created player profile.
-     */
     public async createPlayerProfile(profile: FullPlayerProfile): Promise<FullPlayerProfile> {
         console.log('Creating player profile with data:', profile);
 
@@ -47,23 +41,16 @@ export default class PlayerProfileRepository {
         };
     }
 
-    /**
-     * Retrieve a player profile by user ID.
-     *
-     * @param userId The ID of the user.
-     * @returns The player profile if found, otherwise null.
-     */
     public async getPlayerProfileByUserId(userId: number): Promise<FullPlayerProfile | null> {
         console.log('Retrieving player profile for user ID:', userId);
 
         const result = await pool.query(
-            `SELECT 
-                pp.*, 
-                gs.id as gs_id, gs.player_profile_id as gs_player_profile_id, gs.wave_set_type as gs_wave_set_type, gs.is_winning_session as gs_is_winning_session, gs.score as gs_score, gs.invader_kills as gs_invader_kills, gs.created_at as gs_created_at, gs.updated_at as gs_updated_at,
-                bi.id as bi_id, bi.player_profile_id as bi_player_profile_id, bi.type as bi_type, bi.effect as bi_effect, bi.activation_timestamp as bi_activation_timestamp, bi.state as bi_state, bi.remaining_duration as bi_remaining_duration, bi.created_at as bi_created_at, bi.updated_at as bi_updated_at,
-                ps.id as ps_id, ps.player_profile_id as ps_player_profile_id, ps.skill_id as ps_skill_id, ps.is_active as ps_is_active, ps.created_at as ps_created_at, ps.updated_at as ps_updated_at,
-                pw.id as pw_id, pw.player_profile_id as pw_player_profile_id, pw.level as pw_level, pw.created_at as pw_created_at, pw.updated_at as pw_updated_at,
-                pgl.id as pgl_id, pgl.player_profile_id as pgl_player_profile_id, pgl.level as pgl_level, pgl.created_at as pgl_created_at, pgl.updated_at as pgl_updated_at
+            `SELECT pp.*, 
+                     gs.id as gs_id, gs.player_profile_id as gs_player_profile_id, gs.wave_set_type as gs_wave_set_type, gs.is_winning_session as gs_is_winning_session, gs.score as gs_score, gs.invader_kills as gs_invader_kills, gs.created_at as gs_created_at, 
+                     bi.id as bi_id, bi.player_profile_id as bi_player_profile_id, bi.type as bi_type, bi.effect as bi_effect, bi.activation_timestamp as bi_activation_timestamp, bi.state as bi_state, bi.remaining_duration as bi_remaining_duration, bi.created_at as bi_created_at, bi.updated_at as bi_updated_at,
+                     ps.id as ps_id, ps.player_profile_id as ps_player_profile_id, ps.skill_id as ps_skill_id, ps.is_active as ps_is_active, ps.created_at as ps_created_at, ps.updated_at as ps_updated_at,
+                     pw.id as pw_id, pw.player_profile_id as pw_player_profile_id, pw.level as pw_level, pw.created_at as pw_created_at, pw.updated_at as pw_updated_at,
+                     pgl.id as pgl_id, pgl.player_profile_id as pgl_player_profile_id, pgl.level as pgl_level, pgl.created_at as pgl_created_at, pgl.updated_at as pgl_updated_at
             FROM player_profiles pp
             LEFT JOIN game_sessions gs ON pp.id = gs.player_profile_id
             LEFT JOIN bonus_inventory bi ON pp.id = bi.player_profile_id
@@ -95,7 +82,6 @@ export default class PlayerProfileRepository {
                     score: r.gs_score,
                     invader_kills: r.gs_invader_kills,
                     created_at: r.gs_created_at,
-                    updated_at: r.gs_updated_at
                 })),
                 bonus_inventory: rows.filter((r: any) => r.bi_id).map((r: any) => ({
                     id: r.bi_id,

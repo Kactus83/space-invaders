@@ -69,11 +69,11 @@ export class PlayerDataService {
         };
 
         const playerWallsData: PlayerWallsData = {
-            level: profile.walls[0].level // Assuming there's only one walls record
+            level: profile.walls.level // Assuming there's only one walls record
         };
 
         const playerGroundLineData: PlayerGroundLineData = {
-            level: profile.ground_line[0].level // Assuming there's only one ground line record
+            level: profile.ground_line.level // Assuming there's only one ground line record
         };
 
         return {
