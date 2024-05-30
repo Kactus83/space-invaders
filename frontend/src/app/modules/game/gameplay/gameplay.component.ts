@@ -54,6 +54,10 @@ export class GameplayComponent implements OnInit, OnDestroy {
     }
 
     private async updateGameState(gameState: any): Promise<void> {
-        this.engine.sync(gameState);
+        if (this.engine) {
+            this.engine.sync(gameState);
+        } else {
+            console.error('Game engine not initialized');
+        }
     }
 }
